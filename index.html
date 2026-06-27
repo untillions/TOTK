@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hyrule Regional Map Viewer</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            overflow: hidden;
+        }
+
+        /* --- DASHBOARD VIEW --- */
+        #dashboard {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            box-sizing: border-box;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #4ade80;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 1000px;
+            padding-bottom: 40px;
+        }
+        .region-card {
+            background-color: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .region-card:hover {
+            background-color: #4ade80;
+            color: #0f172a;
+            transform: translateY(-2px);
+            border-color: #4ade80;
+        }
+
+        /* --- MAP VIEWER VIEW --- */
+        #mapViewer {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            cursor: grab;
+        }
+        canvas:active { cursor: grabbing; }
+
+        /* --- UI OVERLAYS --- */
+        .ui-panel {
+            position: absolute;
+            z-index: 10;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        #topPanel {
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #regionTitle {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #4ade80;
+        }
+        .btn {
+            background: #334155;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn:hover { background: #475569; }
+        .btn.back-btn { background: #ef4444; }
+        .btn.back-btn:hover { background: #dc2626; }
+
+        #layerPanel {
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .layer-btn {
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: #94a3b8;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.15s ease;
+        }
+        .layer-btn.active {
+            background: #4ade80;
+            color: #0f172a;
+            border-color: #4ade80;
+        }
+        
+        /* Coordinate tooltip label overlay */
+		#coordLabel {
+			position: absolute;
+			z-index: 12;
+			background: rgba(15, 23, 42, 0.95);
+			border: 1px solid #4ade80;
+			color: #e2e8f0;
+			padding: 8px 14px;
+			border-radius: 6px;
+			font-family: monospace;
+			font-size: 0.85rem;
+			line-height: 1.4;
+			pointer-events: none; 
+			display: none; 
+			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+		}
+		.game-coords {
+			color: #4ade80;
+			font-weight: bold;
+			display: block;
+			margin-bottom: 4px;
+		}
+		.img-coords {
+			color: #94a3b8;
+			font-size: 0.75rem;
+			display: block;
+		}
+    </style>
+</head>
+<body>
+
+<div id="dashboard">
+    <h1>Hyrule Map Companion</h1>
+    <div class="subtitle">Select a region to explore its topography, skies, and depths</div>
+    <div class="grid-container" id="regionGrid"></div>
+</div>
+
+<div id="mapViewer">
+    <div id="topPanel" class="ui-panel">
+        <button class="btn back-btn" onclick="exitToDashboard()">← Regions</button>
+        <div id="regionTitle">Region Name</div>
+        <div style="width: 80px;"></div> </div>
+
+    <canvas id="mapCanvas"></canvas>
+	<div id="coordLabel">X: 0, Y: 0</div>
+	
+    <div id="layerPanel" class="ui-panel">
+        <button class="layer-btn" onclick="setLayer('sky')">Sky</button>
+        <button class="layer-btn active" onclick="setLayer('surface')">Surface</button>
+        <button class="layer-btn" onclick="setLayer('depths')">Depths</button>
+    </div>
+</div>
+
+<script>
+    // 15 Regions tracked precisely to the boundaries mapped by IGN
+    const REGIONS = [
+        { id: "01", name: "North Hyrule Field", gameStartX: 0, gameStartY: 0 },
+        { id: "02", name: "South Hyrule Field", gameStartX: 0, gameStartY: 0 },
+        { id: "03", name: "Hyrule Ridge & Tabantha", gameStartX: 0, gameStartY: 0 },
+        { id: "04", name: "Hebra Mountains", gameStartX: -4887.66666, gameStartY: 4135.33333 },
+        { id: "05", name: "Tabantha Tundra", gameStartX: 0, gameStartY: 0 },
+        { id: "06", name: "Great Hyrule Forest", gameStartX: 0, gameStartY: 0 },
+        { id: "07", name: "Eldin & Death Mountain", gameStartX: 0, gameStartY: 0 },
+        { id: "08", name: "Akkala Highlands", gameStartX: 0, gameStartY: 0 },
+        { id: "09", name: "Lanayru Great Spring", gameStartX: 0, gameStartY: 0 },
+        { id: "10", name: "Lanayru Wetlands & W. Necluda", gameStartX: 0, gameStartY: 0 },
+        { id: "11", name: "Mount Lanayru", gameStartX: 0, gameStartY: 0 },
+        { id: "12", name: "East Necluda", gameStartX: 0, gameStartY: 0 },
+        { id: "13", name: "Faron Grasslands", gameStartX: 0, gameStartY: 0 },
+        { id: "14", name: "Gerudo Canyon & Desert", gameStartX: 0, gameStartY: 0 },
+        { id: "15", name: "Gerudo Highlands", gameStartX: 0, gameStartY: 0 }
+    ];
+
+    let currentRegion = null;
+    let currentLayer = 'surface'; 
+    let activeImage = new Image();
+
+    // Canvas Engine State
+    const canvas = document.getElementById('mapCanvas');
+    const ctx = canvas.getContext('2d');
+    const coordLabel = document.getElementById('coordLabel');
+    
+    let scale = 1, minScale = 1, maxScale = 1.5;
+    let offsetX = 0, offsetY = 0;
+    let isDragging = false, startX, startY, initialPinchDist = 0, initialScale = 1;
+    let dragMoveCounter = 0; // Tracks if a pointer action was a click or a drag pan
+
+    // MARKER STATE
+    // Stores coordinates relative to the original raw image file (0,0 is top-left edge)
+    let markerX = null;
+    let markerY = null;
+
+    // Build Selection Dashboard
+    const grid = document.getElementById('regionGrid');
+    REGIONS.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'region-card';
+        card.innerText = r.name;
+        card.onclick = () => loadRegion(r);
+        grid.appendChild(card);
+    });
+
+    function loadRegion(region) {
+        currentRegion = region;
+        currentLayer = 'surface';
+        
+        // Clear previous marker on region switch
+        markerX = null;
+        markerY = null;
+        coordLabel.style.display = 'none';
+        
+        document.getElementById('regionTitle').innerText = region.name;
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('mapViewer').style.display = 'block';
+        
+        updateLayerUI();
+        scale = -1; 
+        updateMapAsset();
+    }
+
+    function setLayer(layer) {
+        if (currentLayer === layer) return;
+        currentLayer = layer;
+        updateLayerUI();
+        updateMapAsset();
+    }
+
+    function updateLayerUI() {
+        document.querySelectorAll('.layer-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if(btn.innerText.toLowerCase() === currentLayer) btn.classList.add('active');
+        });
+    }
+
+    function updateMapAsset() {
+        const srcPath = `images/regions/region${currentRegion.id}${currentLayer}.png`;
+        activeImage = new Image();
+        activeImage.src = srcPath;
+        activeImage.onload = () => {
+            if (scale === -1) {
+                resizeCanvas(true); 
+            } else {
+                redraw();
+            }
+        };
+        activeImage.onerror = () => { redraw(); };
+    }
+
+    function exitToDashboard() {
+        document.getElementById('mapViewer').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'flex';
+        currentRegion = null;
+        coordLabel.style.display = 'none';
+    }
+
+    function resizeCanvas(resetZoom = false) {
+		if (!currentRegion) return;
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+	
+		if (resetZoom) {
+			const shortestDeviceDim = Math.min(canvas.width, canvas.height);
+			const mapDim = Math.max(activeImage.width, activeImage.height);
+			
+			minScale = shortestDeviceDim / (mapDim || 2000); 
+			scale = minScale;
+			
+			offsetX = (canvas.width - (activeImage.width * scale)) / 2;
+			offsetY = (canvas.height - (activeImage.height * scale)) / 2;
+		} else {
+			const shortestDeviceDim = Math.min(canvas.width, canvas.height);
+			const mapDim = Math.max(activeImage.width, activeImage.height);
+			minScale = shortestDeviceDim / (mapDim || 2000);
+			if (scale < minScale) scale = minScale;
+			keepInBounds();
+		}
+		redraw();
+	}
+
+    function keepInBounds() {
+        const w = activeImage.width * scale;
+        const h = activeImage.height * scale;
+
+        if (w > canvas.width) offsetX = Math.min(0, Math.max(canvas.width - w, offsetX));
+        else offsetX = (canvas.width - w) / 2;
+
+        if (h > canvas.height) offsetY = Math.min(0, Math.max(canvas.height - h, offsetY));
+        else offsetY = (canvas.height - h) / 2;
+    }
+
+    function redraw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        if (!activeImage.complete || activeImage.naturalWidth === 0) {
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ef4444';
+            ctx.font = '18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`Missing File: region${currentRegion.id}${currentLayer}.png`, canvas.width/2, canvas.height/2);
+            return;
+        }
+
+        ctx.save();
+        ctx.translate(offsetX, offsetY);
+        ctx.scale(scale, scale);
+        ctx.drawImage(activeImage, 0, 0);
+        
+        // --- DRAW INTERACTIVE MAP ICON ---
+        // --- DRAW INTERACTIVE MAP ICON & MULTI-COORD TOOLTIP ---
+        if (markerX !== null && markerY !== null) {
+            ctx.restore(); 
+            ctx.save();
+
+            const screenX = (markerX * scale) + offsetX;
+            const screenY = (markerY * scale) + offsetY;
+
+            // Draw a marker icon (Bright green target ring)
+            ctx.beginPath();
+            ctx.arc(screenX, screenY, 12, 0, 2 * Math.PI);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#4ade80';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(screenX, screenY, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = '#4ade80';
+            ctx.fill();
+
+            // --- IN-GAME MATHEMATICAL FORMULA TRANSLATION ---
+            const conversionFactor = 2 / 3; // 1px = 0.666666...
+            
+            // X increases left-to-right
+            const gameX = currentRegion.gameStartX + (markerX * conversionFactor);
+            // Y decreases top-to-bottom on a grid map layout
+            const gameY = currentRegion.gameStartY - (markerY * conversionFactor);
+
+            // Position HTML Coordinate labels
+            coordLabel.style.left = `${screenX + 18}px`;
+            coordLabel.style.top = `${screenY - 15}px`;
+            
+            // Construct cleanly formatted HTML content blocks rounding numbers to tenth decimals (.toFixed(1))
+            coordLabel.innerHTML = `
+                <span class="game-coords">Game: [ ${gameX.toFixed(1)}, ${gameY.toFixed(1)} ]</span>
+                <span class="img-coords">Image PX: X: ${Math.round(markerX)}, Y: ${Math.round(markerY)}</span>
+            `;
+            coordLabel.style.display = 'block';
+        } else {
+            coordLabel.style.display = 'none';
+        }
+
+        ctx.restore();
+    }
+
+    function zoomAround(zoomFactor, centerX, centerY) {
+        const oldScale = scale;
+        scale = Math.min(maxScale, Math.max(minScale, scale * zoomFactor));
+        const actualFactor = scale / oldScale;
+        offsetX = centerX - (centerX - offsetX) * actualFactor;
+        offsetY = centerY - (centerY - offsetY) * actualFactor;
+        keepInBounds();
+        redraw();
+    }
+
+    // --- ZOOM AND DRAG GESTURE LOGIC ---
+    window.addEventListener('wheel', (e) => {
+        if (!currentRegion) return;
+        e.preventDefault();
+        zoomAround(e.deltaY < 0 ? 1.15 : 0.85, e.clientX, e.clientY);
+    }, { passive: false });
+
+    window.addEventListener('pointerdown', (e) => {
+        if (!currentRegion || e.clientY < 70) return; 
+        isDragging = true;
+        dragMoveCounter = 0; // Reset tracking pointer movement
+        startX = e.clientX - offsetX;
+        startY = e.clientY - offsetY;
+    });
+
+    window.addEventListener('pointermove', (e) => {
+        if (!isDragging || (e.pointerType === 'touch' && e.buttons === 0)) return;
+        dragMoveCounter++; // If the cursor moves, prioritize dragging over a tap click
+        offsetX = e.clientX - startX;
+        offsetY = e.clientY - startY;
+        keepInBounds();
+        redraw();
+    });
+
+    window.addEventListener('pointerup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+
+        if (e.target.closest('.ui-panel') || e.target.closest('.btn') || e.target.closest('.layer-btn')) {
+            return;
+        }
+
+        if (dragMoveCounter < 5) {
+            const clickedImageX = (e.clientX - offsetX) / scale;
+            const clickedImageY = (e.clientY - offsetY) / scale;
+
+            if (clickedImageX >= 0 && clickedImageX <= activeImage.width && clickedImageY >= 0 && clickedImageY <= activeImage.height) {
+                markerX = clickedImageX;
+                markerY = clickedImageY;
+                redraw();
+            }
+        }
+    });
+
+    window.addEventListener('touchstart', (e) => {
+        if (!currentRegion) return;
+        if (e.touches.length === 2) {
+            isDragging = false;
+            initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+            initialScale = scale;
+        }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        if (!currentRegion) return;
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+            const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+            zoomAround((initialScale * (dist / initialPinchDist)) / scale, midX, midY);
+        }
+    }, { passive: false });
+
+    window.addEventListener('resize', () => resizeCanvas(false));
+</script>
+</body>
+</html>
