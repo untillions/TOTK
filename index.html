@@ -122,19 +122,19 @@
 
         #layerPanel {
             bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
         .layer-btn {
             background: #1e293b;
             border: 1px solid #475569;
             color: #94a3b8;
-            padding: 10px 20px;
+            padding: 2px 5px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.15s ease;
+            text-align: left;
         }
         .layer-btn.active {
             background: #4ade80;
@@ -175,6 +175,87 @@
             font-size: 1.1rem;
             display: block;
             margin-bottom: 2px;
+        }
+        /* --- LOADER --- */
+        #loader {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 15, 25, 0.85);
+            display: none; /* Flex when active */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 30; /* Keep above everything */
+            color: #4ade80;
+            font-size: 1.2rem;
+            font-weight: bold;
+            gap: 15px;
+        }
+        .spinner {
+            width: 50px; height: 50px;
+            animation: spin 1.2s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- TOGGLE SLIDERS --- */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+            margin-left: auto; /* Pushes the switch to the far right */
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #334155;
+            transition: 0.3s;
+            border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px; width: 14px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #4ade80; }
+        input:checked + .slider:before { transform: translateX(16px); }
+
+        /* --- SLIDE-UP ANIMATIONS --- */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animated-item {
+            opacity: 0;
+            animation: slideUpFade 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        /* --- LAYER MENU --- */
+        #layerPanel {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 10;
+            box-shadow: none; /* Removed from panel, applied to menu */
+        }
+        #layerMenu {
+            display: none;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            flex-direction: column;
+            gap: 8px;
         }
         /* --- FILTER MENU --- */
         #filterPanel {
@@ -227,19 +308,28 @@
     <div id="topPanel" class="ui-panel">
         <button class="btn back-btn" onclick="exitToDashboard()">← Regions</button>
         <div id="regionTitle">Region Name</div>
-        <div style="width: 80px;"></div> </div>
+    </div>
 
     <canvas id="mapCanvas"></canvas>
 	<div id="coordLabel">X: 0, Y: 0</div>
 	
-    <div id="layerPanel" class="ui-panel">
-        <button class="layer-btn" onclick="setLayer('sky')">Sky</button>
-        <button class="layer-btn active" onclick="setLayer('surface')">Surface</button>
-        <button class="layer-btn" onclick="setLayer('depths')">Depths</button>
+    <div id="loader">
+        <img src="icons/loading.png" alt="Loading" class="spinner">
+        <span>Loading...</span>
     </div>
+
+    <div id="layerPanel">
+        <div id="layerMenu">
+            <button class="layer-btn animated-item" style="animation-delay: 0s;" onclick="setLayer('sky')"><img src="icons/sky.png" style="width: 30px; height: 30px; vertical-align: middle;"> Sky</button>
+            <button class="layer-btn active animated-item" style="animation-delay: 0.05s;" onclick="setLayer('surface')"><img src="icons/surface.png" style="width: 30px; height: 30px; vertical-align: middle;"> Surface</button>
+            <button class="layer-btn animated-item" style="animation-delay: 0.1s;" onclick="setLayer('depths')"><img src="icons/depths.png" style="width: 30px; height: 30px; vertical-align: middle;"> Depths</button>
+        </div>
+        <button class="layer-btn" onclick="toggleLayerMenu()" id="layerBtn"><img id="currentLayerIcon" src="icons/layer.png" alt="Layer" style="width: 30px; height: 30px;"></button>
+    </div>
+
     <div id="filterPanel">
         <div id="filterMenu"></div>
-        <button class="layer-btn" onclick="toggleFilterMenu()" id="filterBtn">Filters ⚙️</button>
+        <button class="layer-btn" onclick="toggleFilterMenu()" id="filterBtn"><img src="icons/filter.png" alt="Filter" style="width: 30px; height: 30px;"></button>
     </div>
 </div>
 
@@ -255,7 +345,7 @@
         { id: 6, name: "Great Hyrule Forest", gameStartX: -1315, gameStartY: 4136 },
         { id: 7, name: "Eldin", gameStartX: 376, gameStartY: 4136 },
         { id: 8, name: "Akkala", gameStartX: 2633, gameStartY: 4136 },
-        { id: 9, name: "Lanayru Great Spring", gameStartX: 1503, gameStartY: 1880 },
+        { id: 9, name: "Lanayru Great Spring", gameStartX: 1504, gameStartY: 1879 },
         { id: 10, name: "Lanayru Wetlands", gameStartX: 1, gameStartY: 1503 },
         { id: 11, name: "Mount Lanayru", gameStartX: 1880, gameStartY: 0 },
         { id: 12, name: "East Necluda", gameStartX: 1127, gameStartY: -1127 },
@@ -320,6 +410,13 @@
     function toggleFilterMenu() {
         const menu = document.getElementById('filterMenu');
         menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        document.getElementById('layerMenu').style.display = 'none';
+    }
+    
+    function toggleLayerMenu() {
+        const menu = document.getElementById('layerMenu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        document.getElementById('filterMenu').style.display = 'none'; 
     }
 
     function buildFilterMenu() {
@@ -327,12 +424,25 @@
         menu.innerHTML = '';
         const config = FILTER_CONFIG[currentLayer];
         
-        // Reset to default filters when switching layers
         activeFilters = [...config.defaults]; 
         
-        Object.entries(config.options).forEach(([type, labelText]) => {
+        Object.entries(config.options).forEach(([type, labelText], index) => {
             const label = document.createElement('label');
-            label.className = 'filter-label';
+            // Add the animated item class and set staggered delay based on index
+            label.className = 'filter-label animated-item';
+            label.style.animationDelay = `${index * 0.05}s`;
+            label.style.width = '100%'; 
+            
+            // Generate the Icon
+            const iconImg = document.createElement('img');
+            const fileName = type.toLowerCase().replace(/\s+/g, '-');
+            iconImg.src = `icons/${fileName}.png`;
+            iconImg.style.width = '24px';
+            iconImg.style.height = '24px';
+            
+            // Build the toggle slider
+            const switchDiv = document.createElement('div');
+            switchDiv.className = 'switch';
             
             const cb = document.createElement('input');
             cb.type = 'checkbox';
@@ -344,8 +454,17 @@
                 redraw();
             };
             
-            label.appendChild(cb);
+            const sliderSpan = document.createElement('span');
+            sliderSpan.className = 'slider';
+            
+            switchDiv.appendChild(cb);
+            switchDiv.appendChild(sliderSpan);
+            
+            // Assemble: Icon -> Text -> Toggle (auto-pushed to right by margin-left: auto)
+            label.appendChild(iconImg);
             label.appendChild(document.createTextNode(labelText));
+            label.appendChild(switchDiv);
+            
             menu.appendChild(label);
         });
     }
@@ -387,8 +506,14 @@
     }
 
     function setLayer(layer) {
-        if (currentLayer === layer) return;
+        if (currentLayer === layer) {
+            document.getElementById('layerMenu').style.display = 'none';
+            return;
+        }
         currentLayer = layer;
+        
+        // Update the main layer button image to reflect current state
+        document.getElementById('currentLayerIcon').src = `icons/${layer}.png`;
         
         markerX = null;
         markerY = null;
@@ -397,8 +522,10 @@
         
         updateLayerUI();
         updateMapAsset();
-		document.getElementById('filterMenu').style.display = 'none';
-		buildFilterMenu();
+        
+        document.getElementById('filterMenu').style.display = 'none';
+        document.getElementById('layerMenu').style.display = 'none';
+        buildFilterMenu();
     }
 
     function updateLayerUI() {
@@ -409,19 +536,24 @@
     }
 
     function updateMapAsset() {
-        // Pads the ID with a zero if it's less than 10 (e.g., 1 -> "01") to match file paths
+        document.getElementById('loader').style.display = 'flex'; // Show loading screen
+
         const formattedId = currentRegion.id.toString().padStart(2, '0');
         const srcPath = `images/region${formattedId}${currentLayer}.png`;
         activeImage = new Image();
         activeImage.src = srcPath;
         activeImage.onload = () => {
+            document.getElementById('loader').style.display = 'none'; // Hide loading screen
             if (scale === -1) {
                 resizeCanvas(true); 
             } else {
                 redraw();
             }
         };
-        activeImage.onerror = () => { redraw(); };
+        activeImage.onerror = () => { 
+            document.getElementById('loader').style.display = 'none'; // Hide loading screen
+            redraw(); 
+        };
     }
 
     function exitToDashboard() {
