@@ -268,9 +268,21 @@
     let currentLayer = 'surface'; 
     let activeImage = new Image();
     
-    // Landmark Icons
-    const iconTower = new Image();
-    iconTower.src = 'icons/tower.png';
+    // Landmark Icons Dictionary
+    const icons = {};
+    const iconTypes = [
+        "Tower", "Shrine", "Cave", "Chasm", "Dispenser", 
+        "Hudson Sign", "Named Location", "Old Map", 
+        "Lightroot", "Treasure Chest", "Yiga Hideout"
+    ];
+    
+    iconTypes.forEach(type => {
+        const img = new Image();
+        // Formats "Hudson Sign" to "hudson-sign.png"
+        const fileName = type.toLowerCase().replace(/\s+/g, '-'); 
+        img.src = `icons/${fileName}.png`;
+        icons[type] = img;
+    });
 
     // Canvas Engine State
     const canvas = document.getElementById('mapCanvas');
@@ -491,30 +503,20 @@
             const screenX = (lmImgX * scale) + offsetX;
             const screenY = (lmImgY * scale) + offsetY;
             
-            if (iconTower.complete && iconTower.naturalWidth !== 0) {
-                // Changed from 40x40 to 30x30, and offsets to -15
-                ctx.drawImage(iconTower, screenX - 15, screenY - 15, 30, 30);
-            } else {
-                ctx.beginPath();
-                ctx.arc(screenX, screenY, 15, 0, 2*Math.PI);
-                ctx.fillStyle = '#3b82f6';
-                ctx.fill();
-            }
-        }
-        
-        for (let lm of visibleLandmarks) {
-            // Reverse coordinates: Game -> Image Space
-            const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
-            const lmImgY = (currentRegion.gameStartY - lm.y) * 1.5;
+            const icon = icons[lm.type];
             
-            // Map Image Space -> Screen Space
-            const screenX = (lmImgX * scale) + offsetX;
-            const screenY = (lmImgY * scale) + offsetY;
-            
-            if (iconTower.complete && iconTower.naturalWidth !== 0) {
-                // Drawing at constant 40x40 size, centered on the screen coordinate
-                ctx.drawImage(iconTower, screenX - 15, screenY - 15, 30, 30);
+            if (icon && icon.complete && icon.naturalWidth !== 0) {
+                // Determine scale factor to fit inside a 30x30 bounding box
+                const maxDim = Math.max(icon.naturalWidth, icon.naturalHeight);
+                const scaleFactor = 30 / maxDim;
+                
+                const drawW = icon.naturalWidth * scaleFactor;
+                const drawH = icon.naturalHeight * scaleFactor;
+                
+                // Draw centered on the screen coordinate
+                ctx.drawImage(icon, screenX - (drawW / 2), screenY - (drawH / 2), drawW, drawH);
             } else {
+                // Fallback blue dot if the specific icon image fails to load
                 ctx.beginPath();
                 ctx.arc(screenX, screenY, 15, 0, 2*Math.PI);
                 ctx.fillStyle = '#3b82f6';
@@ -533,7 +535,7 @@
             // Highlight ring around selected landmark (consistent size)
             ctx.beginPath();
             ctx.arc(screenX, screenY, 25, 0, 2 * Math.PI);
-            ctx.lineWidth = 4;
+            ctx.lineWidth = 2;
             ctx.strokeStyle = '#facc15'; // Gold highlight
             ctx.stroke();
 
@@ -558,7 +560,7 @@
 
             ctx.beginPath();
             ctx.arc(screenX, screenY, 12, 0, 2 * Math.PI);
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             ctx.strokeStyle = '#4ade80';
             ctx.stroke();
 
