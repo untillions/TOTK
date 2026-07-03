@@ -142,7 +142,7 @@
             border-color: #4ade80;
         }
         
-        /* Coordinate tooltip label overlay */
+        /* Coordinate/Landmark tooltip label overlay */
 		#coordLabel {
 			position: absolute;
 			z-index: 12;
@@ -169,6 +169,50 @@
 			font-size: 0.75rem;
 			display: block;
 		}
+        .landmark-title {
+            color: #facc15;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 2px;
+        }
+        /* --- FILTER MENU --- */
+        #filterPanel {
+            position: absolute;
+            bottom: 25px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            z-index: 10;
+        }
+        #filterMenu {
+            display: none;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            flex-direction: column;
+            gap: 12px;
+            min-width: 160px;
+        }
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+        .filter-label input {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            accent-color: #4ade80;
+        }
     </style>
 </head>
 <body>
@@ -193,30 +237,40 @@
         <button class="layer-btn active" onclick="setLayer('surface')">Surface</button>
         <button class="layer-btn" onclick="setLayer('depths')">Depths</button>
     </div>
+    <div id="filterPanel">
+        <div id="filterMenu"></div>
+        <button class="layer-btn" onclick="toggleFilterMenu()" id="filterBtn">Filters ⚙️</button>
+    </div>
 </div>
+
+<script src="landmarks.js"></script>
 
 <script>
     const REGIONS = [
-        { id: "01", name: "North Hyrule Field", gameStartX: -1880, gameStartY: 1503 },
-        { id: "02", name: "South Hyrule Field", gameStartX: -3194, gameStartY: 189 },
-        { id: "03", name: "Hyrule Ridge", gameStartX: -4512, gameStartY: 3008 },
-        { id: "04", name: "Hebra Mountains", gameStartX: -4888, gameStartY: 4135 },
-        { id: "05", name: "Tabantha Tundra", gameStartX: -3196, gameStartY: 4136 },
-        { id: "06", name: "Great Hyrule Forest", gameStartX: -1315, gameStartY: 4136 },
-        { id: "07", name: "Eldin", gameStartX: 376, gameStartY: 4136 },
-        { id: "08", name: "Akkala", gameStartX: 2633, gameStartY: 4136 },
-        { id: "09", name: "Lanayru Great Spring", gameStartX: 1503, gameStartY: 1880 },
-        { id: "10", name: "Lanayru Wetlands", gameStartX: 1, gameStartY: 1503 },
-        { id: "11", name: "Mount Lanayru", gameStartX: 1880, gameStartY: 0 },
-        { id: "12", name: "East Necluda", gameStartX: 1127, gameStartY: -1127 },
-        { id: "13", name: "Faron Grasslands", gameStartX: -1503, gameStartY: -752 },
-        { id: "14", name: "Gerudo Desert", gameStartX: -5639, gameStartY: -1129 },
-        { id: "15", name: "Gerudo Highlands", gameStartX: -5640, gameStartY: 752 }
+        { id: 1, name: "North Hyrule Field", gameStartX: -1880, gameStartY: 1503 },
+        { id: 2, name: "South Hyrule Field", gameStartX: -3194, gameStartY: 189 },
+        { id: 3, name: "Hyrule Ridge", gameStartX: -4512, gameStartY: 3008 },
+        { id: 4, name: "Hebra Mountains", gameStartX: -4888, gameStartY: 4135 },
+        { id: 5, name: "Tabantha Tundra", gameStartX: -3196, gameStartY: 4136 },
+        { id: 6, name: "Great Hyrule Forest", gameStartX: -1315, gameStartY: 4136 },
+        { id: 7, name: "Eldin", gameStartX: 376, gameStartY: 4136 },
+        { id: 8, name: "Akkala", gameStartX: 2633, gameStartY: 4136 },
+        { id: 9, name: "Lanayru Great Spring", gameStartX: 1503, gameStartY: 1880 },
+        { id: 10, name: "Lanayru Wetlands", gameStartX: 1, gameStartY: 1503 },
+        { id: 11, name: "Mount Lanayru", gameStartX: 1880, gameStartY: 0 },
+        { id: 12, name: "East Necluda", gameStartX: 1127, gameStartY: -1127 },
+        { id: 13, name: "Faron Grasslands", gameStartX: -1503, gameStartY: -752 },
+        { id: 14, name: "Gerudo Desert", gameStartX: -5639, gameStartY: -1129 },
+        { id: 15, name: "Gerudo Highlands", gameStartX: -5640, gameStartY: 752 }
     ];
 
     let currentRegion = null;
     let currentLayer = 'surface'; 
     let activeImage = new Image();
+    
+    // Landmark Icons
+    const iconTower = new Image();
+    iconTower.src = 'icons/tower.png';
 
     // Canvas Engine State
     const canvas = document.getElementById('mapCanvas');
@@ -226,12 +280,69 @@
     let scale = 1, minScale = 1, maxScale = 1.5;
     let offsetX = 0, offsetY = 0;
     let isDragging = false, startX, startY, initialPinchDist = 0, initialScale = 1;
-    let dragMoveCounter = 0; // Tracks if a pointer action was a click or a drag pan
+    let dragMoveCounter = 0; 
 
     // MARKER STATE
-    // Stores coordinates relative to the original raw image file (0,0 is top-left edge)
     let markerX = null;
     let markerY = null;
+    let selectedLandmark = null;
+    
+    // --- NEW FILTER & FORMATTING STATE ---
+    let activeFilters = [];
+    
+    const FILTER_CONFIG = {
+        surface: {
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Dispenser": "Dispensers", "Hudson Sign": "Hudson Signs", "Named Location": "Named Locations" },
+            defaults: ["Tower", "Shrine"]
+        },
+        sky: {
+            options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps" },
+            defaults: ["Shrine"]
+        },
+        depths: {
+            options: { "Lightroot": "Lightroots", "Treasure Chest": "Treasure Chests", "Yiga Hideout": "Yiga Hideouts" },
+            defaults: ["Lightroot"]
+        }
+    };
+
+    function toggleFilterMenu() {
+        const menu = document.getElementById('filterMenu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function buildFilterMenu() {
+        const menu = document.getElementById('filterMenu');
+        menu.innerHTML = '';
+        const config = FILTER_CONFIG[currentLayer];
+        
+        // Reset to default filters when switching layers
+        activeFilters = [...config.defaults]; 
+        
+        Object.entries(config.options).forEach(([type, labelText]) => {
+            const label = document.createElement('label');
+            label.className = 'filter-label';
+            
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.value = type;
+            cb.checked = activeFilters.includes(type);
+            cb.onchange = (e) => {
+                if (e.target.checked) activeFilters.push(type);
+                else activeFilters = activeFilters.filter(f => f !== type);
+                redraw();
+            };
+            
+            label.appendChild(cb);
+            label.appendChild(document.createTextNode(labelText));
+            menu.appendChild(label);
+        });
+    }
+
+    function formatCoord(val) {
+        // Formats to 4 digits with leading zeroes, maintaining the negative sign
+        const sign = val < 0 ? '-' : '';
+        return sign + Math.abs(Math.round(val)).toString().padStart(4, '0');
+    }
 
     // Build Selection Dashboard
     const grid = document.getElementById('regionGrid');
@@ -247,9 +358,9 @@
         currentRegion = region;
         currentLayer = 'surface';
         
-        // Clear previous marker on region switch
         markerX = null;
         markerY = null;
+        selectedLandmark = null;
         coordLabel.style.display = 'none';
         
         document.getElementById('regionTitle').innerText = region.name;
@@ -259,13 +370,23 @@
         updateLayerUI();
         scale = -1; 
         updateMapAsset();
+		document.getElementById('filterMenu').style.display = 'none';
+		buildFilterMenu();
     }
 
     function setLayer(layer) {
         if (currentLayer === layer) return;
         currentLayer = layer;
+        
+        markerX = null;
+        markerY = null;
+        selectedLandmark = null;
+        coordLabel.style.display = 'none';
+        
         updateLayerUI();
         updateMapAsset();
+		document.getElementById('filterMenu').style.display = 'none';
+		buildFilterMenu();
     }
 
     function updateLayerUI() {
@@ -276,7 +397,9 @@
     }
 
     function updateMapAsset() {
-        const srcPath = `images/region${currentRegion.id}${currentLayer}.png`;
+        // Pads the ID with a zero if it's less than 10 (e.g., 1 -> "01") to match file paths
+        const formattedId = currentRegion.id.toString().padStart(2, '0');
+        const srcPath = `images/region${formattedId}${currentLayer}.png`;
         activeImage = new Image();
         activeImage.src = srcPath;
         activeImage.onload = () => {
@@ -297,28 +420,28 @@
     }
 
     function resizeCanvas(resetZoom = false) {
-		if (!currentRegion) return;
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-	
-		if (resetZoom) {
-			const shortestDeviceDim = Math.min(canvas.width, canvas.height);
-			const mapDim = Math.max(activeImage.width, activeImage.height);
-			
-			minScale = shortestDeviceDim / (mapDim || 2000); 
-			scale = minScale;
-			
-			offsetX = (canvas.width - (activeImage.width * scale)) / 2;
-			offsetY = (canvas.height - (activeImage.height * scale)) / 2;
-		} else {
-			const shortestDeviceDim = Math.min(canvas.width, canvas.height);
-			const mapDim = Math.max(activeImage.width, activeImage.height);
-			minScale = shortestDeviceDim / (mapDim || 2000);
-			if (scale < minScale) scale = minScale;
-			keepInBounds();
-		}
-		redraw();
-	}
+        if (!currentRegion) return;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    
+        if (resetZoom) {
+            const shortestDeviceDim = Math.min(canvas.width, canvas.height);
+            const mapDim = Math.max(activeImage.width, activeImage.height);
+            
+            minScale = shortestDeviceDim / (mapDim || 2000); 
+            scale = minScale;
+            
+            offsetX = (canvas.width - (activeImage.width * scale)) / 2;
+            offsetY = (canvas.height - (activeImage.height * scale)) / 2;
+        } else {
+            const shortestDeviceDim = Math.min(canvas.width, canvas.height);
+            const mapDim = Math.max(activeImage.width, activeImage.height);
+            minScale = shortestDeviceDim / (mapDim || 2000);
+            if (scale < minScale) scale = minScale;
+            keepInBounds();
+        }
+        redraw();
+    }
 
     function keepInBounds() {
         const w = activeImage.width * scale;
@@ -340,25 +463,99 @@
             ctx.fillStyle = '#ef4444';
             ctx.font = '18px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText(`Missing File: region${currentRegion.id}${currentLayer}.png`, canvas.width/2, canvas.height/2);
+            const formattedId = currentRegion.id.toString().padStart(2, '0');
+            ctx.fillText(`Missing File: region${formattedId}${currentLayer}.png`, canvas.width/2, canvas.height/2);
             return;
         }
 
         ctx.save();
         ctx.translate(offsetX, offsetY);
         ctx.scale(scale, scale);
-        ctx.drawImage(activeImage, 0, 0);
         
-        // --- DRAW INTERACTIVE MAP ICON ---
-        // --- DRAW INTERACTIVE MAP ICON & MULTI-COORD TOOLTIP ---
-        if (markerX !== null && markerY !== null) {
-            ctx.restore(); 
-            ctx.save();
+        // Draw Base Map Image
+        ctx.drawImage(activeImage, 0, 0);
+        ctx.restore(); 
+        
+        // --- DRAW LANDMARKS (Screen Space to keep consistent size) ---
+        // Added filter logic here
+        const visibleLandmarks = landmarks.filter(lm => 
+            lm.region === currentRegion.id && 
+            lm.level.toLowerCase() === currentLayer &&
+            activeFilters.includes(lm.type) 
+        );
+        
+        for (let lm of visibleLandmarks) {
+            const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
+            const lmImgY = (currentRegion.gameStartY - lm.y) * 1.5;
+            
+            const screenX = (lmImgX * scale) + offsetX;
+            const screenY = (lmImgY * scale) + offsetY;
+            
+            if (iconTower.complete && iconTower.naturalWidth !== 0) {
+                // Changed from 40x40 to 30x30, and offsets to -15
+                ctx.drawImage(iconTower, screenX - 15, screenY - 15, 30, 30);
+            } else {
+                ctx.beginPath();
+                ctx.arc(screenX, screenY, 15, 0, 2*Math.PI);
+                ctx.fillStyle = '#3b82f6';
+                ctx.fill();
+            }
+        }
+        
+        for (let lm of visibleLandmarks) {
+            // Reverse coordinates: Game -> Image Space
+            const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
+            const lmImgY = (currentRegion.gameStartY - lm.y) * 1.5;
+            
+            // Map Image Space -> Screen Space
+            const screenX = (lmImgX * scale) + offsetX;
+            const screenY = (lmImgY * scale) + offsetY;
+            
+            if (iconTower.complete && iconTower.naturalWidth !== 0) {
+                // Drawing at constant 40x40 size, centered on the screen coordinate
+                ctx.drawImage(iconTower, screenX - 15, screenY - 15, 30, 30);
+            } else {
+                ctx.beginPath();
+                ctx.arc(screenX, screenY, 15, 0, 2*Math.PI);
+                ctx.fillStyle = '#3b82f6';
+                ctx.fill();
+            }
+        }
 
+        // --- DRAW UI OVERLAYS (Landmark Tooltip or Custom Ping) ---
+        if (selectedLandmark) {
+            const lmImgX = (selectedLandmark.x - currentRegion.gameStartX) * 1.5;
+            const lmImgY = (currentRegion.gameStartY - selectedLandmark.y) * 1.5;
+            
+            const screenX = (lmImgX * scale) + offsetX;
+            const screenY = (lmImgY * scale) + offsetY;
+
+            // Highlight ring around selected landmark (consistent size)
+            ctx.beginPath();
+            ctx.arc(screenX, screenY, 25, 0, 2 * Math.PI);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#facc15'; // Gold highlight
+            ctx.stroke();
+
+            coordLabel.style.left = `${screenX + 25}px`;
+            coordLabel.style.top = `${screenY - 20}px`;
+            coordLabel.style.borderColor = '#facc15';
+            
+            let detailHtml = selectedLandmark.details ? `<span class="img-coords" style="margin-top:6px;">${selectedLandmark.details}</span>` : '';
+            
+            coordLabel.innerHTML = `
+                <span class="landmark-title">${selectedLandmark.name}</span>
+                <span style="color:#e2e8f0; font-weight:bold;">${selectedLandmark.type}</span>
+				<span class="game-coords">(${formatCoord(selectedLandmark.x)}, ${formatCoord(selectedLandmark.y)}, ${formatCoord(selectedLandmark.z)})</span>
+                ${detailHtml}
+            `;
+            coordLabel.style.display = 'block';
+
+        } else if (markerX !== null && markerY !== null) {
+            // Standard Custom Ping
             const screenX = (markerX * scale) + offsetX;
             const screenY = (markerY * scale) + offsetY;
 
-            // Draw a marker icon (Bright green target ring)
             ctx.beginPath();
             ctx.arc(screenX, screenY, 12, 0, 2 * Math.PI);
             ctx.lineWidth = 3;
@@ -370,29 +567,22 @@
             ctx.fillStyle = '#4ade80';
             ctx.fill();
 
-            // --- IN-GAME MATHEMATICAL FORMULA TRANSLATION ---
-            const conversionFactor = 2 / 3; // 1px = 0.666666...
-            
-            // X increases left-to-right
+            const conversionFactor = 2 / 3;
             const gameX = currentRegion.gameStartX + (markerX * conversionFactor);
-            // Y decreases top-to-bottom on a grid map layout
             const gameY = currentRegion.gameStartY - (markerY * conversionFactor);
 
-            // Position HTML Coordinate labels
             coordLabel.style.left = `${screenX + 18}px`;
             coordLabel.style.top = `${screenY - 15}px`;
+            coordLabel.style.borderColor = '#4ade80';
             
-            // Construct cleanly formatted HTML content blocks rounding numbers to tenth decimals (.toFixed(1))
             coordLabel.innerHTML = `
-                <span class="game-coords">Game: [ ${gameX.toFixed(1)}, ${gameY.toFixed(1)} ]</span>
-                <span class="img-coords">Image PX: X: ${Math.round(markerX)}, Y: ${Math.round(markerY)}</span>
+				<span class="game-coords">Game: (${formatCoord(gameX)}, ${formatCoord(gameY)})</span>
+                <span class="img-coords">Image PX: (${Math.round(markerX)}, ${Math.round(markerY)})</span>
             `;
             coordLabel.style.display = 'block';
         } else {
             coordLabel.style.display = 'none';
         }
-
-        ctx.restore();
     }
 
     function zoomAround(zoomFactor, centerX, centerY) {
@@ -405,7 +595,6 @@
         redraw();
     }
 
-    // --- ZOOM AND DRAG GESTURE LOGIC ---
     window.addEventListener('wheel', (e) => {
         if (!currentRegion) return;
         e.preventDefault();
@@ -415,14 +604,14 @@
     window.addEventListener('pointerdown', (e) => {
         if (!currentRegion || e.clientY < 70) return; 
         isDragging = true;
-        dragMoveCounter = 0; // Reset tracking pointer movement
+        dragMoveCounter = 0; 
         startX = e.clientX - offsetX;
         startY = e.clientY - offsetY;
     });
 
     window.addEventListener('pointermove', (e) => {
         if (!isDragging || (e.pointerType === 'touch' && e.buttons === 0)) return;
-        dragMoveCounter++; // If the cursor moves, prioritize dragging over a tap click
+        dragMoveCounter++; 
         offsetX = e.clientX - startX;
         offsetY = e.clientY - startY;
         keepInBounds();
@@ -438,14 +627,46 @@
         }
 
         if (dragMoveCounter < 5) {
-            const clickedImageX = (e.clientX - offsetX) / scale;
-            const clickedImageY = (e.clientY - offsetY) / scale;
+            let clickedLandmark = null;
+            const clickTolerance = 15; // Radius in screen pixels (matching the 30x30 icon)
 
-            if (clickedImageX >= 0 && clickedImageX <= activeImage.width && clickedImageY >= 0 && clickedImageY <= activeImage.height) {
-                markerX = clickedImageX;
-                markerY = clickedImageY;
-                redraw();
+            // Check if we clicked on any visible landmark using Screen Coordinates            
+            const visibleLandmarks = landmarks.filter(lm => 
+                lm.region === currentRegion.id && 
+                lm.level.toLowerCase() === currentLayer &&
+                activeFilters.includes(lm.type)
+            );
+
+            for (let lm of visibleLandmarks) {
+                const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
+                const lmImgY = (currentRegion.gameStartY - lm.y) * 1.5;
+                
+                const screenX = (lmImgX * scale) + offsetX;
+                const screenY = (lmImgY * scale) + offsetY;
+                
+                const dist = Math.hypot(e.clientX - screenX, e.clientY - screenY);
+                if (dist <= clickTolerance) {
+                    clickedLandmark = lm;
+                    break;
+                }
             }
+
+            if (clickedLandmark) {
+                selectedLandmark = clickedLandmark;
+                markerX = null; 
+                markerY = null;
+            } else {
+                // Determine raw image coordinates for standard map pings
+                const clickedImageX = (e.clientX - offsetX) / scale;
+                const clickedImageY = (e.clientY - offsetY) / scale;
+                
+                if (clickedImageX >= 0 && clickedImageX <= activeImage.width && clickedImageY >= 0 && clickedImageY <= activeImage.height) {
+                    selectedLandmark = null;
+                    markerX = clickedImageX;
+                    markerY = clickedImageY;
+                }
+            }
+            redraw();
         }
     });
 
