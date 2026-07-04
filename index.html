@@ -32,6 +32,7 @@
             align-items: center;
         }
         h1 {
+			font-family: 'HyliaSerif', serif;
             color: #4ade80;
             margin-bottom: 5px;
             text-align: center;
@@ -102,6 +103,7 @@
             align-items: center;
         }
         #regionTitle {
+			font-family: 'HyliaSerif', serif;
             margin: 0;
             font-size: 1.1rem;
             font-weight: bold;
@@ -159,7 +161,7 @@
 			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
 		}
 		.game-coords {
-			color: #4ade80;
+			color: #ffffff;
 			font-weight: bold;
 			display: block;
 			margin-bottom: 4px;
@@ -170,11 +172,12 @@
 			display: block;
 		}
         .landmark-title {
-            color: #facc15;
-            font-weight: bold;
+            font-family: 'HyliaSerif', serif;
+            font-weight: normal;
             font-size: 1.1rem;
             display: block;
             margin-bottom: 2px;
+            letter-spacing: 1px;
         }
         /* --- LOADER --- */
         #loader {
@@ -294,6 +297,24 @@
             height: 16px;
             accent-color: #4ade80;
         }
+        /* --- FONTS --- */
+        @font-face {
+            font-family: 'HyliaSerif';
+            src: url('fonts/HyliaSerif.otf') format('truetype'); /* Adjust extension if needed */
+            font-weight: normal;
+            font-style: normal;
+        }
+		
+		.tooltip-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+        }
+
+                
     </style>
 </head>
 <body>
@@ -365,6 +386,13 @@
         "Hudson Sign", "Named Location", "Old Map", 
         "Lightroot", "Treasure Chest", "Yiga Hideout"
     ];
+    const landmarkColors = {
+        "Tower": "#86a3e6",
+        "Shrine": "#7cc9c2",
+        "Lightroot": "#7cc9c2",
+        "Cave": "#a784e5",
+        "default": "#facc15"
+    };
     
     iconTypes.forEach(type => {
         const img = new Image();
@@ -587,6 +615,35 @@
         redraw();
     }
 
+	let panAnimId = null;
+
+    function smoothPanTo(targetOffsetX, targetOffsetY) {
+        cancelAnimationFrame(panAnimId);
+        const startX = offsetX;
+        const startY = offsetY;
+        const duration = 350; // Milliseconds for the glide
+        const startTime = performance.now();
+
+        function step(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Cubic ease-out formula for a smooth deceleration
+            const ease = 1 - Math.pow(1 - progress, 3);
+
+            offsetX = startX + (targetOffsetX - startX) * ease;
+            offsetY = startY + (targetOffsetY - startY) * ease;
+
+            keepInBounds();
+            redraw();
+
+            if (progress < 1) {
+                panAnimId = requestAnimationFrame(step);
+            }
+        }
+        panAnimId = requestAnimationFrame(step);
+    }
+    
     function keepInBounds() {
         const w = activeImage.width * scale;
         const h = activeImage.height * scale;
@@ -625,7 +682,7 @@
         const visibleLandmarks = landmarks.filter(lm => 
             lm.region === currentRegion.id && 
             lm.level.toLowerCase() === currentLayer &&
-            activeFilters.includes(lm.type) 
+            activeFilters.includes(lm.landmark) 
         );
         
         for (let lm of visibleLandmarks) {
@@ -635,7 +692,7 @@
             const screenX = (lmImgX * scale) + offsetX;
             const screenY = (lmImgY * scale) + offsetY;
             
-            const icon = icons[lm.type];
+            const icon = icons[lm.landmark];
             
             if (icon && icon.complete && icon.naturalWidth !== 0) {
                 // Determine scale factor to fit inside a 30x30 bounding box
@@ -650,7 +707,7 @@
             } else {
                 // Fallback blue dot if the specific icon image fails to load
                 ctx.beginPath();
-                ctx.arc(screenX, screenY, 15, 0, 2*Math.PI);
+                ctx.arc(screenX, screenY, 8, 0, 2*Math.PI);
                 ctx.fillStyle = '#3b82f6';
                 ctx.fill();
             }
@@ -664,23 +721,34 @@
             const screenX = (lmImgX * scale) + offsetX;
             const screenY = (lmImgY * scale) + offsetY;
 
-            // Highlight ring around selected landmark (consistent size)
+            // Get dynamic color
+            const lmColor = landmarkColors[selectedLandmark.landmark] || landmarkColors["default"];
+
+            // Highlight ring around selected landmark
             ctx.beginPath();
-            ctx.arc(screenX, screenY, 25, 0, 2 * Math.PI);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#facc15'; // Gold highlight
+            ctx.arc(screenX, screenY, 18, 0, 2 * Math.PI);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = lmColor; 
             ctx.stroke();
 
             coordLabel.style.left = `${screenX + 25}px`;
             coordLabel.style.top = `${screenY - 20}px`;
-            coordLabel.style.borderColor = '#facc15';
+            coordLabel.style.borderColor = lmColor;
             
             let detailHtml = selectedLandmark.details ? `<span class="img-coords" style="margin-top:6px;">${selectedLandmark.details}</span>` : '';
             
+            // Format the icon filename
+            const fileName = selectedLandmark.landmark.toLowerCase().replace(/\s+/g, '-');
+            
             coordLabel.innerHTML = `
-                <span class="landmark-title">${selectedLandmark.name}</span>
-                <span style="color:#e2e8f0; font-weight:bold;">${selectedLandmark.type}</span>
-				<span class="game-coords">(${formatCoord(selectedLandmark.x)}, ${formatCoord(selectedLandmark.y)}, ${formatCoord(selectedLandmark.z)})</span>
+                <div class="tooltip-header">
+                    <img src="icons/${fileName}.png" style="height: 2.8em; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
+                    <div>
+                        <span class="landmark-title" style="color: ${lmColor};">${selectedLandmark.name}</span>
+                        <span style="color:#94a3b8; font-weight:bold; font-size: 0.8rem;">${selectedLandmark.type}</span>
+                    </div>
+                </div>
+                <span class="game-coords">(${formatCoord(selectedLandmark.x)}, ${formatCoord(selectedLandmark.y)}, ${formatCoord(selectedLandmark.z)})</span>
                 ${detailHtml}
             `;
             coordLabel.style.display = 'block';
@@ -738,6 +806,7 @@
     window.addEventListener('pointerdown', (e) => {
         if (!currentRegion || e.clientY < 70) return; 
         isDragging = true;
+        cancelAnimationFrame(panAnimId);
         dragMoveCounter = 0; 
         startX = e.clientX - offsetX;
         startY = e.clientY - offsetY;
@@ -768,7 +837,7 @@
             const visibleLandmarks = landmarks.filter(lm => 
                 lm.region === currentRegion.id && 
                 lm.level.toLowerCase() === currentLayer &&
-                activeFilters.includes(lm.type)
+                activeFilters.includes(lm.landmark)
             );
 
             for (let lm of visibleLandmarks) {
@@ -789,6 +858,19 @@
                 selectedLandmark = clickedLandmark;
                 markerX = null; 
                 markerY = null;
+                
+                // Calculate where the landmark is in scaled image space
+                const lmImgX = (selectedLandmark.x - currentRegion.gameStartX) * 1.5;
+                const lmImgY = (currentRegion.gameStartY - selectedLandmark.y) * 1.5;
+                
+                // Calculate target offsets to center the icon + tooltip
+                // Shift left by ~120px to account for the width of the tooltip appearing on the right
+                const tooltipShift = window.innerWidth < 600 ? 100 : 150; 
+                const targetOffsetX = (canvas.width / 2) - tooltipShift - (lmImgX * scale);
+                const targetOffsetY = (canvas.height / 2) - (lmImgY * scale);
+
+                smoothPanTo(targetOffsetX, targetOffsetY);
+                
             } else {
                 // Determine raw image coordinates for standard map pings
                 const clickedImageX = (e.clientX - offsetX) / scale;
