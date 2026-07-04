@@ -83,30 +83,37 @@
         canvas:active { cursor: grabbing; }
 
         /* --- UI OVERLAYS --- */
-        .ui-panel {
+        #topLeftPanel {
             position: absolute;
-            z-index: 10;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 10px;
-            display: flex;
-            gap: 8px;
-        }
-        #topPanel {
             top: 15px;
             left: 15px;
-            right: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            z-index: 10;
         }
+        
+        #topRightPanel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 10;
+        }
+
+        #regionTitlePanel {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            cursor: default;
+            padding: 5px 15px;
+            max-width: calc(100vw - 130px); 
+            box-sizing: border-box;
+        }
+        
         #regionTitle {
 			font-family: 'HyliaSerif', serif;
             margin: 0;
-            font-size: 1.1rem;
-            font-weight: bold;
+            text-align: center;
+            font-size: 1rem;
             color: #4ade80;
         }
         .btn {
@@ -126,15 +133,23 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
         .layer-btn {
-            background: #1e293b;
+            background: rgba(30, 41, 59, 0.85); /* Slightly transparent like the glass menus */
+            backdrop-filter: blur(8px);
             border: 1px solid #475569;
             color: #94a3b8;
-            padding: 2px 5px;
+            padding: 5px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.15s ease;
             text-align: left;
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            gap: 8px;
+        }
+        .layer-btn img {
+            display: block;
         }
         .layer-btn.active {
             background: #4ade80;
@@ -193,7 +208,7 @@
             gap: 15px;
         }
         .spinner {
-            width: 50px; height: 50px;
+            width: 80px; height: 80px;
             animation: spin 1.2s linear infinite;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -324,9 +339,20 @@
 </div>
 
 <div id="mapViewer">
-    <div id="topPanel" class="ui-panel">
-        <button class="btn back-btn" onclick="exitToDashboard()"><img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;"></button>
-        <div id="regionTitle">Region Name</div>
+    <div id="topLeftPanel">
+        <button class="layer-btn" onclick="exitToDashboard()">
+            <img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
+        </button>
+    </div>
+
+    <div id="regionTitlePanel" class="layer-btn">
+        <h2 id="regionTitle" style="margin: 0;">Region Name</h2>
+    </div>
+
+    <div id="topRightPanel">
+        <button class="layer-btn" id="progressBtn">
+            <img src="icons/progress.png" alt="Progress" style="width: 30px; height: 30px;">
+        </button>
     </div>
 
     <canvas id="mapCanvas"></canvas>
@@ -339,9 +365,9 @@
 
     <div id="layerPanel">
         <div id="layerMenu">
-            <button class="layer-btn animated-item" style="animation-delay: 0s;" onclick="setLayer('sky')"><img src="icons/sky.png" style="width: 30px; height: 30px; vertical-align: middle;"> Sky</button>
-            <button class="layer-btn active animated-item" style="animation-delay: 0.05s;" onclick="setLayer('surface')"><img src="icons/surface.png" style="width: 30px; height: 30px; vertical-align: middle;"> Surface</button>
-            <button class="layer-btn animated-item" style="animation-delay: 0.1s;" onclick="setLayer('depths')"><img src="icons/depths.png" style="width: 30px; height: 30px; vertical-align: middle;"> Depths</button>
+            <button class="layer-btn animated-item" style="animation-delay: 0s;" onclick="setLayer('sky')"><img src="icons/sky.png" style="width: 30px; height: 30px;"> Sky</button>
+            <button class="layer-btn active animated-item" style="animation-delay: 0.05s;" onclick="setLayer('surface')"><img src="icons/surface.png" style="width: 30px; height: 30px;"> Surface</button>
+            <button class="layer-btn animated-item" style="animation-delay: 0.1s;" onclick="setLayer('depths')"><img src="icons/depths.png" style="width: 30px; height: 30px;"> Depths</button>
         </div>
         <button class="layer-btn" onclick="toggleLayerMenu()" id="layerBtn"><img id="currentLayerIcon" src="icons/surface.png" alt="Layer" style="width: 30px; height: 30px;"></button>
     </div>
@@ -356,20 +382,20 @@
 
 <script>
     const REGIONS = [
-        { id: 1, name: "North Hyrule Field", gameStartX: -1880, gameStartY: 1503 },
+        { id: 1, name: "North Hyrule Field & Hyrule Castle", gameStartX: -1880, gameStartY: 1503 },
         { id: 2, name: "South Hyrule Field", gameStartX: -3194, gameStartY: 189 },
         { id: 3, name: "Hyrule Ridge", gameStartX: -4512, gameStartY: 3008 },
-        { id: 4, name: "Hebra Mountains", gameStartX: -4888, gameStartY: 4135 },
+        { id: 4, name: "Hebra Mountains & Rito Village", gameStartX: -4888, gameStartY: 4135 },
         { id: 5, name: "Tabantha Tundra", gameStartX: -3196, gameStartY: 4136 },
         { id: 6, name: "Great Hyrule Forest", gameStartX: -1315, gameStartY: 4136 },
-        { id: 7, name: "Eldin", gameStartX: 376, gameStartY: 4136 },
-        { id: 8, name: "Akkala", gameStartX: 2633, gameStartY: 4136 },
-        { id: 9, name: "Lanayru Great Spring", gameStartX: 1504, gameStartY: 1879 },
+        { id: 7, name: "Eldin Canyon & Death Mountain", gameStartX: 376, gameStartY: 4136 },
+        { id: 8, name: "Akkala Highlands & Deep Akkala", gameStartX: 2633, gameStartY: 4136 },
+        { id: 9, name: "Zora's Domain & Lanayru Great Spring", gameStartX: 1504, gameStartY: 1879 },
         { id: 10, name: "Lanayru Wetlands", gameStartX: 1, gameStartY: 1503 },
-        { id: 11, name: "Mount Lanayru", gameStartX: 1880, gameStartY: 0 },
-        { id: 12, name: "East Necluda", gameStartX: 1127, gameStartY: -1127 },
-        { id: 13, name: "Faron Grasslands", gameStartX: -1503, gameStartY: -752 },
-        { id: 14, name: "Gerudo Desert", gameStartX: -5639, gameStartY: -1129 },
+        { id: 11, name: "Mount Lanayru & Naydra Snowfield", gameStartX: 1880, gameStartY: 0 },
+        { id: 12, name: "East Necluda & Eventide Island", gameStartX: 1127, gameStartY: -1127 },
+        { id: 13, name: "Faron Grasslands & Lake Hylia", gameStartX: -1503, gameStartY: -752 },
+        { id: 14, name: "Gerudo Canyon & Gerudo Desert", gameStartX: -5639, gameStartY: -1129 },
         { id: 15, name: "Gerudo Highlands", gameStartX: -5640, gameStartY: 752 }
     ];
 
@@ -389,12 +415,12 @@
         "Shrine": "#7cc9c2",
         "Lightroot": "#7cc9c2",
         "Cave": "#a784e5",
+        "Chasm": "#de878b",
         "default": "#facc15"
     };
     
     iconTypes.forEach(type => {
         const img = new Image();
-        // Formats "Hudson Sign" to "hudson-sign.png"
         const fileName = type.toLowerCase().replace(/\s+/g, '-'); 
         img.src = `icons/${fileName}.png`;
         icons[type] = img;
@@ -725,7 +751,7 @@
             // Highlight ring around selected landmark
             ctx.beginPath();
             ctx.arc(screenX, screenY, 18, 0, 2 * Math.PI);
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             ctx.strokeStyle = lmColor; 
             ctx.stroke();
 
@@ -752,7 +778,7 @@
             coordLabel.style.display = 'block';
 
         } 
-        /* else if (markerX !== null && markerY !== null) {
+        else if (markerX !== null && markerY !== null) {
             // Standard Custom Ping
             const screenX = (markerX * scale) + offsetX;
             const screenY = (markerY * scale) + offsetY;
@@ -781,7 +807,7 @@
                 <span class="img-coords">Image PX: (${Math.round(markerX)}, ${Math.round(markerY)})</span>
             `;
             coordLabel.style.display = 'block';
-        } */
+        } 
         else {
             coordLabel.style.display = 'none';
         }
