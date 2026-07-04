@@ -751,7 +751,8 @@
             `;
             coordLabel.style.display = 'block';
 
-        } else if (markerX !== null && markerY !== null) {
+        } 
+        /* else if (markerX !== null && markerY !== null) {
             // Standard Custom Ping
             const screenX = (markerX * scale) + offsetX;
             const screenY = (markerY * scale) + offsetY;
@@ -780,7 +781,8 @@
                 <span class="img-coords">Image PX: (${Math.round(markerX)}, ${Math.round(markerY)})</span>
             `;
             coordLabel.style.display = 'block';
-        } else {
+        } */
+        else {
             coordLabel.style.display = 'none';
         }
     }
