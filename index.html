@@ -110,17 +110,15 @@
             color: #4ade80;
         }
         .btn {
-            background: #334155;
-            border: none;
+            background: #1e293b;
+            border: 1px solid #475569;
             color: white;
-            padding: 8px 16px;
+            padding: 2px 5px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
         }
         .btn:hover { background: #475569; }
-        .btn.back-btn { background: #ef4444; }
-        .btn.back-btn:hover { background: #dc2626; }
 
         #layerPanel {
             bottom: 25px;
@@ -327,7 +325,7 @@
 
 <div id="mapViewer">
     <div id="topPanel" class="ui-panel">
-        <button class="btn back-btn" onclick="exitToDashboard()">← Regions</button>
+        <button class="btn back-btn" onclick="exitToDashboard()"><img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;"></button>
         <div id="regionTitle">Region Name</div>
     </div>
 
@@ -345,7 +343,7 @@
             <button class="layer-btn active animated-item" style="animation-delay: 0.05s;" onclick="setLayer('surface')"><img src="icons/surface.png" style="width: 30px; height: 30px; vertical-align: middle;"> Surface</button>
             <button class="layer-btn animated-item" style="animation-delay: 0.1s;" onclick="setLayer('depths')"><img src="icons/depths.png" style="width: 30px; height: 30px; vertical-align: middle;"> Depths</button>
         </div>
-        <button class="layer-btn" onclick="toggleLayerMenu()" id="layerBtn"><img id="currentLayerIcon" src="icons/layer.png" alt="Layer" style="width: 30px; height: 30px;"></button>
+        <button class="layer-btn" onclick="toggleLayerMenu()" id="layerBtn"><img id="currentLayerIcon" src="icons/surface.png" alt="Layer" style="width: 30px; height: 30px;"></button>
     </div>
 
     <div id="filterPanel">
