@@ -142,7 +142,6 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.15s ease;
-            text-align: left;
             display: flex;
             align-items: center; 
             justify-content: center;
@@ -171,6 +170,7 @@
 			line-height: 1.4;
 			pointer-events: none; 
 			display: none; 
+			max-width: 220px;
 			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
 		}
 		.game-coords {
@@ -310,6 +310,49 @@
             height: 16px;
             accent-color: #4ade80;
         }
+        
+        /* --- MASTER FILTER CONTROLS --- */
+        .filter-master-row {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            user-select: none;
+        }
+        .filter-master-btn {
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        .filter-master-btn:hover {
+            opacity: 0.8;
+        }
+        .filter-master-btn.show-all {
+            color: #4ade80;
+        }
+        .filter-master-btn.hide-all {
+            color: #94a3b8;
+        }
+
+        /* --- FILTER LIST ITEM LAYOUT --- */
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            font-weight: 600;
+            width: 100%;
+        }
+        .filter-icon {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
+        
         /* --- FONTS --- */
         @font-face {
             font-family: 'HyliaSerif';
@@ -365,9 +408,9 @@
 
     <div id="layerPanel">
         <div id="layerMenu">
-            <button class="layer-btn animated-item" style="animation-delay: 0s;" onclick="setLayer('sky')"><img src="icons/sky.png" style="width: 30px; height: 30px;"> Sky</button>
-            <button class="layer-btn active animated-item" style="animation-delay: 0.05s;" onclick="setLayer('surface')"><img src="icons/surface.png" style="width: 30px; height: 30px;"> Surface</button>
-            <button class="layer-btn animated-item" style="animation-delay: 0.1s;" onclick="setLayer('depths')"><img src="icons/depths.png" style="width: 30px; height: 30px;"> Depths</button>
+            <button class="layer-btn animated-item" style="animation-delay: 0s; justify-content: left;" onclick="setLayer('sky')"><img src="icons/sky.png" style="width: 30px; height: 30px;"> Sky</button>
+            <button class="layer-btn active animated-item" style="animation-delay: 0.05s; justify-content: left;" onclick="setLayer('surface')"><img src="icons/surface.png" style="width: 30px; height: 30px;"> Surface</button>
+            <button class="layer-btn animated-item" style="animation-delay: 0.1s; justify-content: left;" onclick="setLayer('depths')"><img src="icons/depths.png" style="width: 30px; height: 30px;"> Depths</button>
         </div>
         <button class="layer-btn" onclick="toggleLayerMenu()" id="layerBtn"><img id="currentLayerIcon" src="icons/surface.png" alt="Layer" style="width: 30px; height: 30px;"></button>
     </div>
@@ -408,7 +451,7 @@
     const iconTypes = [
         "Tower", "Shrine", "Cave", "Chasm", "Dispenser", 
         "Hudson Sign", "Named Location", "Old Map", 
-        "Lightroot", "Treasure Chest", "Yiga Hideout"
+        "Lightroot", "Treasure", "Yiga Hideout"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
@@ -417,6 +460,7 @@
         "Cave": "#a784e5",
         "Chasm": "#de878b",
         "Dispenser": "#a7c96e",
+        "Hudson Sign": "#c6a96a",
         "default": "#facc15"
     };
     
@@ -442,22 +486,26 @@
     let markerY = null;
     let selectedLandmark = null;
     
-    // --- NEW FILTER & FORMATTING STATE ---
-    let activeFilters = [];
-    
-    const FILTER_CONFIG = {
+    // --- FILTERING STATE ---
+	const FILTER_CONFIG = {
         surface: {
             options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Dispenser": "Dispensers", "Hudson Sign": "Hudson Signs", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine"]
+            defaults: ["Tower", "Shrine", "Hudson Sign"]
         },
         sky: {
             options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves" },
             defaults: ["Shrine"]
         },
         depths: {
-            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure Chest": "Treasure Chests", "Yiga Hideout": "Yiga Hideouts" },
+            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure": "Treasure", "Yiga Hideout": "Yiga Hideouts" },
             defaults: ["Lightroot"]
         }
+    };
+    
+    let activeFiltersByLayer = {
+        surface: [...FILTER_CONFIG.surface.defaults],
+        sky: [...FILTER_CONFIG.sky.defaults],
+        depths: [...FILTER_CONFIG.depths.defaults]
     };
 
     function toggleFilterMenu() {
@@ -477,33 +525,64 @@
         menu.innerHTML = '';
         const config = FILTER_CONFIG[currentLayer];
         
-        activeFilters = [...config.defaults]; 
+        let layerFilters = activeFiltersByLayer[currentLayer]; 
         
+        const masterRow = document.createElement('div');
+        masterRow.className = 'filter-master-row';
+
+        const showAllBtn = document.createElement('span');
+        showAllBtn.className = 'filter-master-btn show-all';
+        showAllBtn.innerText = 'SHOW ALL';
+        showAllBtn.onclick = () => {
+            activeFiltersByLayer[currentLayer] = Object.keys(config.options);
+            
+            menu.querySelectorAll('.switch input').forEach(cb => {
+                if (config.options[cb.value]) cb.checked = true;
+            });
+            redraw();
+        };
+
+        const hideAllBtn = document.createElement('span');
+        hideAllBtn.className = 'filter-master-btn hide-all';
+        hideAllBtn.innerText = 'HIDE ALL';
+        hideAllBtn.onclick = () => {
+            activeFiltersByLayer[currentLayer] = [];
+            
+            menu.querySelectorAll('.switch input').forEach(cb => {
+                if (config.options[cb.value]) cb.checked = false;
+            });
+            redraw();
+        };
+
+        masterRow.appendChild(showAllBtn);
+        masterRow.appendChild(hideAllBtn);
+        menu.appendChild(masterRow);
+
         Object.entries(config.options).forEach(([type, labelText], index) => {
             const label = document.createElement('label');
-            // Add the animated item class and set staggered delay based on index
             label.className = 'filter-label animated-item';
             label.style.animationDelay = `${index * 0.05}s`;
-            label.style.width = '100%'; 
             
-            // Generate the Icon
             const iconImg = document.createElement('img');
             const fileName = type.toLowerCase().replace(/\s+/g, '-');
             iconImg.src = `icons/${fileName}.png`;
-            iconImg.style.width = '24px';
-            iconImg.style.height = '24px';
+            iconImg.className = 'filter-icon';
             
-            // Build the toggle slider
             const switchDiv = document.createElement('div');
             switchDiv.className = 'switch';
             
             const cb = document.createElement('input');
             cb.type = 'checkbox';
             cb.value = type;
-            cb.checked = activeFilters.includes(type);
+            cb.checked = layerFilters.includes(type);
             cb.onchange = (e) => {
-                if (e.target.checked) activeFilters.push(type);
-                else activeFilters = activeFilters.filter(f => f !== type);
+                if (e.target.checked) {
+                    if (!activeFiltersByLayer[currentLayer].includes(type)) {
+                        activeFiltersByLayer[currentLayer].push(type);
+                    }
+                } else {
+                    activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== type);
+                }
                 redraw();
             };
             
@@ -513,7 +592,6 @@
             switchDiv.appendChild(cb);
             switchDiv.appendChild(sliderSpan);
             
-            // Assemble: Icon -> Text -> Toggle (auto-pushed to right by margin-left: auto)
             label.appendChild(iconImg);
             label.appendChild(document.createTextNode(labelText));
             label.appendChild(switchDiv);
@@ -707,7 +785,7 @@
         const visibleLandmarks = landmarks.filter(lm => 
             lm.region === currentRegion.id && 
             lm.level.toLowerCase() === currentLayer &&
-            activeFilters.includes(lm.landmark) 
+            activeFiltersByLayer[currentLayer].includes(lm.landmark) 
         );
         
         for (let lm of visibleLandmarks) {
@@ -774,7 +852,7 @@
                         `;
                     });
                     
-                    detailHtml = `<div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">${imgTags.join('')}</div>`;
+                    detailHtml = `<div style="margin-top: 2px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">${imgTags.join('')}</div>`;
                 } else {
                     detailHtml = `<span class="img-coords" style="margin-top:6px; display:block;">${selectedLandmark.details}</span>`;
                 }
@@ -869,13 +947,13 @@
     window.addEventListener('pointerup', (e) => {
         if (!currentRegion) return;
 
-        document.getElementById('layerMenu').style.display = 'none';
-        document.getElementById('filterMenu').style.display = 'none';
-
-        if (e.target.closest('.ui-panel') || e.target.closest('.btn') || e.target.closest('.layer-btn')) {
+        if (e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('.ui-panel') || e.target.closest('.btn') || e.target.closest('.layer-btn')) {
             isDragging = false;
             return;
         }
+        
+        document.getElementById('layerMenu').style.display = 'none';
+        document.getElementById('filterMenu').style.display = 'none';
 
         if (dragMoveCounter < 5) {
             let clickedLandmark = null;
@@ -884,7 +962,7 @@
             const visibleLandmarks = landmarks.filter(lm => 
                 lm.region === currentRegion.id && 
                 lm.level.toLowerCase() === currentLayer &&
-                activeFilters.includes(lm.landmark)
+                activeFiltersByLayer[currentLayer].includes(lm.landmark)
             );
 
             for (let lm of visibleLandmarks) {
@@ -909,7 +987,7 @@
                 const lmImgX = (selectedLandmark.x - currentRegion.gameStartX) * 1.5;
                 const lmImgY = (currentRegion.gameStartY - selectedLandmark.y) * 1.5;
                 
-                const tooltipShift = window.innerWidth < 600 ? 100 : 150; 
+                const tooltipShift = window.innerWidth < 600 ? 120 : 150; 
                 const targetOffsetX = (canvas.width / 2) - tooltipShift - (lmImgX * scale);
                 const targetOffsetY = (canvas.height / 2) - (lmImgY * scale);
 
