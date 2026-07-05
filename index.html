@@ -416,6 +416,7 @@
         "Lightroot": "#7cc9c2",
         "Cave": "#a784e5",
         "Chasm": "#de878b",
+        "Dispenser": "#a7c96e",
         "default": "#facc15"
     };
     
@@ -454,7 +455,7 @@
             defaults: ["Shrine"]
         },
         depths: {
-            options: { "Lightroot": "Lightroots", "Treasure Chest": "Treasure Chests", "Yiga Hideout": "Yiga Hideouts" },
+            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure Chest": "Treasure Chests", "Yiga Hideout": "Yiga Hideouts" },
             defaults: ["Lightroot"]
         }
     };
@@ -758,8 +759,26 @@
             coordLabel.style.left = `${screenX + 25}px`;
             coordLabel.style.top = `${screenY - 20}px`;
             coordLabel.style.borderColor = lmColor;
-            
-            let detailHtml = selectedLandmark.details ? `<span class="img-coords" style="margin-top:6px;">${selectedLandmark.details}</span>` : '';
+                        
+            let detailHtml = '';
+            if (selectedLandmark.details) {
+                if (selectedLandmark.landmark === "Dispenser") {
+                    const items = selectedLandmark.details.split(',').map(item => item.trim());
+                    
+                    const imgTags = items.map(item => {
+                        const fileName = item.replace(/\s+/g, '-'); 
+                        return `
+                            <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="${item}">
+                                <img src="images/zonai/${fileName}.png" alt="${item}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                            </div>
+                        `;
+                    });
+                    
+                    detailHtml = `<div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">${imgTags.join('')}</div>`;
+                } else {
+                    detailHtml = `<span class="img-coords" style="margin-top:6px; display:block;">${selectedLandmark.details}</span>`;
+                }
+            }
             
             // Format the icon filename
             const fileName = selectedLandmark.landmark.toLowerCase().replace(/\s+/g, '-');
@@ -848,18 +867,20 @@
     });
 
     window.addEventListener('pointerup', (e) => {
-        if (!isDragging) return;
-        isDragging = false;
+        if (!currentRegion) return;
+
+        document.getElementById('layerMenu').style.display = 'none';
+        document.getElementById('filterMenu').style.display = 'none';
 
         if (e.target.closest('.ui-panel') || e.target.closest('.btn') || e.target.closest('.layer-btn')) {
+            isDragging = false;
             return;
         }
 
         if (dragMoveCounter < 5) {
             let clickedLandmark = null;
-            const clickTolerance = 15; // Radius in screen pixels (matching the 30x30 icon)
-
-            // Check if we clicked on any visible landmark using Screen Coordinates            
+            const clickTolerance = 15;
+        
             const visibleLandmarks = landmarks.filter(lm => 
                 lm.region === currentRegion.id && 
                 lm.level.toLowerCase() === currentLayer &&
@@ -885,12 +906,9 @@
                 markerX = null; 
                 markerY = null;
                 
-                // Calculate where the landmark is in scaled image space
                 const lmImgX = (selectedLandmark.x - currentRegion.gameStartX) * 1.5;
                 const lmImgY = (currentRegion.gameStartY - selectedLandmark.y) * 1.5;
                 
-                // Calculate target offsets to center the icon + tooltip
-                // Shift left by ~120px to account for the width of the tooltip appearing on the right
                 const tooltipShift = window.innerWidth < 600 ? 100 : 150; 
                 const targetOffsetX = (canvas.width / 2) - tooltipShift - (lmImgX * scale);
                 const targetOffsetY = (canvas.height / 2) - (lmImgY * scale);
@@ -898,18 +916,15 @@
                 smoothPanTo(targetOffsetX, targetOffsetY);
                 
             } else {
-                // Determine raw image coordinates for standard map pings
-                const clickedImageX = (e.clientX - offsetX) / scale;
-                const clickedImageY = (e.clientY - offsetY) / scale;
-                
-                if (clickedImageX >= 0 && clickedImageX <= activeImage.width && clickedImageY >= 0 && clickedImageY <= activeImage.height) {
-                    selectedLandmark = null;
-                    markerX = clickedImageX;
-                    markerY = clickedImageY;
-                }
-            }
+                selectedLandmark = null;
+                markerX = null;
+                markerY = null;
+                document.getElementById('coordLabel').style.display = 'none';
+            } 
             redraw();
         }
+
+        isDragging = false;
     });
 
     window.addEventListener('touchstart', (e) => {
