@@ -451,7 +451,7 @@
     const iconTypes = [
         "Tower", "Shrine", "Cave", "Chasm", "Dispenser", 
         "Hudson Sign", "Named Location", "Old Map", 
-        "Lightroot", "Treasure", "Yiga Hideout"
+        "Lightroot", "Treasure", "Schematic"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
@@ -461,6 +461,9 @@
         "Chasm": "#de878b",
         "Dispenser": "#a7c96e",
         "Hudson Sign": "#c6a96a",
+        "Old Map": "#dd88d3",
+        "Treasure": "#c6a96a",
+        "Schematic": "#dd87d3",
         "default": "#facc15"
     };
     
@@ -489,16 +492,16 @@
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Dispenser": "Dispensers", "Hudson Sign": "Hudson Signs", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine", "Hudson Sign"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Dispenser": "Dispensers", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Named Location": "Named Locations" },
+            defaults: ["Tower", "Shrine", "Schematic"]
         },
         sky: {
             options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves" },
             defaults: ["Shrine"]
         },
         depths: {
-            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure": "Treasure", "Yiga Hideout": "Yiga Hideouts" },
-            defaults: ["Lightroot"]
+            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics" },
+            defaults: ["Lightroot", "Schematic"]
         }
     };
     
@@ -618,7 +621,6 @@
 
     function loadRegion(region) {
         currentRegion = region;
-        currentLayer = 'surface';
         
         markerX = null;
         markerY = null;
@@ -628,6 +630,8 @@
         document.getElementById('regionTitle').innerText = region.name;
         document.getElementById('dashboard').style.display = 'none';
         document.getElementById('mapViewer').style.display = 'block';
+        
+        document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
         
         updateLayerUI();
         scale = -1; 
@@ -660,11 +664,13 @@
     }
 
     function updateLayerUI() {
-        document.querySelectorAll('.layer-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if(btn.innerText.toLowerCase() === currentLayer) btn.classList.add('active');
-        });
-    }
+		document.querySelectorAll('.layer-btn').forEach(btn => {
+			btn.classList.remove('active');
+			if(btn.innerText.toLowerCase().includes(currentLayer)) {
+				btn.classList.add('active');
+			}
+		});
+	}
 
     function updateMapAsset() {
         document.getElementById('loader').style.display = 'flex'; // Show loading screen
