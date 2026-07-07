@@ -21,6 +21,16 @@
         }
 
         /* --- DASHBOARD VIEW --- */
+        #bgVideo {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: 0% 50%;
+			z-index: 1;
+		}
         #dashboard {
             width: 100%;
             height: 100%;
@@ -30,38 +40,45 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            background: transparent;
         }
         h1 {
 			font-family: 'HyliaSerif', serif;
             color: #4ade80;
-            margin-bottom: 5px;
+            text-shadow: 2px 2px 5px black;
+            margin-bottom: 10px;
             text-align: center;
+            z-index: 2;
         }
         .subtitle {
-            color: #94a3b8;
+            color: #1e293b;
             margin-bottom: 30px;
             text-align: center;
+            text-decoration: italic;
+            z-index: 2;
         }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 15px;
             width: 100%;
             max-width: 1000px;
             padding-bottom: 40px;
+            z-index: 2;
         }
         .region-card {
+			font-family: 'HyliaSerif', serif;
             background-color: #1e293b;
-            border: 2px solid #334155;
+            border: 1px solid #334155;
             border-radius: 8px;
-            padding: 20px;
+            padding: 10px;
             text-align: center;
             cursor: pointer;
-            font-weight: 600;
+            font-size: 1em;
             transition: all 0.2s ease;
         }
         .region-card:hover {
-            background-color: #4ade80;
+            background-color: #75b38c;
             color: #0f172a;
             transform: translateY(-2px);
             border-color: #4ade80;
@@ -82,33 +99,30 @@
         }
         canvas:active { cursor: grabbing; }
 
-        /* --- UI OVERLAYS --- */
-        #topLeftPanel {
+        /* --- TOP PANEL --- */
+        #bottomLeftPanel {
             position: absolute;
-            top: 15px;
+            bottom: 25px;
             left: 15px;
             z-index: 10;
         }
-        
-        #topRightPanel {
+        #bottomRightPanel {
             position: absolute;
-            top: 15px;
+            bottom: 25px;
             right: 15px;
             z-index: 10;
         }
-
         #regionTitlePanel {
             position: absolute;
-            top: 15px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
-            cursor: default;
+            cursor: pointer;
             padding: 5px 15px;
             max-width: calc(100vw - 130px); 
             box-sizing: border-box;
         }
-        
         #regionTitle {
 			font-family: 'HyliaSerif', serif;
             margin: 0;
@@ -116,6 +130,43 @@
             font-size: 1rem;
             color: #4ade80;
         }
+        #regionMenu {
+			display: none;
+			position: absolute;
+			bottom: 60px;
+			left: 50%;
+			transform: translateX(-50%);
+			background: rgba(15, 23, 42, 0.95);
+			border: 1px solid #334155;
+			border-radius: 8px;
+			padding: 10px;
+			box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+			flex-direction: column;
+			gap: 5px;
+			max-height: 350px;
+			overflow-y: auto;
+			z-index: 10;
+			width: max-content;
+		}
+		.region-menu-btn {
+			background: transparent;
+			border: none;
+			color: #94a3b8;
+			padding: 8px 15px;
+			cursor: pointer;
+			font-family: 'HyliaSerif', serif;
+			font-size: 1rem;
+			text-align: center;
+			border-radius: 4px;
+		}
+		.region-menu-btn:hover {
+			background: #75b38c;
+			color: #0f172a;
+		}
+		.region-menu-btn.active {
+			color: #4ade80;
+		}
+        
         .btn {
             background: #1e293b;
             border: 1px solid #475569;
@@ -146,15 +197,21 @@
             align-items: center; 
             justify-content: center;
             gap: 8px;
+            z-index: 1;
         }
         .layer-btn img {
             display: block;
         }
         .layer-btn.active {
-            background: #4ade80;
+            background: #75b38c;
             color: #0f172a;
             border-color: #4ade80;
         }
+        .active-panel {
+			outline: 1px solid #4ade80 !important;
+			outline-offset: -1px;
+			border-radius: 6px; /* Matches your general UI rounding */
+		}
         
         /* Coordinate/Landmark tooltip label overlay */
 		#coordLabel {
@@ -209,7 +266,7 @@
         }
         .spinner {
             width: 80px; height: 80px;
-            animation: spin 1.2s linear infinite;
+            animation: spin 2s linear infinite;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
@@ -254,7 +311,7 @@
         /* --- LAYER MENU --- */
         #layerPanel {
             position: absolute;
-            bottom: 25px;
+            top: 15px;
             left: 15px;
             display: flex;
             flex-direction: column;
@@ -268,7 +325,7 @@
             border: 1px solid #334155;
             border-radius: 8px;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-top: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             flex-direction: column;
             gap: 8px;
@@ -276,7 +333,7 @@
         /* --- FILTER MENU --- */
         #filterPanel {
             position: absolute;
-            bottom: 25px;
+            top: 15px;
             right: 15px;
             display: flex;
             flex-direction: column;
@@ -289,7 +346,7 @@
             border: 1px solid #334155;
             border-radius: 8px;
             padding: 15px;
-            margin-bottom: 10px;
+            margin-top: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             flex-direction: column;
             gap: 12px;
@@ -310,6 +367,59 @@
             height: 16px;
             accent-color: #4ade80;
         }
+        
+        /* --- SEARCH & REGION MENUS --- */
+		#searchPanel {
+			position: absolute;
+			top: 18px;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 20;
+			display: flex;
+			flex-direction: column;
+			width: 350px;
+			max-width: calc(100vw - 150px); 
+		}
+		#searchInput {
+			background: rgba(30, 41, 59, 0.85);
+			backdrop-filter: blur(8px);
+			border: 1px solid #475569;
+			color: #e2e8f0;
+			padding: 8px 12px;
+			border-radius: 6px;
+			font-size: 1rem;
+			outline: none;
+			width: 100%;
+			box-sizing: border-box;
+			font-family: 'Segoe UI', sans-serif;
+		}
+		#searchInput:focus {
+			border-color: #4ade80;
+		}
+		#autocompleteResults {
+			display: none;
+			background: rgba(15, 23, 42, 0.95);
+			border: 1px solid #334155;
+			border-radius: 6px;
+			margin-top: 5px;
+			max-height: 250px;
+			overflow-y: auto;
+			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+		}
+		.autocomplete-item {
+			padding: 10px 12px;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			border-bottom: 1px solid rgba(255,255,255,0.05);
+		}
+		.autocomplete-item:hover {
+			background: rgba(74, 222, 128, 0.1);
+		}
+		.autocomplete-item:last-child {
+			border-bottom: none;
+		}
         
         /* --- MASTER FILTER CONTROLS --- */
         .filter-master-row {
@@ -369,57 +479,66 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 4px;
         }
-
+		/* <div class="grid-container" id="regionGrid"></div> */
                 
     </style>
 </head>
 <body>
 
-<div id="dashboard">
-    <h1>Hyrule Map Companion</h1>
-    <div class="subtitle">Select a region to explore its topography, skies, and depths</div>
-    <div class="grid-container" id="regionGrid"></div>
-</div>
-
-<div id="mapViewer">
-    <div id="topLeftPanel">
-        <button class="layer-btn" onclick="exitToDashboard()">
-            <img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
-        </button>
-    </div>
-
-    <div id="regionTitlePanel" class="layer-btn">
-        <h2 id="regionTitle" style="margin: 0;">Region Name</h2>
-    </div>
-
-    <div id="topRightPanel">
-        <button class="layer-btn" id="progressBtn">
-            <img src="icons/progress.png" alt="Progress" style="width: 30px; height: 30px;">
-        </button>
-    </div>
-
-    <canvas id="mapCanvas"></canvas>
-	<div id="coordLabel">X: 0, Y: 0</div>
+	<div id="dashboard">
+		<video autoplay muted loop playsinline poster="videos/fallback.png" id="bgVideo">
+			<source src="videos/bg-desktop.mp4" media="(min-width: 768px)">
+			<source src="videos/bg-mobile.mp4" media="(max-width: 767px)">
+		</video>
+		<h1>Tears of the Kingdom<br>Companion</h1>
+		<div class="subtitle">Use this app to find and track landmarks in the great Kingdom of Hyrule.</div>
+		<button class="layer-btn" style="justify-content: left; padding-right: 12px;" onclick="loadRegion(REGIONS[0])"><img src="icons/point.png" style="width: 30px; height: 30px;"> View Map</button>
+	</div>
 	
-    <div id="loader">
-        <img src="icons/loading.png" alt="Loading" class="spinner">
-        <span>Loading...</span>
-    </div>
-
-    <div id="layerPanel">
-        <div id="layerMenu">
-            <button class="layer-btn animated-item" style="animation-delay: 0s; justify-content: left;" onclick="setLayer('sky')"><img src="icons/sky.png" style="width: 30px; height: 30px;"> Sky</button>
-            <button class="layer-btn active animated-item" style="animation-delay: 0.05s; justify-content: left;" onclick="setLayer('surface')"><img src="icons/surface.png" style="width: 30px; height: 30px;"> Surface</button>
-            <button class="layer-btn animated-item" style="animation-delay: 0.1s; justify-content: left;" onclick="setLayer('depths')"><img src="icons/depths.png" style="width: 30px; height: 30px;"> Depths</button>
-        </div>
-        <button class="layer-btn" onclick="toggleLayerMenu()" id="layerBtn"><img id="currentLayerIcon" src="icons/surface.png" alt="Layer" style="width: 30px; height: 30px;"></button>
-    </div>
-
-    <div id="filterPanel">
-        <div id="filterMenu"></div>
-        <button class="layer-btn" onclick="toggleFilterMenu()" id="filterBtn"><img src="icons/filter.png" alt="Filter" style="width: 30px; height: 30px;"></button>
-    </div>
-</div>
+	<div id="mapViewer">
+		<canvas id="mapCanvas"></canvas>
+		<div id="coordLabel"></div>
+		<div id="loader">
+			<img src="icons/loading.png" class="spinner" alt="...">
+			<div>Loading...</div>
+		</div>
+	
+		<div id="layerPanel">
+			<button class="layer-btn" onclick="toggleLayerMenu()" id="layerBtn"><img id="currentLayerIcon" src="icons/surface.png" alt="Layer" style="width: 30px; height: 30px;"></button>
+			<div id="layerMenu">
+				<button class="layer-btn animated-item" style="animation-delay: 0s; justify-content: left;" onclick="setLayer('sky')"><img src="icons/sky.png" style="width: 30px; height: 30px;"> Sky</button>
+				<button class="layer-btn active animated-item" style="animation-delay: 0.05s; justify-content: left;" onclick="setLayer('surface')"><img src="icons/surface.png" style="width: 30px; height: 30px;"> Surface</button>
+				<button class="layer-btn animated-item" style="animation-delay: 0.1s; justify-content: left;" onclick="setLayer('depths')"><img src="icons/depths.png" style="width: 30px; height: 30px;"> Depths</button>
+			</div>
+		</div>
+		
+		<div id="searchPanel">
+			<input type="text" id="searchInput" placeholder="Search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+			<div id="autocompleteResults"></div>
+		</div>
+		
+		<div id="filterPanel">
+			<button class="layer-btn" onclick="toggleFilterMenu()" id="filterBtn"><img src="icons/filter.png" alt="Filter" style="width: 30px; height: 30px;"></button>
+			<div id="filterMenu"></div>
+		</div>
+		
+		<div id="bottomLeftPanel">
+			<button class="layer-btn" onclick="exitToDashboard()">
+				<img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
+			</button>
+		</div>
+		
+		<div id="regionTitlePanel" class="layer-btn" onclick="toggleRegionMenu()">
+			<h2 id="regionTitle" style="margin: 0;">Region Name</h2>
+		</div>
+		<div id="regionMenu"></div>
+		
+		<div id="bottomRightPanel">
+			<button class="layer-btn" id="progressBtn">
+				<img src="icons/progress.png" alt="Progress" style="width: 30px; height: 30px;">
+			</button>
+		</div>
+	</div>
 
 <script src="landmarks.js"></script>
 
@@ -441,6 +560,36 @@
         { id: 14, name: "Gerudo Canyon & Gerudo Desert", gameStartX: -5639, gameStartY: -1129 },
         { id: 15, name: "Gerudo Highlands", gameStartX: -5640, gameStartY: 752 }
     ];
+    
+    const MENU_REGIONS = [
+		{ name: "Akkala Highlands", id: 8 },
+		{ name: "Death Mountain", id: 7 },
+		{ name: "Deep Akkala", id: 8 },
+		{ name: "East Necluda", id: 12 },
+		{ name: "Eldin Canyon", id: 7 },
+		{ name: "Eldin Mountains", id: 7 },
+		{ name: "Eventide Island", id: 12 },
+		{ name: "Faron Grasslands", id: 13 },
+		{ name: "Gerudo Canyon", id: 14 },
+		{ name: "Gerudo Desert", id: 14 },
+		{ name: "Gerudo Highlands", id: 15 },
+		{ name: "Great Hyrule Forest", id: 6 },
+		{ name: "Hebra Mountains", id: 4 },
+		{ name: "Hyrule Castle", id: 1 },
+		{ name: "Hyrule Ridge", id: 3 },
+		{ name: "Lake Hylia", id: 13 },
+		{ name: "Lanayru Great Spring", id: 9 },
+		{ name: "Lanayru Wetlands", id: 10 },
+		{ name: "Mount Lanayru", id: 11 },
+		{ name: "Naydra Snowfield", id: 11 },
+		{ name: "North Hyrule Field", id: 1 },
+		{ name: "Rito Village", id: 4 },
+		{ name: "South Hyrule Field", id: 2 },
+		{ name: "Tabantha Frontier", id: 3 },
+		{ name: "Tabantha Tundra", id: 5 },
+		{ name: "West Necluda", id: 10 },
+		{ name: "Zora's Domain", id: 9 }
+	];
 
     let currentRegion = null;
     let currentLayer = 'surface'; 
@@ -512,16 +661,64 @@
     };
 
     function toggleFilterMenu() {
-        const menu = document.getElementById('filterMenu');
-        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-        document.getElementById('layerMenu').style.display = 'none';
-    }
-    
-    function toggleLayerMenu() {
-        const menu = document.getElementById('layerMenu');
-        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-        document.getElementById('filterMenu').style.display = 'none'; 
-    }
+		const menu = document.getElementById('filterMenu');
+		const btn = document.getElementById('filterBtn');
+		const isOpening = menu.style.display !== 'flex';
+		
+		document.getElementById('layerMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('autocompleteResults').style.display = 'none';
+		clearActivePanels();
+		
+		if (isOpening) {
+			menu.style.display = 'flex';
+			btn.classList.add('active-panel');
+		} else {
+			menu.style.display = 'none';
+		}
+	}
+	
+	function toggleLayerMenu() {
+		const menu = document.getElementById('layerMenu');
+		const btn = document.getElementById('layerBtn');
+		const isOpening = menu.style.display !== 'flex';
+		
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('autocompleteResults').style.display = 'none';
+		clearActivePanels();
+		
+		if (isOpening) {
+			menu.style.display = 'flex';
+			btn.classList.add('active-panel');
+		} else {
+			menu.style.display = 'none';
+		}
+	}
+	
+	function toggleRegionMenu() {
+		const menu = document.getElementById('regionMenu');
+		const btn = document.getElementById('regionTitlePanel');
+		const isOpening = menu.style.display !== 'flex';
+		
+		document.getElementById('layerMenu').style.display = 'none';
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('autocompleteResults').style.display = 'none';
+		clearActivePanels();
+		
+		if (isOpening) {
+			menu.style.display = 'flex';
+			btn.classList.add('active-panel');
+		} else {
+			menu.style.display = 'none';
+		}
+	}
+	
+	function clearActivePanels() {
+		document.getElementById('layerBtn').classList.remove('active-panel');
+		document.getElementById('filterBtn').classList.remove('active-panel');
+		document.getElementById('regionTitlePanel').classList.remove('active-panel');
+	}
 
     function buildFilterMenu() {
         const menu = document.getElementById('filterMenu');
@@ -608,17 +805,7 @@
         const sign = val < 0 ? '-' : '';
         return sign + Math.abs(Math.round(val)).toString().padStart(4, '0');
     }
-
-    // Build Selection Dashboard
-    const grid = document.getElementById('regionGrid');
-    REGIONS.forEach(r => {
-        const card = document.createElement('div');
-        card.className = 'region-card';
-        card.innerText = r.name;
-        card.onclick = () => loadRegion(r);
-        grid.appendChild(card);
-    });
-
+    
     function loadRegion(region) {
         currentRegion = region;
         
@@ -637,7 +824,10 @@
         scale = -1; 
         updateMapAsset();
 		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		clearActivePanels();
 		buildFilterMenu();
+		buildRegionMenu();
     }
 
     function setLayer(layer) {
@@ -763,6 +953,144 @@
         if (h > canvas.height) offsetY = Math.min(0, Math.max(canvas.height - h, offsetY));
         else offsetY = (canvas.height - h) / 2;
     }
+    
+    // --- NEW SEARCH & REGION MENU LOGIC ---	
+	function buildRegionMenu() {
+		const menu = document.getElementById('regionMenu');
+		menu.innerHTML = '';
+		
+		MENU_REGIONS.forEach(menuItem => {
+			const masterRegion = REGIONS.find(r => r.id === menuItem.id);
+			
+			const btn = document.createElement('button');
+			btn.className = 'region-menu-btn' + (currentRegion && currentRegion.id === menuItem.id ? ' active' : '');
+			btn.innerText = menuItem.name;
+			
+			btn.onclick = () => {
+				toggleRegionMenu();
+				loadRegion(masterRegion); 
+			};
+			
+			menu.appendChild(btn);
+		});
+	}
+	
+	const searchInput = document.getElementById('searchInput');
+	const autocompleteResults = document.getElementById('autocompleteResults');
+	
+	searchInput.addEventListener('focus', function() {
+		document.getElementById('layerMenu').style.display = 'none';
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		clearActivePanels();
+		
+		if (this.value.trim() !== '') {
+			autocompleteResults.style.display = 'block';
+		}
+	});
+
+	searchInput.addEventListener('input', function() {
+		const val = this.value.toLowerCase().trim();
+		autocompleteResults.innerHTML = '';
+		if (!val) {
+			autocompleteResults.style.display = 'none';
+			return;
+		}
+	
+		const matches = landmarks.filter(lm => lm.name.toLowerCase().includes(val)).slice(0, 15);
+		if (matches.length === 0) {
+			autocompleteResults.style.display = 'none';
+			return;
+		}
+	
+		matches.forEach(lm => {
+			const item = document.createElement('div');
+			item.className = 'autocomplete-item';
+	
+			const lmColor = landmarkColors[lm.landmark] || landmarkColors["default"];
+			const fileName = lm.landmark.toLowerCase().replace(/\s+/g, '-');
+	
+			item.innerHTML = `
+				<img src="icons/${fileName}.png" style="height: 2em; width: auto; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));">
+				<div>
+					<span style="font-family: 'HyliaSerif', serif; color: ${lmColor}; font-size: 1.05rem; letter-spacing: 0.5px;">${lm.name}</span>
+					<span style="color:#94a3b8; font-weight:bold; font-size: 0.8rem; margin-left: 8px;">${lm.type}</span>
+				</div>
+			`;
+	
+			item.onclick = () => {
+				searchInput.value = '';
+				autocompleteResults.style.display = 'none';
+				navigateToLandmark(lm);
+			};
+	
+			autocompleteResults.appendChild(item);
+		});
+		autocompleteResults.style.display = 'block';
+	});
+	
+	function navigateToLandmark(lm) {
+		const region = REGIONS.find(r => r.id === lm.region);
+		if (!region) return;
+	
+		const needsLoad = (!currentRegion || currentRegion.id !== region.id || currentLayer !== lm.level.toLowerCase());
+		
+		if (needsLoad) {
+			currentRegion = region;
+			currentLayer = lm.level.toLowerCase();
+			
+			document.getElementById('regionTitle').innerText = region.name;
+			document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
+			updateLayerUI();
+			
+			document.getElementById('filterMenu').style.display = 'none';
+			buildFilterMenu();
+			buildRegionMenu();
+			
+			document.getElementById('dashboard').style.display = 'none';
+			document.getElementById('mapViewer').style.display = 'block';
+	
+			document.getElementById('loader').style.display = 'flex';
+			const formattedId = currentRegion.id.toString().padStart(2, '0');
+			activeImage = new Image();
+			activeImage.src = `images/region${formattedId}${currentLayer}.png`;
+			activeImage.onload = () => {
+				document.getElementById('loader').style.display = 'none';
+				resizeCanvas(true);
+				executeZoomAndPan(lm);
+			};
+			activeImage.onerror = () => { 
+				document.getElementById('loader').style.display = 'none'; 
+				redraw(); 
+			};
+		} else {
+			executeZoomAndPan(lm);
+		}
+	}
+	
+	function executeZoomAndPan(lm) {
+		// Ensure the filter is checked so the landmark is visible
+		if (!activeFiltersByLayer[currentLayer].includes(lm.landmark)) {
+			activeFiltersByLayer[currentLayer].push(lm.landmark);
+			const cb = document.querySelector(`#filterMenu input[value="${lm.landmark}"]`);
+			if (cb) cb.checked = true;
+		}
+	
+		scale = maxScale * 0.2; // Zoom in
+		selectedLandmark = lm;
+		markerX = null;
+		markerY = null;
+		
+		const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
+		const lmImgY = (currentRegion.gameStartY - lm.y) * 1.5;
+		
+		// Shift slightly depending on screen width so the tooltip isn't hidden behind menus
+		const tooltipShift = window.innerWidth < 600 ? 120 : 150; 
+		const targetOffsetX = (canvas.width / 2) - tooltipShift - (lmImgX * scale);
+		const targetOffsetY = (canvas.height / 2) - (lmImgY * scale);
+	
+		smoothPanTo(targetOffsetX, targetOffsetY);
+	}
 
     function redraw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -786,7 +1114,7 @@
         ctx.drawImage(activeImage, 0, 0);
         ctx.restore(); 
         
-        // --- DRAW LANDMARKS (Screen Space to keep consistent size) ---
+        // --- DRAW LANDMARKS ---
         // Added filter logic here
         const visibleLandmarks = landmarks.filter(lm => 
             lm.region === currentRegion.id && 
@@ -926,20 +1254,39 @@
         redraw();
     }
 
+	// ------EVENT LISTENERS------
+	const video = document.getElementById('bgVideo');
+	const loader = document.getElementById('loader');
+	
+	// Force loader to show on initial page load
+	loader.style.display = 'flex'; 
+	
+	video.addEventListener('canplaythrough', () => {
+		// Once the video has enough data to play, hide the loader
+		loader.style.display = 'none';
+	});
+
     window.addEventListener('wheel', (e) => {
-        if (!currentRegion) return;
-        e.preventDefault();
-        zoomAround(e.deltaY < 0 ? 1.15 : 0.85, e.clientX, e.clientY);
-    }, { passive: false });
+		if (!currentRegion) return;
+		
+		// Allow native scrolling inside menus
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults')) return;
+		
+		e.preventDefault();
+		zoomAround(e.deltaY < 0 ? 1.15 : 0.85, e.clientX, e.clientY);
+	}, { passive: false });
 
     window.addEventListener('pointerdown', (e) => {
-        if (!currentRegion || e.clientY < 70) return; 
-        isDragging = true;
-        cancelAnimationFrame(panAnimId);
-        dragMoveCounter = 0; 
-        startX = e.clientX - offsetX;
-        startY = e.clientY - offsetY;
-    });
+		if (!currentRegion || e.clientY < 70) return; 
+		
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults')) return;
+	
+		isDragging = true;
+		cancelAnimationFrame(panAnimId);
+		dragMoveCounter = 0; 
+		startX = e.clientX - offsetX;
+		startY = e.clientY - offsetY;
+	});
 
     window.addEventListener('pointermove', (e) => {
         if (!isDragging || (e.pointerType === 'touch' && e.buttons === 0)) return;
@@ -958,8 +1305,11 @@
             return;
         }
         
-        document.getElementById('layerMenu').style.display = 'none';
-        document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('layerMenu').style.display = 'none';
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('autocompleteResults').style.display = 'none';
+		clearActivePanels();
 
         if (dragMoveCounter < 5) {
             let clickedLandmark = null;
@@ -1021,15 +1371,19 @@
     }, { passive: true });
 
     window.addEventListener('touchmove', (e) => {
-        if (!currentRegion) return;
-        if (e.touches.length === 2) {
-            e.preventDefault();
-            const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-            const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-            const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-            zoomAround((initialScale * (dist / initialPinchDist)) / scale, midX, midY);
-        }
-    }, { passive: false });
+		if (!currentRegion) return;
+		
+		// Allow native touch scrolling inside menus
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults')) return;
+	
+		if (e.touches.length === 2) {
+			e.preventDefault();
+			const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+			const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+			const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+			zoomAround((initialScale * (dist / initialPinchDist)) / scale, midX, midY);
+		}
+	}, { passive: false });
 
     window.addEventListener('resize', () => resizeCanvas(false));
 </script>
