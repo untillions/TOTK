@@ -750,7 +750,7 @@
 
 <script>
     const REGIONS = [
-        { id: 0, name: "Great Sky Island", gameStartX: -470, gameStartY: 938 },
+        { id: 0, name: "Great Sky Island", gameStartX: -752, gameStartY: -376 },
         { id: 1, name: "North Hyrule Field & Hyrule Castle", gameStartX: -1880, gameStartY: 1503 },
         { id: 2, name: "South Hyrule Field", gameStartX: -3194, gameStartY: 189 },
         { id: 3, name: "Hyrule Ridge", gameStartX: -4512, gameStartY: 3008 },
@@ -799,6 +799,9 @@
 		{ name: "Zora's Domain", id: 9 }
 	];
 
+	const arrowImg = new Image();
+	arrowImg.src = 'icons/arrow.png';
+
     let currentRegion = null;
     let currentLayer = 'sky'; 
     let activeImage = new Image();
@@ -845,7 +848,7 @@
     let markerX = null;
     let markerY = null;
     let selectedLandmark = null;
-    
+
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
@@ -1009,10 +1012,38 @@
     }
 
     function formatCoord(val) {
-        // Formats to 4 digits with leading zeroes, maintaining the negative sign
         const sign = val < 0 ? '-' : '';
         return sign + Math.abs(Math.round(val)).toString().padStart(4, '0');
     }
+    
+    function executeArrowNavigation(arr) {
+		const targetRegion = REGIONS.find(r => r.id === arr.toRegion);
+		if (!targetRegion) return;
+		
+		currentRegion = targetRegion;
+		currentLayer = arr.toLevel.toLowerCase();
+		
+		scale = -1; 
+		offsetX = 0;
+		offsetY = 0;
+		
+		document.getElementById('regionTitle').innerText = targetRegion.name;
+		document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
+		updateLayerUI();
+		
+		const layerBtn = document.getElementById('layerBtn');
+		if (currentRegion.id === 0) {
+			layerBtn.style.opacity = '0.5';
+			layerBtn.style.pointerEvents = 'none';
+		} else {
+			layerBtn.style.opacity = '1';
+			layerBtn.style.pointerEvents = 'auto';
+		}
+		
+		buildFilterMenu();
+		buildRegionMenu();
+		updateMapAsset(); 
+	}
     
     function loadRegion(region) {
         currentRegion = region;
@@ -1072,7 +1103,7 @@
     }
 
     function updateLayerUI() {
-		document.querySelectorAll('.layer-btn').forEach(btn => {
+		document.querySelectorAll('#layerMenu .layer-btn').forEach(btn => {
 			btn.classList.remove('active');
 			if(btn.innerText.toLowerCase().includes(currentLayer)) {
 				btn.classList.add('active');
@@ -1369,6 +1400,49 @@
                 ctx.fill();
             }
         }
+        
+        // --- DRAW NAV ARROWS ---
+		const visibleArrows = navArrows.filter(arr => 
+			[].concat(arr.fromRegion).includes(currentRegion.id) && 
+			arr.fromLevel.toLowerCase() === currentLayer
+		);
+		
+		ctx.textAlign = 'center';
+		ctx.font = 'bold 10px "Segoe UI", sans-serif';
+		ctx.fillStyle = '#e2e8f0'; 
+		ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+		ctx.shadowBlur = 4;
+		ctx.shadowOffsetX = 1;
+		ctx.shadowOffsetY = 1;
+		
+		for (let arr of visibleArrows) {
+			const imgX = (arr.x - currentRegion.gameStartX) * 1.5;
+			const imgY = (currentRegion.gameStartY - arr.y) * 1.5;
+			
+			const screenX = (imgX * scale) + offsetX;
+			const screenY = (imgY * scale) + offsetY;
+		
+			if (arrowImg.complete && arrowImg.naturalWidth !== 0) {
+				const drawW = 30;
+				const drawH = 30;
+				
+				ctx.save();
+				ctx.translate(screenX, screenY);
+				ctx.rotate(arr.rotation * Math.PI / 180);
+				ctx.drawImage(arrowImg, -(drawW / 2), -(drawH / 2), drawW, drawH);
+				ctx.restore();
+				
+				if (scale > minScale + 0.2) { 
+					const lines = arr.label.split('\n');
+					const lineHeight = 12; 
+					
+					lines.forEach((line, index) => {
+						ctx.fillText(line, screenX, screenY + 25 + (index * lineHeight));
+					});
+				}
+			}
+		}
+		ctx.shadowBlur = 0;
 
         // --- DRAW UI OVERLAYS (Landmark Tooltip or Custom Ping) ---
         if (selectedLandmark) {
@@ -1534,9 +1608,32 @@
 		clearActivePanels();
 
         if (dragMoveCounter < 5) {
-            let clickedLandmark = null;
             const clickTolerance = 15;
-        
+        	
+        	let clickedArrow = null;
+			const visibleArrows = navArrows.filter(arr => 
+				[].concat(arr.fromRegion).includes(currentRegion.id) && 
+				arr.fromLevel.toLowerCase() === currentLayer
+			);
+			
+			for (let arr of visibleArrows) {
+				const imgX = (arr.x - currentRegion.gameStartX) * 1.5;
+				const imgY = (currentRegion.gameStartY - arr.y) * 1.5;
+				const screenX = (imgX * scale) + offsetX;
+				const screenY = (imgY * scale) + offsetY;
+				
+				if (Math.hypot(e.clientX - screenX, e.clientY - screenY) <= 25) {
+					clickedArrow = arr;
+					break;
+				}
+			}
+		
+			if (clickedArrow) {
+				executeArrowNavigation(clickedArrow);
+				return; 
+			}
+			
+			let clickedLandmark = null;
             const visibleLandmarks = landmarks.filter(lm => 
 				[].concat(lm.region).includes(currentRegion.id) &&
 				lm.level.toLowerCase() === currentLayer &&
@@ -1573,9 +1670,12 @@
                 
             } else {
                 selectedLandmark = null;
-                markerX = null;
-                markerY = null;
-                document.getElementById('coordLabel').style.display = 'none';
+                markerX = (e.clientX - offsetX) / scale; // remove this line to stop functionality
+                markerY = (e.clientY - offsetY) / scale; // this one too
+                
+                // markerX = null;
+                // markerY = null;
+                // document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
         }
