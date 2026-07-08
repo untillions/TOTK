@@ -21,6 +21,9 @@
         }
 
         /* --- DASHBOARD VIEW --- */
+        .fade-in { animation: fadeIn ease 8s; }
+		@keyframes fadeIn { 0% { opacity:0; } 100% { opacity:1; } }
+
         #bgVideo {
 			position: fixed;
 			top: 0;
@@ -42,14 +45,6 @@
             align-items: center;
             background: transparent;
         }
-        h1 {
-			font-family: 'HyliaSerif', serif;
-            color: #4ade80;
-            text-shadow: 2px 2px 5px black;
-            margin-bottom: 10px;
-            text-align: center;
-            z-index: 2;
-        }
         .subtitle {
             color: #1e293b;
             margin-bottom: 30px;
@@ -57,32 +52,185 @@
             text-decoration: italic;
             z-index: 2;
         }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 1000px;
-            padding-bottom: 40px;
-            z-index: 2;
-        }
-        .region-card {
+        .dashboard-btn-wrapper {
+			width: 60%;
+			max-width: 640px;
+			margin: 100px auto 0px auto;
+			display: flex;
+			justify-content: flex-end;
+			z-index: 2;
+		}
+		.dashboard-btn-group {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			width: max-content;
+			z-index: 2;
+		}
+		#dashboard .layer-btn {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			width: 100%;
+			padding: 5px 10px 5px 10px;
+			box-sizing: border-box;
+			text-align: left;
+		}
+		#dashboard .layer-btn img {
+			width: 30px;
+			height: 30px;
+			margin-right: 5px;
+			flex-shrink: 0;
+		}
+		#dashboard .layer-btn span {
+			line-height: 1.2;
+			display: inline-block;
+		}
+		.dashboard-footer {
+			position: absolute;
+			bottom: 25px;
+			transform: translateX(-50%);
+			font-size: 0.9rem;
+			color: #FAF7DF;
+			text-align: center;
+			white-space: nowrap;
+			text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+			z-index: 2;
+		}
+		
+		.dashboard-footer a {
+			color: #4ade80;
+			text-decoration: none;
+			transition: color 0.15s ease;
+		}
+		
+		.dashboard-footer a:hover {
+			color: #ABB0B8;
+			text-decoration: underline;
+		}
+        
+        /* --- CINEMATIC DASHBOARD --- */
+		.hero-container {
+			position: relative;
+			width: 100%;
+			max-width: 800px;
+			height: 260px; /* Comfortably holds the 200px asset + title buffer */
+			margin-top: 0px;
+			z-index: 2;
+			display: flex;
+			flex-direction: column;
+		}
+		
+		/* The Animated Center Line */
+		.hero-line {
+			position: absolute;
+			top: 80%;
+			left: 5%;
+			width: 90%;
+			height: 2px;
+			background-color: #FAF7DF;
+			box-shadow: 0 0 10px rgba(74, 222, 128, 0.5); /* Subtle green Hylian glow */
+			transform: scaleX(0);
+			transform-origin: center;
+			animation: stretchLine 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+			z-index: 4;
+		}
+		
+		/* Container limits for masking the reveals */
+		.hero-top, .hero-bottom {
+			position: relative;
+			width: 100%;
+			overflow: hidden;
+			opacity: 0;
+			animation: waitForLine 0.1s linear 1s forwards;
+		}
+		.hero-top {
+			height: 80%;
+			padding-bottom: 5px;
+		}
+		.hero-bottom {
+			height: 20%;
+			padding-top: 5px;
+		}
+		
+		/* Left-justified Logo Container */
+		.hero-top {
+			display: flex;
+			align-items: flex-end;
+			justify-content: flex-start;
+			padding-left: 5%;
+			box-sizing: border-box;
+		}
+		
+		.hero-logo {
+			max-height: 200px;
+			width: auto;
+			transform: translateY(100%); /* Start hidden under the center line */
+			animation: revealUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
+		}
+		
+		/* Right-justified Title Container */
+		.hero-bottom {
+			display: flex;
+			align-items: flex-start;
+			justify-content: flex-end;
+			padding-right: 5%;
+			box-sizing: border-box;
+		}
+		
+		.hero-title {
 			font-family: 'HyliaSerif', serif;
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.2s ease;
-        }
-        .region-card:hover {
-            background-color: #75b38c;
-            color: #0f172a;
-            transform: translateY(-2px);
-            border-color: #4ade80;
-        }
+			color: #FAF7DF;
+			text-shadow: 2px 2px 2px black;
+			margin: 0;
+			font-size: 2rem;
+			letter-spacing: 2px;
+			transform: translateY(-100%);
+			animation: revealDown 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
+		}
+		
+		/* --- STAGGERED FADE IN FOR LOWER UI --- */
+		.staggered-item {
+			opacity: 0;
+			animation: dashboardFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+			animation-delay: calc(1.8s + (var(--delay) * 0.25s));
+			z-index: 2;
+		}
+		
+		.subtitle.staggered-item {
+			margin-top: 20px;
+			margin-bottom: 30px;
+			color: #FAF7DF;
+			font-style: italic;
+			text-shadow: 1px 1px 4px black;
+		}
+		
+		/* --- ANIMATION KEYFRAMES --- */
+		@keyframes stretchLine {
+			0% { transform: scaleX(0); opacity: 0; }
+			5% { opacity: 1; }
+			100% { transform: scaleX(1); opacity: 1; }
+		}
+		
+		@keyframes revealUp {
+			0% { transform: translateY(100%); }
+			100% { transform: translateY(0%); }
+		}
+		
+		@keyframes revealDown {
+			0% { transform: translateY(-100%); }
+			100% { transform: translateY(0%); }
+		}
+		
+		@keyframes dashboardFadeIn {
+			0% { opacity: 0; transform: translateY(10px); }
+			100% { opacity: 1; transform: translateY(0); }
+		}
+		
+		@keyframes waitForLine {
+			0% { opacity: 0; }
+			100% { opacity: 1; }
+		}
 
         /* --- MAP VIEWER VIEW --- */
         #mapViewer {
@@ -479,20 +627,78 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 4px;
         }
-		/* <div class="grid-container" id="regionGrid"></div> */
+		/* --- DIGITAL --- */
+		
+		@media (max-width: 600px) {
+			
+			.hero-container {
+				height: 185px;
+				margin-bottom: 20px;
+			}
+			.hero-logo {
+				max-height: 150px;
+			}
+			.hero-title {
+				font-size: 1.5rem;
+				text-shadow: 1px 1px 1px black;
+			}
+			.dashboard-btn-wrapper {
+				width: 100%;
+				max-width: none;
+				margin: 130px 0 0 0;
+			}
+			.dashboard-btn-group {
+				margin-left: auto;
+				margin-right: 5%;
+			}
+			.dashboard-footer {
+				white-space: normal;
+				width: 90%;
+				line-height: 1.4;
+			}
+
+		}
                 
     </style>
 </head>
 <body>
 
 	<div id="dashboard">
-		<video autoplay muted loop playsinline poster="videos/fallback.png" id="bgVideo">
+		<video autoplay muted loop playsinline poster="videos/fallback.png" id="bgVideo" class="fade-in">
 			<source src="videos/bg-desktop.mp4" media="(min-width: 768px)">
 			<source src="videos/bg-mobile.mp4" media="(max-width: 767px)">
 		</video>
-		<h1>Tears of the Kingdom<br>Companion</h1>
-		<div class="subtitle">Use this app to find and track landmarks in the great Kingdom of Hyrule.</div>
-		<button class="layer-btn" style="justify-content: left; padding-right: 12px;" onclick="loadRegion(REGIONS[0])"><img src="icons/point.png" style="width: 30px; height: 30px;"> View Map</button>
+	
+		<div class="hero-container">
+			<div class="hero-line"></div>
+			
+			<div class="hero-top">
+				<img src="icons/totk.png" alt="TOTK Logo" class="hero-logo">
+			</div>
+			
+			<div class="hero-bottom">
+				<h1 class="hero-title">Companion App</h1>
+			</div>
+		</div>
+	
+		<div class="subtitle staggered-item" style="--delay: 1">Use this app to find and track landmarks<br>in the great Kingdom of Hyrule.</div>
+		<div class="dashboard-btn-wrapper">
+			<div class="dashboard-btn-group">
+				<button class="layer-btn staggered-item" style="--delay: 2;" onclick="loadRegion(REGIONS[0])">
+					<img src="icons/map.png"> <span>View<br>Map</span>
+				</button>
+				<button class="layer-btn staggered-item" style="--delay: 3;" onclick="">
+					<img src="icons/list.png"> <span>View<br>List</span>
+				</button>
+				<button class="layer-btn staggered-item" style="--delay: 4;" onclick="">
+					<img src="icons/progress2.png"> <span>View<br>Progress</span>
+				</button>
+			</div>
+		</div>
+		<div class="dashboard-footer staggered-item" style="--delay: 5;">
+			Icons by <em>Freepik</em> on <a href="https://www.flaticon.com/authors/freepik" title="Flaticon">Flaticon</a><br>
+			Hylia Serif Font from <a href="https://www.fontbolt.com/font/zelda-font/" title="Font Bolt">Font Bolt</a>
+		</div>
 	</div>
 	
 	<div id="mapViewer">
