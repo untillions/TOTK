@@ -677,7 +677,7 @@
 			</div>
 			
 			<div class="hero-bottom">
-				<h1 class="hero-title">Companion App</h1>
+				<h1 class="hero-title">Region Companion</h1>
 			</div>
 		</div>
 	
@@ -1366,6 +1366,47 @@
         ctx.drawImage(activeImage, 0, 0);
         ctx.restore(); 
         
+        // --- DRAW MAP LABELS ---
+        const visibleLabels = mapLabels.filter(label => 
+            [].concat(label.region).includes(currentRegion.id) && 
+            label.level.toLowerCase() === currentLayer
+        );
+        
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#b9a66a'; 
+        ctx.strokeStyle = 'rgba(59, 52, 28, 0.8)';
+        
+        const minSizeMap = { "S": 10, "M": 12, "L": 14 };
+        const maxSizeMap = { "S": 20, "M": 24, "L": 28 };
+        
+        let zoomFactor = 0;
+        if (maxScale > minScale) {
+            zoomFactor = (scale - minScale) / (maxScale - minScale);
+            zoomFactor = Math.max(0, Math.min(1, zoomFactor));
+        }
+        
+        for (let label of visibleLabels) {
+            const sizeKey = label.size?.toUpperCase() || "M";
+            
+            const minSize = minSizeMap[sizeKey];
+            const maxSize = maxSizeMap[sizeKey];
+            
+            const dynamicFontSize = minSize + (zoomFactor * (maxSize - minSize));
+            
+            ctx.font = `${dynamicFontSize}px "Segoe UI", sans-serif`; 
+            ctx.lineWidth = Math.max(0.5, dynamicFontSize * 0.25);
+            
+            const imgX = (label.x - currentRegion.gameStartX) * 1.5;
+            const imgY = (currentRegion.gameStartY - label.y) * 1.5;
+            const screenX = (imgX * scale) + offsetX;
+            const screenY = (imgY * scale) + offsetY;
+        
+            ctx.strokeText(label.text, screenX, screenY);
+            ctx.fillText(label.text, screenX, screenY);
+        }
+        
+        ctx.shadowBlur = 0;
+        
         // --- DRAW LANDMARKS ---
         const visibleLandmarks = landmarks.filter(lm => 
 			[].concat(lm.region).includes(currentRegion.id) &&
@@ -1630,6 +1671,7 @@
 		
 			if (clickedArrow) {
 				executeArrowNavigation(clickedArrow);
+				isDragging = false;
 				return; 
 			}
 			
