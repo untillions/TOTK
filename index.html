@@ -809,8 +809,8 @@
     // Landmark Icons Dictionary
     const icons = {};
     const iconTypes = [
-        "Tower", "Shrine", "Cave", "Chasm", "Dispenser", 
-        "Hudson Sign", "Named Location", "Old Map", 
+        "Tower", "Shrine", "Cave", "Chasm", "Cherry Tree", "Dispenser", "Great Fairy",
+        "Hudson Sign", "Named Location", "Old Map", "Village", "Stable",
         "Lightroot", "Treasure", "Schematic"
     ];
     const landmarkColors = {
@@ -821,6 +821,8 @@
         "Chasm": "#de878b",
         "Dispenser": "#a7c96e",
         "Hudson Sign": "#c6a96a",
+        "Village": "#c6a96a",
+        "Stable": "#c6a96a",
         "Old Map": "#dd88d3",
         "Treasure": "#c6a96a",
         "Schematic": "#dd87d3",
@@ -852,8 +854,8 @@
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Dispenser": "Dispensers", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine", "Schematic"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Named Location": "Named Locations" },
+            defaults: ["Tower", "Shrine", "Village"]
         },
         sky: {
             options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves" },
@@ -1112,8 +1114,8 @@
 	}
 
     function updateMapAsset() {
-        document.getElementById('loader').style.display = 'flex'; // Show loading screen
-
+        document.getElementById('loader').style.display = 'flex';
+ 
         const formattedId = currentRegion.id.toString().padStart(2, '0');
         const srcPath = `images/region${formattedId}${currentLayer}.png`;
         activeImage = new Image();
@@ -1140,28 +1142,37 @@
     }
 
     function resizeCanvas(resetZoom = false) {
-        if (!currentRegion) return;
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    
-        if (resetZoom) {
-            const shortestDeviceDim = Math.min(canvas.width, canvas.height);
-            const mapDim = Math.max(activeImage.width, activeImage.height);
-            
-            minScale = shortestDeviceDim / (mapDim || 2000); 
-            scale = minScale;
-            
-            offsetX = (canvas.width - (activeImage.width * scale)) / 2;
-            offsetY = (canvas.height - (activeImage.height * scale)) / 2;
-        } else {
-            const shortestDeviceDim = Math.min(canvas.width, canvas.height);
-            const mapDim = Math.max(activeImage.width, activeImage.height);
-            minScale = shortestDeviceDim / (mapDim || 2000);
-            if (scale < minScale) scale = minScale;
-            keepInBounds();
-        }
-        redraw();
-    }
+		if (!currentRegion) return;
+	
+		const dpr = window.devicePixelRatio || 1;
+		
+		canvas.width = window.innerWidth * dpr;
+		canvas.height = window.innerHeight * dpr;
+		
+		canvas.style.width = `${window.innerWidth}px`;
+		canvas.style.height = `${window.innerHeight}px`;
+		
+		ctx.setTransform(1, 0, 0, 1, 0, 0); 
+		ctx.scale(dpr, dpr);
+	
+		if (resetZoom) {
+			const shortestDeviceDim = Math.min(window.innerWidth, window.innerHeight);
+			const mapDim = Math.max(activeImage.width, activeImage.height);
+			
+			minScale = shortestDeviceDim / (mapDim || 2000); 
+			scale = minScale;
+			
+			offsetX = (window.innerWidth - (activeImage.width * scale)) / 2;
+			offsetY = (window.innerHeight - (activeImage.height * scale)) / 2;
+		} else {
+			const shortestDeviceDim = Math.min(window.innerWidth, window.innerHeight);
+			const mapDim = Math.max(activeImage.width, activeImage.height);
+			minScale = shortestDeviceDim / (mapDim || 2000);
+			if (scale < minScale) scale = minScale;
+			keepInBounds();
+		}
+		redraw();
+	}
 
 	let panAnimId = null;
 
@@ -1193,17 +1204,17 @@
     }
     
     function keepInBounds() {
-        const w = activeImage.width * scale;
-        const h = activeImage.height * scale;
-
-        if (w > canvas.width) offsetX = Math.min(0, Math.max(canvas.width - w, offsetX));
-        else offsetX = (canvas.width - w) / 2;
-
-        if (h > canvas.height) offsetY = Math.min(0, Math.max(canvas.height - h, offsetY));
-        else offsetY = (canvas.height - h) / 2;
-    }
+		const w = activeImage.width * scale;
+		const h = activeImage.height * scale;
+	
+		if (w > window.innerWidth) offsetX = Math.min(0, Math.max(window.innerWidth - w, offsetX));
+		else offsetX = (window.innerWidth - w) / 2;
+	
+		if (h > window.innerHeight) offsetY = Math.min(0, Math.max(window.innerHeight - h, offsetY));
+		else offsetY = (window.innerHeight - h) / 2;
+	}
     
-    // --- NEW SEARCH & REGION MENU LOGIC ---	
+    // --- SEARCH & REGION MENU LOGIC ---	
 	function buildRegionMenu() {
 		const menu = document.getElementById('regionMenu');
 		menu.innerHTML = '';
@@ -1335,28 +1346,28 @@
 		
 		const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
 		const lmImgY = (currentRegion.gameStartY - lm.y) * 1.5;
-		
-		// Shift slightly depending on screen width so the tooltip isn't hidden behind menus
+	
 		const tooltipShift = window.innerWidth < 600 ? 120 : 150; 
-		const targetOffsetX = (canvas.width / 2) - tooltipShift - (lmImgX * scale);
-		const targetOffsetY = (canvas.height / 2) - (lmImgY * scale);
+		
+		const targetOffsetX = (window.innerWidth / 2) - tooltipShift - (lmImgX * scale);
+		const targetOffsetY = (window.innerHeight / 2) - (lmImgY * scale);
 	
 		smoothPanTo(targetOffsetX, targetOffsetY);
 	}
 
     function redraw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        if (!activeImage.complete || activeImage.naturalWidth === 0) {
-            ctx.fillStyle = '#1e293b';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ef4444';
-            ctx.font = '18px Arial';
-            ctx.textAlign = 'center';
-            const formattedId = currentRegion.id.toString().padStart(2, '0');
-            ctx.fillText(`Missing File: region${formattedId}${currentLayer}.png`, canvas.width/2, canvas.height/2);
-            return;
-        }
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    
+		if (!activeImage.complete || activeImage.naturalWidth === 0) {
+			ctx.fillStyle = '#1e293b';
+			ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+			ctx.fillStyle = '#ef4444';
+			ctx.font = '18px Arial';
+			ctx.textAlign = 'center';
+			const formattedId = currentRegion.id.toString().padStart(2, '0');
+			ctx.fillText(`Missing File: region${formattedId}${currentLayer}.png`, window.innerWidth/2, window.innerHeight/2);
+			return;
+		}
 
         ctx.save();
         ctx.translate(offsetX, offsetY);
@@ -1374,7 +1385,7 @@
         
         ctx.textAlign = 'center';
         ctx.fillStyle = '#b9a66a'; 
-        ctx.strokeStyle = 'rgba(59, 52, 28, 0.8)';
+        ctx.strokeStyle = 'rgba(59, 52, 28, 1)';
         
         const minSizeMap = { "S": 10, "M": 12, "L": 14 };
         const maxSizeMap = { "S": 20, "M": 24, "L": 28 };
@@ -1394,18 +1405,18 @@
             const dynamicFontSize = minSize + (zoomFactor * (maxSize - minSize));
             
             ctx.font = `${dynamicFontSize}px "Segoe UI", sans-serif`; 
-            ctx.lineWidth = Math.max(0.5, dynamicFontSize * 0.25);
+            ctx.lineWidth = Math.max(1, dynamicFontSize * 0.25);
             
             const imgX = (label.x - currentRegion.gameStartX) * 1.5;
-            const imgY = (currentRegion.gameStartY - label.y) * 1.5;
-            const screenX = (imgX * scale) + offsetX;
-            const screenY = (imgY * scale) + offsetY;
-        
-            ctx.strokeText(label.text, screenX, screenY);
-            ctx.fillText(label.text, screenX, screenY);
+			const imgY = (currentRegion.gameStartY - label.y) * 1.5;
+            const screenX = Math.round((imgX * scale) + offsetX);
+			const screenY = Math.round((imgY * scale) + offsetY);
+		
+			ctx.strokeText(label.text, screenX, screenY);
+			ctx.fillText(label.text, screenX, screenY);
         }
         
-        ctx.shadowBlur = 0;
+        ctx.shadowColor = 'transparent';
         
         // --- DRAW LANDMARKS ---
         const visibleLandmarks = landmarks.filter(lm => 
@@ -1423,6 +1434,11 @@
             
             const icon = icons[lm.landmark];
             
+            ctx.shadowColor = 'rgba(0, 0, 0, 1)';
+			ctx.shadowBlur = 3;
+			ctx.shadowOffsetX = 2;
+			ctx.shadowOffsetY = 2;
+			
             if (icon && icon.complete && icon.naturalWidth !== 0) {
                 // Determine scale factor to fit inside a 30x30 bounding box
                 const maxDim = Math.max(icon.naturalWidth, icon.naturalHeight);
@@ -1441,6 +1457,8 @@
                 ctx.fill();
             }
         }
+        
+        ctx.shadowColor = 'transparent';
         
         // --- DRAW NAV ARROWS ---
 		const visibleArrows = navArrows.filter(arr => 
@@ -1483,7 +1501,7 @@
 				}
 			}
 		}
-		ctx.shadowBlur = 0;
+		ctx.shadowColor = 'transparent';
 
         // --- DRAW UI OVERLAYS (Landmark Tooltip or Custom Ping) ---
         if (selectedLandmark) {
@@ -1705,8 +1723,8 @@
                 const lmImgY = (currentRegion.gameStartY - selectedLandmark.y) * 1.5;
                 
                 const tooltipShift = window.innerWidth < 600 ? 120 : 150; 
-                const targetOffsetX = (canvas.width / 2) - tooltipShift - (lmImgX * scale);
-                const targetOffsetY = (canvas.height / 2) - (lmImgY * scale);
+				const targetOffsetX = (window.innerWidth / 2) - tooltipShift - (lmImgX * scale);
+				const targetOffsetY = (window.innerHeight / 2) - (lmImgY * scale);
 
                 smoothPanTo(targetOffsetX, targetOffsetY);
                 
