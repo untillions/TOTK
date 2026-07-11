@@ -769,34 +769,22 @@
     ];
     
     const MENU_REGIONS = [
-		{ name: "Akkala Highlands", id: 8 },
-		{ name: "Death Mountain", id: 7 },
-		{ name: "Deep Akkala", id: 8 },
-		{ name: "East Necluda", id: 12 },
-		{ name: "Eldin Canyon", id: 7 },
-		{ name: "Eldin Mountains", id: 7 },
-		{ name: "Eventide Island", id: 12 },
-		{ name: "Faron Grasslands", id: 13 },
-		{ name: "Gerudo Canyon", id: 14 },
-		{ name: "Gerudo Desert", id: 14 },
-		{ name: "Gerudo Highlands", id: 15 },
-		{ name: "Great Hyrule Forest", id: 6 },
 		{ name: "Great Sky Island", id: 0 },
-		{ name: "Hebra Mountains", id: 4 },
-		{ name: "Hyrule Castle", id: 1 },
-		{ name: "Hyrule Ridge", id: 3 },
-		{ name: "Lake Hylia", id: 13 },
-		{ name: "Lanayru Great Spring", id: 9 },
-		{ name: "Lanayru Wetlands", id: 10 },
-		{ name: "Mount Lanayru", id: 11 },
-		{ name: "Naydra Snowfield", id: 11 },
-		{ name: "North Hyrule Field", id: 1 },
-		{ name: "Rito Village", id: 4 },
+		{ name: "Hyrule Castle", id: 1 }, { name: "North Hyrule Field", id: 1 },
 		{ name: "South Hyrule Field", id: 2 },
-		{ name: "Tabantha Frontier", id: 3 },
+		{ name: "Hyrule Ridge", id: 3 }, { name: "Tabantha Frontier", id: 3 },
+		{ name: "Hebra Mountains", id: 4 }, { name: "Rito Village", id: 4 },
 		{ name: "Tabantha Tundra", id: 5 },
-		{ name: "West Necluda", id: 10 },
-		{ name: "Zora's Domain", id: 9 }
+		{ name: "Great Hyrule Forest", id: 6 },
+		{ name: "Death Mountain", id: 7 }, { name: "Eldin Canyon", id: 7 }, { name: "Eldin Mountains", id: 7 },
+		{ name: "Akkala Highlands", id: 8 }, { name: "Deep Akkala", id: 8 },
+		{ name: "Lanayru Great Spring", id: 9 }, { name: "Zora's Domain", id: 9 },
+		{ name: "Lanayru Wetlands", id: 10 }, { name: "West Necluda", id: 10 },
+		{ name: "Mount Lanayru", id: 11 }, { name: "Naydra Snowfield", id: 11 },
+		{ name: "East Necluda", id: 12 }, { name: "Eventide Island", id: 12 },
+		{ name: "Faron Grasslands", id: 13 }, { name: "Lake Hylia", id: 13 },
+		{ name: "Gerudo Canyon", id: 14 }, { name: "Gerudo Desert", id: 14 },
+		{ name: "Gerudo Highlands", id: 15 },
 	];
 
 	const arrowImg = new Image();
@@ -811,15 +799,18 @@
     const iconTypes = [
         "Tower", "Shrine", "Cave", "Chasm", "Cherry Tree", "Dispenser", "Great Fairy",
         "Hudson Sign", "Named Location", "Old Map", "Village", "Stable",
-        "Lightroot", "Treasure", "Schematic"
+        "Lightroot", "Treasure", "Schematic", "Forge Construct", "Dragon Tear"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
+        "Forge Construct": "#86a3e6",
         "Shrine": "#7cc9c2",
         "Lightroot": "#7cc9c2",
         "Cave": "#a784e5",
         "Chasm": "#de878b",
+        "Cherry Tree": "#de878b",
         "Dispenser": "#a7c96e",
+		"Dragon Tear": "#a7c96e",
         "Hudson Sign": "#c6a96a",
         "Village": "#c6a96a",
         "Stable": "#c6a96a",
@@ -854,16 +845,16 @@
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine", "Village"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Named Location": "Named Locations" },
+            defaults: ["Tower", "Shrine", "Village", "Dragon Tear"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves" },
+            options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge Construct": "Forge Constructs" },
             defaults: ["Shrine"]
         },
         depths: {
-            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics" },
-            defaults: ["Lightroot", "Schematic"]
+            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Forge Construct": "Forge Constructs" },
+            defaults: ["Lightroot", "Forge Construct"]
         }
     };
     
@@ -1730,12 +1721,14 @@
                 
             } else {
                 selectedLandmark = null;
-                markerX = (e.clientX - offsetX) / scale; // remove this line to stop functionality
-                markerY = (e.clientY - offsetY) / scale; // this one too
                 
-                // markerX = null;
-                // markerY = null;
-                // document.getElementById('coordLabel').style.display = 'none';
+                // To add back the click to view coordinates functionality, just switch the commented lines below:
+                
+                // markerX = (e.clientX - offsetX) / scale;
+                // markerY = (e.clientY - offsetY) / scale;
+                markerX = null;
+                markerY = null;
+                document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
         }
