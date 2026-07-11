@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>TOTK Companion</title>
     
     <link rel="apple-touch-icon" href="icons/main-icon.png">
@@ -24,6 +24,14 @@
         .fade-in { animation: fadeIn ease 8s; }
 		@keyframes fadeIn { 0% { opacity:0; } 100% { opacity:1; } }
 
+		body:not(.video-loaded) #dashboard * {
+			animation-play-state: paused !important;
+		}
+		
+		body:not(.video-loaded) #bgVideo {
+			opacity: 0;
+		}
+
         #bgVideo {
 			position: fixed;
 			top: 0;
@@ -40,6 +48,7 @@
             overflow-y: auto;
             box-sizing: border-box;
             padding: 20px;
+            padding-top: calc(20px + env(safe-area-inset-top));
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -326,11 +335,6 @@
         }
         .btn:hover { background: #475569; }
 
-        #layerPanel {
-            bottom: 25px;
-            left: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
         .layer-btn {
             background: rgba(30, 41, 59, 0.85); /* Slightly transparent like the glass menus */
             backdrop-filter: blur(8px);
@@ -401,7 +405,7 @@
         #loader {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 15, 25, 0.85);
+            background: #0b0f19;
             display: none; /* Flex when active */
             flex-direction: column;
             justify-content: center;
@@ -459,7 +463,7 @@
         /* --- LAYER MENU --- */
         #layerPanel {
             position: absolute;
-            top: 15px;
+            top: calc(15px + env(safe-area-inset-top));
             left: 15px;
             display: flex;
             flex-direction: column;
@@ -481,7 +485,7 @@
         /* --- FILTER MENU --- */
         #filterPanel {
             position: absolute;
-            top: 15px;
+			top: calc(15px + env(safe-area-inset-top));
             right: 15px;
             display: flex;
             flex-direction: column;
@@ -519,7 +523,7 @@
         /* --- SEARCH & REGION MENUS --- */
 		#searchPanel {
 			position: absolute;
-			top: 18px;
+			top: calc(18px + env(safe-area-inset-top));
 			left: 50%;
 			transform: translateX(-50%);
 			z-index: 20;
@@ -1013,6 +1017,11 @@
 		const targetRegion = REGIONS.find(r => r.id === arr.toRegion);
 		if (!targetRegion) return;
 		
+		selectedLandmark = null;
+		markerX = null;
+		markerY = null;
+		document.getElementById('coordLabel').style.display = 'none';
+		
 		currentRegion = targetRegion;
 		currentLayer = arr.toLevel.toLowerCase();
 		
@@ -1290,8 +1299,19 @@
 		const needsLoad = (!currentRegion || currentRegion.id !== region.id || currentLayer !== lm.level.toLowerCase());
 		
 		if (needsLoad) {
+			document.getElementById('coordLabel').style.display = 'none';
+			
 			currentRegion = region;
 			currentLayer = lm.level.toLowerCase();
+			
+			const layerBtn = document.getElementById('layerBtn');
+			if (currentRegion.id === 0) {
+				layerBtn.style.opacity = '0.5';
+				layerBtn.style.pointerEvents = 'none';
+			} else {
+				layerBtn.style.opacity = '1';
+				layerBtn.style.pointerEvents = 'auto';
+			}
 			
 			document.getElementById('regionTitle').innerText = region.name;
 			document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
@@ -1602,13 +1622,18 @@
 	const video = document.getElementById('bgVideo');
 	const loader = document.getElementById('loader');
 	
-	// Force loader to show on initial page load
 	loader.style.display = 'flex'; 
 	
-	video.addEventListener('canplaythrough', () => {
-		// Once the video has enough data to play, hide the loader
+	function revealDashboard() {
 		loader.style.display = 'none';
-	});
+		document.body.classList.add('video-loaded');
+	}
+	
+	if (video.readyState >= 3) {
+		revealDashboard();
+	} else {
+		video.addEventListener('canplaythrough', revealDashboard);
+	}
 
     window.addEventListener('wheel', (e) => {
 		if (!currentRegion) return;
