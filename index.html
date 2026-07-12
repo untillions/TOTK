@@ -55,16 +55,14 @@
             background: transparent;
         }
         .subtitle {
-            color: #1e293b;
             margin-bottom: 30px;
             text-align: center;
-            text-decoration: italic;
             z-index: 2;
         }
         .dashboard-btn-wrapper {
 			width: 60%;
 			max-width: 640px;
-			margin: 100px auto 0px auto;
+			margin: 12vh auto 0px auto;
 			display: flex;
 			justify-content: flex-end;
 			z-index: 2;
@@ -124,7 +122,7 @@
 			width: 100%;
 			max-width: 800px;
 			height: 260px; /* Comfortably holds the 200px asset + title buffer */
-			margin-top: 0px;
+			margin-top: 1vh;
 			z-index: 2;
 			display: flex;
 			flex-direction: column;
@@ -209,9 +207,7 @@
 		.subtitle.staggered-item {
 			margin-top: 20px;
 			margin-bottom: 30px;
-			color: #FAF7DF;
-			font-style: italic;
-			text-shadow: 1px 1px 4px black;
+			text-shadow: 0px 0px 3px rgb(30,30,30);
 		}
 		
 		/* --- ANIMATION KEYFRAMES --- */
@@ -401,19 +397,17 @@
             margin-bottom: 2px;
             letter-spacing: 1px;
         }
+        
         /* --- LOADER --- */
         #loader {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #0b0f19;
-            display: none; /* Flex when active */
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 30; /* Keep above everything */
-            color: #4ade80;
-            font-size: 1.2rem;
-            font-weight: bold;
+            z-index: 30;
             gap: 15px;
         }
         .spinner {
@@ -422,13 +416,58 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
+        /* --- REUSABLE TEXT ANIMATION --- */
+        .text-anim-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        #staticAnimText {
+            color: #FAF7DF;
+            width: auto;
+            text-shadow: 1px 1px 3px black;
+            text-align: right;
+        }
+        #staticAnimText2 {
+            color: #FAF7DF;
+            width: 150px;
+            text-align: right;
+        }
+        .dynamic-container {
+            position: relative;
+            height: 50px; 
+            width: 150px; 
+            overflow: hidden; 
+            text-align: left;
+        }
+        .cycle-slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            font-style: normal; /* Overrides the italic from the dashboard */
+        }
+        .cycle-slide img {
+            height: 30px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+        }
+              
+
         /* --- TOGGLE SLIDERS --- */
         .switch {
             position: relative;
             display: inline-block;
-            width: 36px;
-            height: 20px;
-            margin-left: auto; /* Pushes the switch to the far right */
+            width: 30px;
+            height: 16px;
+            margin-left: auto;
         }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
@@ -442,14 +481,15 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 14px; width: 14px;
-            left: 3px; bottom: 3px;
+            height: 12px; 
+            width: 12px;
+            left: 2px; bottom: 2px;
             background-color: white;
             transition: 0.3s;
             border-radius: 50%;
         }
         input:checked + .slider { background-color: #4ade80; }
-        input:checked + .slider:before { transform: translateX(16px); }
+        input:checked + .slider:before { transform: translateX(14px); }
 
         /* --- SLIDE-UP ANIMATIONS --- */
         @keyframes slideUpFade {
@@ -497,27 +537,107 @@
             background: rgba(15, 23, 42, 0.95);
             border: 1px solid #334155;
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             margin-top: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             flex-direction: column;
-            gap: 12px;
-            min-width: 160px;
+            gap: 6px;
+            min-width: 220px; 
+			max-height: calc(100vh - 180px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            overflow-y: auto;
         }
         .filter-label {
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #e2e8f0;
             font-weight: 600;
+            width: 100%;
         }
         .filter-label input {
             cursor: pointer;
             width: 16px;
             height: 16px;
             accent-color: #4ade80;
+        }
+        .filter-icon {
+            width: 22px;
+            height: 22px;
+            display: block;
+        }
+        /* --- MASTER FILTER CONTROLS --- */
+        .filter-master-row {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            user-select: none;
+        }
+        .filter-master-btn {
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        .filter-master-btn:hover {
+            opacity: 0.8;
+        }
+        .filter-master-btn.show-all {
+            color: #4ade80;
+        }
+        .filter-master-btn.hide-all {
+            color: #94a3b8;
+        }
+        
+        /* --- FILTER CATEGORY HIERARCHY --- */
+        .filter-category {
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
+        }
+        .filter-category:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .filter-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 4px 0;
+            user-select: none;
+        }
+        .filter-category-title {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-grow: 1;
+            cursor: pointer;
+        }
+        .category-chevron {
+            font-size: 0.7rem;
+            transition: transform 0.2s ease;
+        }
+        .category-collapsed .category-chevron {
+            transform: rotate(-90deg);
+        }
+        .filter-category-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Spacing between items inside a category */
+            padding-top: 8px;
+            padding-left: 5px; 
+            overflow: hidden;
+        }
+        .category-collapsed .filter-category-content {
+            display: none;
         }
         
         /* --- SEARCH & REGION MENUS --- */
@@ -573,48 +693,6 @@
 			border-bottom: none;
 		}
         
-        /* --- MASTER FILTER CONTROLS --- */
-        .filter-master-row {
-            display: flex;
-            justify-content: space-between;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            user-select: none;
-        }
-        .filter-master-btn {
-            cursor: pointer;
-            transition: opacity 0.15s ease;
-        }
-        .filter-master-btn:hover {
-            opacity: 0.8;
-        }
-        .filter-master-btn.show-all {
-            color: #4ade80;
-        }
-        .filter-master-btn.hide-all {
-            color: #94a3b8;
-        }
-
-        /* --- FILTER LIST ITEM LAYOUT --- */
-        .filter-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            color: #e2e8f0;
-            font-weight: 600;
-            width: 100%;
-        }
-        .filter-icon {
-            width: 24px;
-            height: 24px;
-            display: block;
-        }
-        
         /* --- FONTS --- */
         @font-face {
             font-family: 'HyliaSerif';
@@ -649,7 +727,7 @@
 			.dashboard-btn-wrapper {
 				width: 100%;
 				max-width: none;
-				margin: 130px 0 0 0;
+				margin: 15vh 0 0 0;
 			}
 			.dashboard-btn-group {
 				margin-left: auto;
@@ -685,7 +763,11 @@
 			</div>
 		</div>
 	
-		<div class="subtitle staggered-item" style="--delay: 1">Use this app to find and track landmarks<br>in the great Kingdom of Hyrule.</div>
+		<div class="subtitle staggered-item text-anim-wrapper" style="--delay: 1">
+			<span id="staticAnimText">DISCOVER EVERY</span>
+			<div id="dashboardDynamicContainer" class="dynamic-container"></div>
+		</div>
+		
 		<div class="dashboard-btn-wrapper">
 			<div class="dashboard-btn-group">
 				<button class="layer-btn staggered-item" style="--delay: 2;" onclick="loadRegion(REGIONS[0])">
@@ -710,7 +792,10 @@
 		<div id="coordLabel"></div>
 		<div id="loader">
 			<img src="icons/loading.png" class="spinner" alt="...">
-			<div>Loading...</div>
+			<div id="loaderTextWrapper" class="text-anim-wrapper">
+				<span id="staticAnimText2">LOADING</span>
+				<div id="loaderDynamicContainer" class="dynamic-container"></div>
+			</div>
 		</div>
 	
 		<div id="layerPanel">
@@ -802,7 +887,7 @@
     const icons = {};
     const iconTypes = [
         "Tower", "Shrine", "Cave", "Chasm", "Cherry Tree", "Dispenser", "Great Fairy",
-        "Hudson Sign", "Named Location", "Old Map", "Village", "Stable",
+        "Hudson Sign", "Named Location", "Old Map", "Village", "Stable", "Well",
         "Lightroot", "Treasure", "Schematic", "Forge Construct", "Dragon Tear"
     ];
     const landmarkColors = {
@@ -811,6 +896,7 @@
         "Shrine": "#7cc9c2",
         "Lightroot": "#7cc9c2",
         "Cave": "#a784e5",
+        "Well": "#a784e5",
         "Chasm": "#de878b",
         "Cherry Tree": "#de878b",
         "Dispenser": "#a7c96e",
@@ -849,8 +935,8 @@
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine", "Village", "Dragon Tear"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Named Location": "Named Locations" },
+            defaults: ["Tower", "Shrine", "Village", "Well"]
         },
         sky: {
             options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge Construct": "Forge Constructs" },
@@ -861,6 +947,90 @@
             defaults: ["Lightroot", "Forge Construct"]
         }
     };
+    
+    const FILTER_CATEGORIES = [
+        {
+            name: "Waypoints",
+            items: ["Tower", "Shrine", "Lightroot", "Village", "Stable"]
+        },
+        {
+            name: "Collectables",
+            items: ["Cave", "Well", "Hudson Sign", "Dragon Tear", "Old Map", "Treasure", "Schematic"]
+        },
+        {
+            name: "Destinations",
+            items: ["Named Location", "Chasm", "Dispenser", "Forge Construct", "Cherry Tree"]
+        }
+    ];
+    
+    let dashInterval, loaderInterval;
+    const loaderPlurals = {
+        "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms",
+        "Cherry Tree": "Cherry Trees", "Dispenser": "Dispensers",
+        "Hudson Sign": "Hudson Signs", "Old Map": "Old Maps", "Dragon Tear": "Dragon Tears",
+        "Village": "Villages", "Stable": "Stables", "Well": "Wells", "Lightroot": "Lightroots",
+        "Treasure": "Treasures", "Schematic": "Schematics", "Forge Construct": "Forge Constructs"        
+    };
+    const cycleLandmarks = Object.keys(loaderPlurals);
+
+    function startCycleAnimation(containerId, usePlural = false) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        container.innerHTML = '';
+
+        // Pass the flag down to the item creator
+        let currentCycleItem = createCycleItem(usePlural);
+        currentCycleItem.style.transform = 'translate(0%, 0%)';
+        container.appendChild(currentCycleItem);
+
+        return setInterval(() => {
+            // Pass the flag here as well
+            const nextItem = createCycleItem(usePlural);
+            
+            const dir = Math.floor(Math.random() * 4);
+            let startX = 0, startY = 0, endX = 0, endY = 0;
+
+            if (dir === 0) { startY = -100; endY = 100; }      
+            else if (dir === 1) { startX = 100; endX = -100; } 
+            else if (dir === 2) { startY = 100; endY = -100; } 
+            else if (dir === 3) { startX = -100; endX = 100; } 
+
+            nextItem.style.transform = `translate(${startX}%, ${startY}%)`;
+            container.appendChild(nextItem);
+            void nextItem.offsetWidth;
+            nextItem.style.transform = 'translate(0%, 0%)';
+            
+            if (currentCycleItem) {
+                currentCycleItem.style.transform = `translate(${endX}%, ${endY}%)`;
+                const itemToRemove = currentCycleItem;
+                setTimeout(() => {
+                    if (itemToRemove && itemToRemove.parentNode) {
+                        itemToRemove.parentNode.removeChild(itemToRemove);
+                    }
+                }, 600); 
+            }
+            currentCycleItem = nextItem;
+        }, 2000); 
+    }
+
+    function createCycleItem(usePlural) {
+        const type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
+        const color = landmarkColors[type] || landmarkColors["default"];
+        
+        const displayName = usePlural ? loaderPlurals[type] : type;
+        
+        const fileName = type.toLowerCase().replace(/\s+/g, '-');
+        const formattedName = displayName.replace(' ', '<br>');
+
+        const div = document.createElement('div');
+        div.className = 'cycle-slide';
+        div.innerHTML = `
+            <img src="icons/${fileName}.png">
+            <span style="color: ${color}; font-family: 'HyliaSerif', serif; letter-spacing: 1px; line-height: 1.1;">${formattedName}</span>
+        `;
+        return div;
+    }
     
     let activeFiltersByLayer = {
         surface: [...FILTER_CONFIG.surface.defaults],
@@ -926,15 +1096,16 @@
 		document.getElementById('layerBtn').classList.remove('active-panel');
 		document.getElementById('filterBtn').classList.remove('active-panel');
 		document.getElementById('regionTitlePanel').classList.remove('active-panel');
+		document.getElementById('coordLabel').style.display = 'none';
 	}
 
     function buildFilterMenu() {
         const menu = document.getElementById('filterMenu');
         menu.innerHTML = '';
         const config = FILTER_CONFIG[currentLayer];
-        
         let layerFilters = activeFiltersByLayer[currentLayer]; 
         
+        // --- 1. Master Show All / Hide All Row ---
         const masterRow = document.createElement('div');
         masterRow.className = 'filter-master-row';
 
@@ -943,10 +1114,7 @@
         showAllBtn.innerText = 'SHOW ALL';
         showAllBtn.onclick = () => {
             activeFiltersByLayer[currentLayer] = Object.keys(config.options);
-            
-            menu.querySelectorAll('.switch input').forEach(cb => {
-                if (config.options[cb.value]) cb.checked = true;
-            });
+            menu.querySelectorAll('.switch input').forEach(cb => cb.checked = true);
             redraw();
         };
 
@@ -955,10 +1123,7 @@
         hideAllBtn.innerText = 'HIDE ALL';
         hideAllBtn.onclick = () => {
             activeFiltersByLayer[currentLayer] = [];
-            
-            menu.querySelectorAll('.switch input').forEach(cb => {
-                if (config.options[cb.value]) cb.checked = false;
-            });
+            menu.querySelectorAll('.switch input').forEach(cb => cb.checked = false);
             redraw();
         };
 
@@ -966,45 +1131,117 @@
         masterRow.appendChild(hideAllBtn);
         menu.appendChild(masterRow);
 
-        Object.entries(config.options).forEach(([type, labelText], index) => {
-            const label = document.createElement('label');
-            label.className = 'filter-label animated-item';
-            label.style.animationDelay = `${index * 0.05}s`;
-            
-            const iconImg = document.createElement('img');
-            const fileName = type.toLowerCase().replace(/\s+/g, '-');
-            iconImg.src = `icons/${fileName}.png`;
-            iconImg.className = 'filter-icon';
-            
-            const switchDiv = document.createElement('div');
+        // --- 2. Build Category Hierarchies ---
+        FILTER_CATEGORIES.forEach(category => {
+            // Find items in this category that are available on the current layer
+            const availableItems = category.items.filter(item => config.options[item]);
+
+            if (availableItems.length === 0) return; // Skip if layer has none of these
+
+            const catDiv = document.createElement('div');
+            catDiv.className = 'filter-category'; // Expand by default
+
+            // Header (Title, Chevron, and Category Master Toggle)
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'filter-category-header';
+
+            const titleSpan = document.createElement('div');
+            titleSpan.className = 'filter-category-title';
+            titleSpan.innerHTML = `<span class="category-chevron">▼</span> ${category.name}`;
+            titleSpan.onclick = () => {
+                catDiv.classList.toggle('category-collapsed');
+            };
+
+            const switchDiv = document.createElement('label');
             switchDiv.className = 'switch';
             
-            const cb = document.createElement('input');
-            cb.type = 'checkbox';
-            cb.value = type;
-            cb.checked = layerFilters.includes(type);
-            cb.onchange = (e) => {
-                if (e.target.checked) {
-                    if (!activeFiltersByLayer[currentLayer].includes(type)) {
-                        activeFiltersByLayer[currentLayer].push(type);
+            const categoryCb = document.createElement('input');
+            categoryCb.type = 'checkbox';
+            // It is checked only if ALL available items in this category are active
+            categoryCb.checked = availableItems.every(item => layerFilters.includes(item));
+            
+            categoryCb.onchange = (e) => {
+                const isChecked = e.target.checked;
+                availableItems.forEach(item => {
+                    if (isChecked) {
+                        if (!activeFiltersByLayer[currentLayer].includes(item)) {
+                            activeFiltersByLayer[currentLayer].push(item);
+                        }
+                    } else {
+                        activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== item);
                     }
-                } else {
-                    activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== type);
-                }
+                });
+                
+                // Visually update all child checkboxes in this category
+                const childBoxes = catDiv.querySelectorAll('.filter-category-content input[type="checkbox"]');
+                childBoxes.forEach(box => box.checked = isChecked);
+                
                 redraw();
             };
             
             const sliderSpan = document.createElement('span');
             sliderSpan.className = 'slider';
-            
-            switchDiv.appendChild(cb);
+            switchDiv.appendChild(categoryCb);
             switchDiv.appendChild(sliderSpan);
-            
-            label.appendChild(iconImg);
-            label.appendChild(document.createTextNode(labelText));
-            label.appendChild(switchDiv);
-            
-            menu.appendChild(label);
+
+            headerDiv.appendChild(titleSpan);
+            headerDiv.appendChild(switchDiv);
+            catDiv.appendChild(headerDiv);
+
+            // Item List Container
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'filter-category-content';
+
+            availableItems.forEach((type, index) => {
+                const labelText = config.options[type];
+                const label = document.createElement('label');
+                label.className = 'filter-label animated-item';
+                label.style.animationDelay = `${index * 0.03}s`; // Sped up the stagger slightly
+                
+                const iconImg = document.createElement('img');
+                const fileName = type.toLowerCase().replace(/\s+/g, '-');
+                iconImg.src = `icons/${fileName}.png`;
+                iconImg.className = 'filter-icon';
+                
+                const itemSwitch = document.createElement('div');
+                itemSwitch.className = 'switch';
+                
+                const itemCb = document.createElement('input');
+                itemCb.type = 'checkbox';
+                itemCb.value = type;
+                itemCb.checked = layerFilters.includes(type);
+                
+                itemCb.onchange = (e) => {
+                    if (e.target.checked) {
+                        if (!activeFiltersByLayer[currentLayer].includes(type)) {
+                            activeFiltersByLayer[currentLayer].push(type);
+                        }
+                    } else {
+                        activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== type);
+                    }
+                    
+                    // Update category master toggle state based on children
+                    const allChecked = availableItems.every(i => activeFiltersByLayer[currentLayer].includes(i));
+                    categoryCb.checked = allChecked;
+                    
+                    redraw();
+                };
+                
+                const itemSlider = document.createElement('span');
+                itemSlider.className = 'slider';
+                
+                itemSwitch.appendChild(itemCb);
+                itemSwitch.appendChild(itemSlider);
+                
+                label.appendChild(iconImg);
+                label.appendChild(document.createTextNode(labelText));
+                label.appendChild(itemSwitch);
+                
+                contentDiv.appendChild(label);
+            });
+
+            catDiv.appendChild(contentDiv);
+            menu.appendChild(catDiv);
         });
     }
 
@@ -1049,6 +1286,9 @@
     
     function loadRegion(region) {
         currentRegion = region;
+        
+        clearInterval(dashInterval);
+        dashInterval = null;
         
         const layerBtn = document.getElementById('layerBtn');
 		if (currentRegion.id === 0) {
@@ -1115,13 +1355,16 @@
 
     function updateMapAsset() {
         document.getElementById('loader').style.display = 'flex';
+        loaderInterval = startCycleAnimation('loaderDynamicContainer', true);
  
         const formattedId = currentRegion.id.toString().padStart(2, '0');
         const srcPath = `images/region${formattedId}${currentLayer}.png`;
         activeImage = new Image();
         activeImage.src = srcPath;
         activeImage.onload = () => {
-            document.getElementById('loader').style.display = 'none'; // Hide loading screen
+            document.getElementById('loader').style.display = 'none'; 
+            clearInterval(loaderInterval);
+            
             if (scale === -1) {
                 resizeCanvas(true); 
             } else {
@@ -1129,7 +1372,8 @@
             }
         };
         activeImage.onerror = () => { 
-            document.getElementById('loader').style.display = 'none'; // Hide loading screen
+            document.getElementById('loader').style.display = 'none'; 
+            clearInterval(loaderInterval);
             redraw(); 
         };
     }
@@ -1139,6 +1383,8 @@
         document.getElementById('dashboard').style.display = 'flex';
         currentRegion = null;
         coordLabel.style.display = 'none';
+        
+        if (!dashInterval) dashInterval = startCycleAnimation('dashboardDynamicContainer', false);
     }
 
     function resizeCanvas(resetZoom = false) {
@@ -1627,6 +1873,8 @@
 	function revealDashboard() {
 		loader.style.display = 'none';
 		document.body.classList.add('video-loaded');
+	
+        if (!dashInterval) dashInterval = startCycleAnimation('dashboardDynamicContainer', false);
 	}
 	
 	if (video.readyState >= 3) {
@@ -1638,8 +1886,7 @@
     window.addEventListener('wheel', (e) => {
 		if (!currentRegion) return;
 		
-		// Allow native scrolling inside menus
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults')) return;
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu')) return;
 		
 		e.preventDefault();
 		zoomAround(e.deltaY < 0 ? 1.15 : 0.85, e.clientX, e.clientY);
@@ -1648,7 +1895,7 @@
     window.addEventListener('pointerdown', (e) => {
 		if (!currentRegion || e.clientY < 70) return; 
 		
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults')) return;
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu')) return;
 	
 		isDragging = true;
 		cancelAnimationFrame(panAnimId);
@@ -1761,27 +2008,42 @@
         isDragging = false;
     });
 
+    let lastPinchMidX = 0, lastPinchMidY = 0;
+
     window.addEventListener('touchstart', (e) => {
         if (!currentRegion) return;
+        
         if (e.touches.length === 2) {
             isDragging = false;
             initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
             initialScale = scale;
+            
+            // Track the initial center point of the pinch gesture
+            lastPinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            lastPinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
         }
     }, { passive: true });
 
     window.addEventListener('touchmove', (e) => {
 		if (!currentRegion) return;
 		
-		// Allow native touch scrolling inside menus
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults')) return;
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu')) return;
 	
 		if (e.touches.length === 2) {
 			e.preventDefault();
+			
 			const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
 			const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
 			const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+			
+			const dx = midX - lastPinchMidX;
+			const dy = midY - lastPinchMidY;
+			
+			offsetX += dx;
+			offsetY += dy;
 			zoomAround((initialScale * (dist / initialPinchDist)) / scale, midX, midY);
+			lastPinchMidX = midX;
+			lastPinchMidY = midY;
 		}
 	}, { passive: false });
 
