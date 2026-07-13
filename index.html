@@ -37,16 +37,14 @@
 
         #bgVideo {
 			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
+			top: 0; left: 0; right: 0; bottom: 0;
 			width: 100vw;
-			height: 100vh;
+			height: 100dvh; /* Changed from vh */
 			object-fit: cover;
 			object-position: 0% 50%;
 			z-index: 1;
 		}
+
         #dashboard {
             width: 100%;
             height: 100%;
@@ -244,43 +242,47 @@
 
         /* --- MAP VIEWER VIEW --- */
         #mapViewer {
-            display: none;
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-        }
-        canvas {
-            display: block;
-            width: 100vw;
-            height: 100vh;
-            cursor: grab;
-        }
+			display: none;
+			position: relative;
+			width: 100vw;
+			height: 100dvh;
+		}
+		canvas {
+			display: block;
+			position: absolute;
+			top: 0; left: 0;
+			width: 100vw;
+			height: 100dvh;
+			cursor: grab;
+		}
         canvas:active { cursor: grabbing; }
 
-        /* --- TOP PANEL --- */
+        /* --- BOTTOM PANEL --- */
         #bottomLeftPanel {
-            position: absolute;
-            bottom: 25px;
-            left: 15px;
-            z-index: 10;
-        }
-        #bottomRightPanel {
-            position: absolute;
-            bottom: 25px;
-            right: 15px;
-            z-index: 10;
-        }
-        #regionTitlePanel {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            cursor: pointer;
-            padding: 5px 15px;
-            max-width: calc(100vw - 130px); 
-            box-sizing: border-box;
-        }
+			position: absolute;
+			bottom: calc(25px + env(safe-area-inset-bottom));
+			left: calc(15px + env(safe-area-inset-left));
+			z-index: 10;
+		}
+		
+		#bottomRightPanel {
+			position: absolute;
+			bottom: calc(25px + env(safe-area-inset-bottom));
+			right: calc(15px + env(safe-area-inset-right));
+			z-index: 10;
+		}
+		
+		#regionTitlePanel {
+			position: absolute;
+			bottom: calc(25px + env(safe-area-inset-bottom));
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 10;
+			cursor: pointer;
+			padding: 5px 15px;
+			max-width: calc(100vw - 130px); 
+			box-sizing: border-box;
+		}
         #regionTitle {
 			font-family: 'HyliaSerif', serif;
             margin: 0;
@@ -893,7 +895,8 @@
     const iconTypes = [
         "Tower", "Shrine", "Cave", "Chasm", "Cherry Tree", "Dispenser", "Great Fairy",
         "Hudson Sign", "Named Location", "Old Map", "Village", "Stable", "Well",
-        "Lightroot", "Treasure", "Schematic", "Forge Construct", "Dragon Tear"
+        "Lightroot", "Treasure", "Schematic", "Forge Construct", "Dragon Tear",
+        "Ancient Tablet"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
@@ -904,6 +907,7 @@
         "Well": "#a784e5",
         "Chasm": "#de878b",
         "Cherry Tree": "#de878b",
+		"Ancient Tablet": "#de878b",
         "Dispenser": "#a7c96e",
 		"Dragon Tear": "#a7c96e",
         "Hudson Sign": "#c6a96a",
@@ -944,8 +948,8 @@
             defaults: ["Tower", "Shrine", "Village", "Well"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge Construct": "Forge Constructs" },
-            defaults: ["Shrine"]
+            options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge Construct": "Forge Constructs", "Ancient Tablet": "Ancient Tablets" },
+            defaults: ["Shrine", "Ancient Tablet" ]
         },
         depths: {
             options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Forge Construct": "Forge Constructs" },
@@ -960,7 +964,7 @@
         },
         {
             name: "Collectables",
-            items: ["Cave", "Well", "Hudson Sign", "Dragon Tear", "Old Map", "Treasure", "Schematic"]
+            items: ["Cave", "Well", "Hudson Sign", "Dragon Tear", "Old Map", "Ancient Tablet", "Treasure", "Schematic"]
         },
         {
             name: "Destinations",
@@ -974,7 +978,8 @@
         "Cherry Tree": "Cherry Trees", "Dispenser": "Dispensers",
         "Hudson Sign": "Hudson Signs", "Old Map": "Old Maps", "Dragon Tear": "Dragon Tears",
         "Village": "Villages", "Stable": "Stables", "Well": "Wells", "Lightroot": "Lightroots",
-        "Treasure": "Treasures", "Schematic": "Schematics", "Forge Construct": "Forge Constructs"        
+        "Treasure": "Treasures", "Schematic": "Schematics", "Forge Construct": "Forge Constructs",
+        "Ancient Tablet": "Ancient Tablets"        
     };
     const cycleLandmarks = Object.keys(loaderPlurals);
     let lastLandmarkType = null;
@@ -1415,19 +1420,19 @@
 		ctx.setTransform(1, 0, 0, 1, 0, 0); 
 		ctx.scale(dpr, dpr);
 	
+		const scaleX = window.innerWidth / (activeImage.width || 2000);
+		const scaleY = window.innerHeight / (activeImage.height || 2000);
+		
+		const calculatedMinScale = Math.min(scaleX, scaleY);
+	
 		if (resetZoom) {
-			const shortestDeviceDim = Math.min(window.innerWidth, window.innerHeight);
-			const mapDim = Math.max(activeImage.width, activeImage.height);
-			
-			minScale = shortestDeviceDim / (mapDim || 2000); 
+			minScale = calculatedMinScale; 
 			scale = minScale;
 			
 			offsetX = (window.innerWidth - (activeImage.width * scale)) / 2;
 			offsetY = (window.innerHeight - (activeImage.height * scale)) / 2;
 		} else {
-			const shortestDeviceDim = Math.min(window.innerWidth, window.innerHeight);
-			const mapDim = Math.max(activeImage.width, activeImage.height);
-			minScale = shortestDeviceDim / (mapDim || 2000);
+			minScale = calculatedMinScale;
 			if (scale < minScale) scale = minScale;
 			keepInBounds();
 		}
@@ -2012,7 +2017,7 @@
                 
                 // markerX = (e.clientX - offsetX) / scale;
                 // markerY = (e.clientY - offsetY) / scale;
-                markerX = null;
+            	markerX = null;
                 markerY = null;
                 document.getElementById('coordLabel').style.display = 'none';
             } 
