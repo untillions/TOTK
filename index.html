@@ -16,7 +16,7 @@
             margin: 0;
             padding: 0;
             width: 100vw;
-            height: 100dvh;
+            height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0b0f19;
             color: #e2e8f0;
@@ -39,7 +39,7 @@
 			position: fixed;
 			top: 0; left: 0; right: 0; bottom: 0;
 			width: 100vw;
-			height: 100dvh; /* Changed from vh */
+			height: 100vh; /* Changed from vh */
 			object-fit: cover;
 			object-position: 0% 50%;
 			z-index: 1;
@@ -245,14 +245,14 @@
 			display: none;
 			position: relative;
 			width: 100vw;
-			height: 100dvh;
+			height: 100vh;
 		}
 		canvas {
 			display: block;
 			position: absolute;
 			top: 0; left: 0;
 			width: 100vw;
-			height: 100dvh;
+			height: 100vh;
 			cursor: grab;
 		}
         canvas:active { cursor: grabbing; }
@@ -260,21 +260,21 @@
         /* --- BOTTOM PANEL --- */
         #bottomLeftPanel {
 			position: fixed;
-			bottom: calc(25px + env(safe-area-inset-bottom));
-			left: calc(15px + env(safe-area-inset-left));
+			bottom: 25px;
+			left: 25px;
 			z-index: 10;
 		}
 		
 		#bottomRightPanel {
 			position: fixed;
-			bottom: calc(25px + env(safe-area-inset-bottom));
-			right: calc(15px + env(safe-area-inset-right));
+			bottom: 25px;
+			right: 25px;
 			z-index: 10;
 		}
 		
 		#regionTitlePanel {
 			position: fixed;
-			bottom: calc(25px + env(safe-area-inset-bottom));
+			bottom: 25px;
 			left: 50%;
 			transform: translateX(-50%);
 			z-index: 10;
@@ -789,7 +789,7 @@
 			</div>
 		</div>
 		<div class="dashboard-footer staggered-item" style="--delay: 5;">
-			Icons by <em>NOT ME</em> on <a href="https://www.flaticon.com/authors/freepik" title="Flaticon">Flaticon</a><br>
+			Icons by <em>ME</em> on <a href="https://www.flaticon.com/authors/freepik" title="Flaticon">Flaticon</a><br>
 			Hylia Serif Font from <a href="https://www.fontbolt.com/font/zelda-font/" title="Font Bolt">Font Bolt</a>
 		</div>
 	</div>
