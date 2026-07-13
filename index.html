@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <title>TOTK Companion</title>
     
     <link rel="apple-touch-icon" href="icons/main-icon.png">
@@ -36,8 +39,10 @@
 			position: fixed;
 			top: 0;
 			left: 0;
-			width: 100%;
-			height: 100%;
+			right: 0;
+			bottom: 0;
+			width: 100vw;
+			height: 100vh;
 			object-fit: cover;
 			object-position: 0% 50%;
 			z-index: 1;
@@ -241,8 +246,8 @@
         #mapViewer {
             display: none;
             position: relative;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
         }
         canvas {
             display: block;
@@ -782,7 +787,7 @@
 			</div>
 		</div>
 		<div class="dashboard-footer staggered-item" style="--delay: 5;">
-			Icons by <em>Freepik</em> on <a href="https://www.flaticon.com/authors/freepik" title="Flaticon">Flaticon</a><br>
+			Icons by <em>ME</em> on <a href="https://www.flaticon.com/authors/freepik" title="Flaticon">Flaticon</a><br>
 			Hylia Serif Font from <a href="https://www.fontbolt.com/font/zelda-font/" title="Font Bolt">Font Bolt</a>
 		</div>
 	</div>
@@ -972,6 +977,7 @@
         "Treasure": "Treasures", "Schematic": "Schematics", "Forge Construct": "Forge Constructs"        
     };
     const cycleLandmarks = Object.keys(loaderPlurals);
+    let lastLandmarkType = null;
 
     function startCycleAnimation(containerId, usePlural = false) {
         const container = document.getElementById(containerId);
@@ -1015,7 +1021,14 @@
     }
 
     function createCycleItem(usePlural) {
-        const type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
+    	let type = null;
+		do {
+            type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
+        } while (type === lastLandmarkType && cycleLandmarks.length > 1);
+
+        // Update the tracker
+        lastLandmarkType = type;
+        // const type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
         const color = landmarkColors[type] || landmarkColors["default"];
         
         const displayName = usePlural ? loaderPlurals[type] : type;
@@ -1360,7 +1373,6 @@
         const formattedId = currentRegion.id.toString().padStart(2, '0');
         const srcPath = `images/region${formattedId}${currentLayer}.png`;
         activeImage = new Image();
-        activeImage.src = srcPath;
         activeImage.onload = () => {
             document.getElementById('loader').style.display = 'none'; 
             clearInterval(loaderInterval);
@@ -1376,6 +1388,8 @@
             clearInterval(loaderInterval);
             redraw(); 
         };
+        
+		activeImage.src = srcPath;
     }
 
     function exitToDashboard() {
