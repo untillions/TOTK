@@ -896,15 +896,18 @@
         "Tower", "Shrine", "Cave", "Chasm", "Cherry Tree", "Dispenser", "Great Fairy",
         "Hudson Sign", "Named Location", "Old Map", "Village", "Stable", "Well",
         "Lightroot", "Treasure", "Schematic", "Forge Construct", "Dragon Tear",
-        "Ancient Tablet"
+        "Ancient Tablet", "Goddess Statue", "Bargainer Statue"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
+        "Well": "#86a3e6",
         "Forge Construct": "#86a3e6",
         "Shrine": "#7cc9c2",
+		"Goddess Statue": "#7cc9c2",
+		"Bargainer Statue": "#7cc9c2",
         "Lightroot": "#7cc9c2",
         "Cave": "#a784e5",
-        "Well": "#a784e5",
+		"Great Fairy": "#a784e5",
         "Chasm": "#de878b",
         "Cherry Tree": "#de878b",
 		"Ancient Tablet": "#de878b",
@@ -944,16 +947,16 @@
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine", "Village", "Well"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Named Location": "Named Locations" },
+            defaults: ["Tower", "Shrine", "Village", "Great Fairy"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge Construct": "Forge Constructs", "Ancient Tablet": "Ancient Tablets" },
-            defaults: ["Shrine", "Ancient Tablet" ]
+            options: { "Shrine": "Shrines", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge Construct": "Forge Constructs", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues" },
+            defaults: ["Shrine", "Ancient Tablet"]
         },
         depths: {
-            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Forge Construct": "Forge Constructs" },
-            defaults: ["Lightroot", "Forge Construct"]
+            options: { "Lightroot": "Lightroots", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Forge Construct": "Forge Constructs", "Statue": "Statues" },
+            defaults: ["Lightroot", "Forge Construct", "Bargainer Statue"]
         }
     };
     
@@ -968,18 +971,18 @@
         },
         {
             name: "Destinations",
-            items: ["Named Location", "Chasm", "Dispenser", "Forge Construct", "Cherry Tree"]
+            items: ["Named Location", "Chasm", "Goddess Statue", "Bargainer Statue", "Great Fairy", "Dispenser", "Forge Construct", "Cherry Tree"]
         }
     ];
     
     let dashInterval, loaderInterval;
     const loaderPlurals = {
-        "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Chasm": "Chasms",
-        "Cherry Tree": "Cherry Trees", "Dispenser": "Dispensers",
+        "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Bargainer Statue": "Bargainer Statues",
+        "Cherry Tree": "Cherry Trees", "Dispenser": "Dispensers", "Goddess Statue": "Goddess Statues", 
         "Hudson Sign": "Hudson Signs", "Old Map": "Old Maps", "Dragon Tear": "Dragon Tears",
         "Village": "Villages", "Stable": "Stables", "Well": "Wells", "Lightroot": "Lightroots",
         "Treasure": "Treasures", "Schematic": "Schematics", "Forge Construct": "Forge Constructs",
-        "Ancient Tablet": "Ancient Tablets"        
+        "Ancient Tablet": "Ancient Tablets", "Great Fairy": "Great Fairies", "Chasm": "Chasms",
     };
     const cycleLandmarks = Object.keys(loaderPlurals);
     let lastLandmarkType = null;
@@ -2015,11 +2018,11 @@
                 
                 // To add back the click to view coordinates functionality, just switch the commented lines below:
                 
-                // markerX = (e.clientX - offsetX) / scale;
-                // markerY = (e.clientY - offsetY) / scale;
-            	markerX = null;
-                markerY = null;
-                document.getElementById('coordLabel').style.display = 'none';
+                markerX = (e.clientX - offsetX) / scale;
+                markerY = (e.clientY - offsetY) / scale;
+            	// markerX = null;
+                // markerY = null;
+                // document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
         }
