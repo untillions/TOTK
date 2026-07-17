@@ -903,12 +903,13 @@
         "Hudson Sign", "Named Location", "Old Map", "Village", "Stable", "Well",
         "Lightroot", "Treasure", "Schematic", "Forge & Refinery", "Dragon Tear",
         "Ancient Tablet", "Goddess Statue", "Bargainer Statue", "Temple", "Shop",
-        "Armor Shop", "General Shop", "Other Shop"
+        "Armor Shop", "General Shop", "Other Shop", "Inn", "Sage's Will"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
         "Well": "#86a3e6",
         "Forge & Refinery": "#86a3e6",
+        "Sage's Will": "#86a3e6",
         "Shrine": "#7cc9c2",
 		"Goddess Statue": "#7cc9c2",
 		"Bargainer Statue": "#7cc9c2",
@@ -927,9 +928,11 @@
         "Old Map": "#dd88d3",
         "Treasure": "#c6a96a",
         "Schematic": "#dd87d3",
+        "Shop": "#dd87d3",
         "Armor Shop": "#dd87d3",
         "General Shop": "#dd87d3",
         "Other Shop": "#dd87d3",
+        "Inn": "#dd87d3",
         "default": "#facc15"
     };
     
@@ -958,11 +961,11 @@
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine", "Village", "Shop"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Named Location": "Named Locations" },
+            defaults: ["Tower", "Shrine", "Village", "Shop", "Inn"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues" },
+            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills" },
             defaults: ["Shrine", "Temple"]
         },
         depths: {
@@ -978,11 +981,11 @@
         },
         {
             name: "Collectables",
-            items: ["Cave", "Well", "Dragon Tear", "Hudson Sign", "Old Map", "Ancient Tablet", "Treasure", "Schematic"]
+            items: ["Cave", "Well", "Dragon Tear", "Hudson Sign", "Old Map", "Ancient Tablet", "Sage's Will", "Treasure", "Schematic"]
         },
         {
             name: "Destinations",
-            items: ["Named Location", "Temple", "Chasm", "Shop", "Goddess Statue", "Bargainer Statue", "Great Fairy", "Dispenser", "Forge & Refinery", "Cherry Tree"]
+            items: ["Named Location", "Temple", "Chasm", "Shop", "Inn", "Goddess Statue", "Bargainer Statue", "Great Fairy", "Dispenser", "Forge & Refinery", "Cherry Tree"]
         }
     ];
     
@@ -994,7 +997,7 @@
         "Village": "Villages", "Stable": "Stables", "Well": "Wells", "Lightroot": "Lightroots",
         "Treasure": "Treasures", "Schematic": "Schematics", "Forge & Refinery": "Forges & Refineries",
         "Ancient Tablet": "Ancient Tablets", "Great Fairy": "Great Fairies", "Chasm": "Chasms",
-        "Temple": "Temples", "Shop": "Shops"
+        "Temple": "Temples", "Shop": "Shops", "Inn": "Inns", "Sage's Will": "Sage's Wills"
     };
     const cycleLandmarks = Object.keys(loaderPlurals);
     let lastLandmarkType = null;
@@ -1823,9 +1826,9 @@
 			if (selectedLandmark.details) {
 				if (["Dispenser", "Armor Shop", "General Shop"].includes(selectedLandmark.landmark)) {
 					
-					let folder = "zonai";
-					if (selectedLandmark.landmark === "Armor Shop") folder = "armor";
-					else if (selectedLandmark.landmark === "General Shop") folder = "items";
+					let folder = "items";
+					if (selectedLandmark.landmark === "Dispenser") folder = "zonai";
+					else if (selectedLandmark.landmark === "Armor Shop") folder = "armor";
 			
 					const items = selectedLandmark.details.split(',').map(item => item.trim());
 					
