@@ -380,7 +380,7 @@
 			font-family: monospace;
 			font-size: 0.85rem;
 			line-height: 1.4;
-			pointer-events: none; 
+			pointer-events: auto; 
 			display: none; 
 			max-width: 220px;
 			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
@@ -516,7 +516,7 @@
             flex-direction: column;
             align-items: flex-start;
             z-index: 10;
-            box-shadow: none; /* Removed from panel, applied to menu */
+            box-shadow: none;
         }
         #layerMenu {
             display: none;
@@ -700,6 +700,70 @@
 			border-bottom: none;
 		}
         
+        /* --- PROGRESS MENU --- */
+		#progressMenu {
+			display: none;
+			position: absolute;
+			bottom: 50px;
+			right: 0;
+			background: rgba(15, 23, 42, 0.95);
+			border: 1px solid #334155;
+			border-radius: 8px;
+			padding: 12px;
+			box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+			flex-direction: column;
+			gap: 5px;
+			width: 250px;
+			max-height: calc(100vh - 180px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+			overflow-y: auto;
+			z-index: 10;
+		}
+		.progress-item {
+			display: flex;
+			flex-direction: column;
+			gap: 1px;
+		}
+		.progress-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			font-size: 0.9rem;
+			color: #e2e8f0;
+			font-weight: 600;
+		}
+		.progress-title {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+		.progress-icon {
+			width: 22px;
+			height: 22px;
+			filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+		}
+		.progress-fraction {
+			color: #94a3b8;
+			font-size: 0.85rem;
+		}
+		.progress-bar-container {
+			width: 100%;
+			height: 12px;
+			background: #cbd5e1; /* Light gray default background */
+			border-radius: 6px;
+			overflow: hidden;
+			position: relative;
+			box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+		}
+		.progress-bar-fill {
+			height: 100%;
+			border-radius: 6px;
+			transition: width 0.3s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+		}
+
         /* --- FONTS --- */
         @font-face {
             font-family: 'HyliaSerif';
@@ -836,9 +900,10 @@
 		<div id="regionMenu"></div>
 		
 		<div id="bottomRightPanel">
-			<button class="layer-btn" id="progressBtn">
+			<button class="layer-btn" id="progressBtn" onclick="toggleProgressMenu()">
 				<img src="icons/progress.png" alt="Progress" style="width: 30px; height: 30px;">
 			</button>
+			<div id="progressMenu"></div>
 		</div>
 	</div>
 
@@ -903,7 +968,8 @@
         "Hudson Sign", "Named Location", "Old Map", "Village", "Stable", "Well",
         "Lightroot", "Treasure", "Schematic", "Forge & Refinery", "Dragon Tear",
         "Ancient Tablet", "Goddess Statue", "Bargainer Statue", "Temple", "Shop",
-        "Armor Shop", "General Shop", "Other Shop", "Inn", "Sage's Will"
+        "Armor Shop", "General Shop", "Other Shop", "Inn", "Sage's Will", 
+        "Named Location"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
@@ -925,6 +991,7 @@
         "Village": "#c6a96a",
         "Stable": "#c6a96a",
         "Temple": "#c6a96a",
+        "Named Location": "#c6a96a",
         "Old Map": "#dd88d3",
         "Treasure": "#c6a96a",
         "Schematic": "#dd87d3",
@@ -962,15 +1029,15 @@
 	const FILTER_CONFIG = {
         surface: {
             options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine", "Village", "Shop", "Inn"]
+            defaults: ["Tower", "Shrine", "Village", "Named Location"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills" },
-            defaults: ["Shrine", "Temple"]
+            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Named Location": "Named Locations" },
+            defaults: ["Shrine", "Temple", "Named Location"]
         },
         depths: {
-            options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues" },
-            defaults: ["Lightroot", "Forge Construct", "Temple"]
+            options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Named Location": "Named Locations" },
+            defaults: ["Lightroot", "Forge Construct", "Temple", "Named Location"]
         }
     };
     
@@ -985,7 +1052,11 @@
         },
         {
             name: "Destinations",
-            items: ["Named Location", "Temple", "Chasm", "Shop", "Inn", "Goddess Statue", "Bargainer Statue", "Great Fairy", "Dispenser", "Forge & Refinery", "Cherry Tree"]
+            items: ["Temple", "Chasm", "Shop", "Inn", "Goddess Statue", "Bargainer Statue", "Great Fairy", "Dispenser", "Forge & Refinery", "Cherry Tree"]
+        },
+        {
+			name: "Completionist",
+            items: ["Named Location", "Korok"]
         }
     ];
     
@@ -997,10 +1068,49 @@
         "Village": "Villages", "Stable": "Stables", "Well": "Wells", "Lightroot": "Lightroots",
         "Treasure": "Treasures", "Schematic": "Schematics", "Forge & Refinery": "Forges & Refineries",
         "Ancient Tablet": "Ancient Tablets", "Great Fairy": "Great Fairies", "Chasm": "Chasms",
-        "Temple": "Temples", "Shop": "Shops", "Inn": "Inns", "Sage's Will": "Sage's Wills"
+        "Temple": "Temples", "Shop": "Shops", "Inn": "Inns", "Sage's Will": "Sage's Wills",
+        "Named Location": "Named Locations"
     };
     const cycleLandmarks = Object.keys(loaderPlurals);
     let lastLandmarkType = null;
+	const PROGRESS_STORAGE_KEY = "totk_companion_progress";
+
+	function loadProgress() {
+		const storedData = localStorage.getItem(PROGRESS_STORAGE_KEY);
+		
+		if (storedData) {
+			try {
+				return JSON.parse(storedData);
+			} catch (error) {
+				console.error("Failed to parse local save data. Starting fresh.", error);
+				return {};
+			}
+		}
+		return {};
+	}
+
+	function saveProgress(landmarkId, isFound) {
+		const currentProgress = loadProgress();
+		
+		if (isFound) {
+			currentProgress[landmarkId] = true;
+		} else {
+			delete currentProgress[landmarkId];
+		}
+		
+		localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(currentProgress));
+	}
+
+	function handleLandmarkToggle(landmarkId, checkboxElement) {
+		const isFound = checkboxElement.checked;
+		
+		saveProgress(landmarkId, isFound);
+		redraw(); 
+	
+		if (document.getElementById('progressMenu').style.display === 'flex') {
+			buildProgressMenu();
+		}
+	}
 
     function startCycleAnimation(containerId, usePlural = false) {
         const container = document.getElementById(containerId);
@@ -1082,6 +1192,7 @@
 		document.getElementById('layerMenu').style.display = 'none';
 		document.getElementById('regionMenu').style.display = 'none';
 		document.getElementById('autocompleteResults').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
 		clearActivePanels();
 		
 		if (isOpening) {
@@ -1100,6 +1211,7 @@
 		document.getElementById('filterMenu').style.display = 'none';
 		document.getElementById('regionMenu').style.display = 'none';
 		document.getElementById('autocompleteResults').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
 		clearActivePanels();
 		
 		if (isOpening) {
@@ -1118,6 +1230,7 @@
 		document.getElementById('layerMenu').style.display = 'none';
 		document.getElementById('filterMenu').style.display = 'none';
 		document.getElementById('autocompleteResults').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
 		clearActivePanels();
 		
 		if (isOpening) {
@@ -1132,6 +1245,7 @@
 		document.getElementById('layerBtn').classList.remove('active-panel');
 		document.getElementById('filterBtn').classList.remove('active-panel');
 		document.getElementById('regionTitlePanel').classList.remove('active-panel');
+		document.getElementById('progressBtn').classList.remove('active-panel');
 		document.getElementById('coordLabel').style.display = 'none';
 	}
 
@@ -1352,6 +1466,7 @@
         updateMapAsset();
 		document.getElementById('filterMenu').style.display = 'none';
 		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
 		clearActivePanels();
 		buildFilterMenu();
 		buildRegionMenu();
@@ -1525,6 +1640,7 @@
 		document.getElementById('layerMenu').style.display = 'none';
 		document.getElementById('filterMenu').style.display = 'none';
 		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
 		clearActivePanels();
 		
 		if (this.value.trim() !== '') {
@@ -1673,46 +1789,24 @@
         ctx.drawImage(activeImage, 0, 0);
         ctx.restore(); 
         
-        // --- DRAW MAP LABELS ---
-        const visibleLabels = mapLabels.filter(label => 
-            [].concat(label.region).includes(currentRegion.id) && 
-            label.level.toLowerCase() === currentLayer
-        );
+        const progressData = loadProgress();
         
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#b9a66a'; 
-        ctx.strokeStyle = 'rgba(59, 52, 28, 1)';
-        
-        const minSizeMap = { "S": 10, "M": 12, "L": 14 };
-        const maxSizeMap = { "S": 20, "M": 24, "L": 28 };
-        
-        let zoomFactor = 0;
+        // --- NEW: CALCULATE CURRENT ZOOM LEVEL (CUSTOM THRESHOLDS) ---
+        let currentZoomLevel = 1;
         if (maxScale > minScale) {
-            zoomFactor = (scale - minScale) / (maxScale - minScale);
-            zoomFactor = Math.max(0, Math.min(1, zoomFactor));
+            const zoomFactor = Math.max(0, Math.min(1, (scale - minScale) / (maxScale - minScale)));
+            
+            // Tweak these decimals to fine-tune your zoom distribution
+            if (zoomFactor <= 0.02) {
+                currentZoomLevel = 1;
+            } else if (zoomFactor <= 0.15) {
+                currentZoomLevel = 2;
+            } else if (zoomFactor <= 0.35) {
+                currentZoomLevel = 3;
+            } else {
+                currentZoomLevel = 4;
+            }
         }
-        
-        for (let label of visibleLabels) {
-            const sizeKey = label.size?.toUpperCase() || "M";
-            
-            const minSize = minSizeMap[sizeKey];
-            const maxSize = maxSizeMap[sizeKey];
-            
-            const dynamicFontSize = minSize + (zoomFactor * (maxSize - minSize));
-            
-            ctx.font = `${dynamicFontSize}px "Segoe UI", sans-serif`; 
-            ctx.lineWidth = Math.max(1, dynamicFontSize * 0.25);
-            
-            const imgX = (label.x - currentRegion.gameStartX) * 1.5;
-			const imgY = (currentRegion.gameStartY - label.y) * 1.5;
-            const screenX = Math.round((imgX * scale) + offsetX);
-			const screenY = Math.round((imgY * scale) + offsetY);
-		
-			ctx.strokeText(label.text, screenX, screenY);
-			ctx.fillText(label.text, screenX, screenY);
-        }
-        
-        ctx.shadowColor = 'transparent';
         
         // --- DRAW LANDMARKS ---
         const visibleLandmarks = landmarks.filter(lm => {
@@ -1730,29 +1824,70 @@
             const screenY = (lmImgY * scale) + offsetY;
             
             const icon = icons[lm.landmark];
+
+            // Generate unique ID and check if it has been found
+            const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+            const isFound = progressData[lmId] || false;
             
             ctx.shadowColor = 'rgba(0, 0, 0, 1)';
 			ctx.shadowBlur = 3;
 			ctx.shadowOffsetX = 2;
 			ctx.shadowOffsetY = 2;
+
+            // Make icon 50% transparent if found
+            if (isFound) {
+                ctx.globalAlpha = 0.65;
+            } else {
+                ctx.globalAlpha = 1.0;
+            }
 			
             if (icon && icon.complete && icon.naturalWidth !== 0) {
-                // Determine scale factor to fit inside a 30x30 bounding box
                 const maxDim = Math.max(icon.naturalWidth, icon.naturalHeight);
                 const scaleFactor = 30 / maxDim;
                 
                 const drawW = icon.naturalWidth * scaleFactor;
                 const drawH = icon.naturalHeight * scaleFactor;
                 
-                // Draw centered on the screen coordinate
                 ctx.drawImage(icon, screenX - (drawW / 2), screenY - (drawH / 2), drawW, drawH);
             } else {
-                // Fallback blue dot if the specific icon image fails to load
                 ctx.beginPath();
                 ctx.arc(screenX, screenY, 8, 0, 2*Math.PI);
                 ctx.fillStyle = '#3b82f6';
                 ctx.fill();
             }
+
+            // --- UPDATED: Draw Fully Visible Text for Found "Named Location" landmarks ---
+            if (lm.landmark === "Named Location" && isFound) {
+                
+                // Safely handle missing zooms, single integers, or arrays
+                let validZoomLevels = [1, 2, 3, 4];
+                if (lm.zoom !== undefined) {
+                    validZoomLevels = Array.isArray(lm.zoom) ? lm.zoom : [lm.zoom];
+                }
+                
+                if (validZoomLevels.includes(currentZoomLevel)) {
+                    ctx.globalAlpha = 1.0; // Ensure text is fully visible
+                    ctx.shadowColor = 'transparent'; 
+                    
+                    const sizeKey = lm.size?.toUpperCase() || "M";
+                    
+                    // Define standard static pixel sizes based on the S, M, L property
+                    const fixedSizeMap = { "S": 12, "M": 15, "L": 18 };
+                    const fixedFontSize = fixedSizeMap[sizeKey];
+                    
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = '#b9a66a'; 
+                    ctx.strokeStyle = 'rgba(59, 52, 28, 1)';
+                    ctx.font = `${fixedFontSize}px "Segoe UI", sans-serif`; 
+                    ctx.lineWidth = Math.max(1, fixedFontSize * 0.25);
+                    
+                    ctx.strokeText(lm.name, screenX, screenY);
+                    ctx.fillText(lm.name, screenX, screenY);
+                }
+            }
+
+            // Reset opacity for the next iteration
+            ctx.globalAlpha = 1.0;
         }
         
         ctx.shadowColor = 'transparent';
@@ -1850,6 +1985,10 @@
             // Format the icon filename
             const fileName = selectedLandmark.landmark.toLowerCase().replace(/\s+/g, '-');
             
+            // Check status of the currently selected landmark
+            const lmId = `${selectedLandmark.landmark}_${selectedLandmark.x}_${selectedLandmark.y}`;
+            const isFound = progressData[lmId] || false;
+            
             coordLabel.innerHTML = `
                 <div class="tooltip-header">
                     <img src="icons/${fileName}.png" style="height: 2.8em; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
@@ -1860,6 +1999,13 @@
                 </div>
                 <span class="game-coords">(${formatCoord(selectedLandmark.x)}, ${formatCoord(selectedLandmark.y)}, ${formatCoord(selectedLandmark.z)})</span>
                 ${detailHtml}
+                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 12px; gap: 8px;">
+                    <span style="font-size: 0.7rem; font-weight: bold; color: #e2e8f0;">Found?</span>
+                    <label class="switch" style="margin-left: 0;">
+                        <input type="checkbox" onchange="handleLandmarkToggle('${lmId}', this)" ${isFound ? 'checked' : ''}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
             `;
             coordLabel.style.display = 'block';
 
@@ -1909,6 +2055,168 @@
         redraw();
     }
 
+    // --- PROGRESS MENU LOGIC ---	
+	function toggleProgressMenu() {
+		const menu = document.getElementById('progressMenu');
+		const btn = document.getElementById('progressBtn');
+		const isOpening = menu.style.display !== 'flex';
+		
+		document.getElementById('layerMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('autocompleteResults').style.display = 'none';
+		clearActivePanels();
+		
+		if (isOpening) {
+			buildProgressMenu(); // Calculate stats before showing
+			menu.style.display = 'flex';
+			btn.classList.add('active-panel');
+		} else {
+			menu.style.display = 'none';
+		}
+	}
+	
+	function buildProgressMenu() {
+		const menu = document.getElementById('progressMenu');
+		menu.innerHTML = '';
+		
+		if (!currentRegion) return;
+		
+		const progressData = loadProgress();
+		
+		// Filter landmarks for the exact region and layer currently being viewed
+		const localLandmarks = landmarks.filter(lm => 
+			[].concat(lm.region).includes(currentRegion.id) &&
+			lm.level.toLowerCase() === currentLayer
+		);
+		
+		if (localLandmarks.length === 0) {
+			menu.innerHTML = '<div style="color: #94a3b8; text-align: center; font-size: 0.9rem; padding: 10px;">No landmarks in this area.</div>';
+			return;
+		}
+		
+		// Aggregate totals and found counts
+		const stats = {};
+		let overallTotal = 0;
+		let overallFound = 0;
+	
+		localLandmarks.forEach(lm => {
+			const type = lm.landmark;
+			if (!stats[type]) stats[type] = { total: 0, found: 0 };
+			
+			stats[type].total++;
+			overallTotal++;
+			
+			const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+			if (progressData[lmId]) {
+				stats[type].found++;
+				overallFound++;
+			}
+		});
+	
+		// --- 1. BUILD MASTER ROW ---
+		const overallPercentage = Math.round((overallFound / overallTotal) * 100) || 0;
+		const overallTextOpacity = overallPercentage > 12 ? '1' : '0';
+		const formattedLayer = currentLayer.charAt(0).toUpperCase() + currentLayer.slice(1); // Capitalizes the layer name
+		
+		const masterDiv = document.createElement('div');
+		masterDiv.className = 'progress-item';
+		masterDiv.innerHTML = `
+			<div class="progress-header">
+				<div class="progress-title" style="color: #4ade80; font-weight: bold; font-size: 0.9rem;">
+					<span>${formattedLayer} Progress</span>
+				</div>
+				<span class="progress-fraction" style="color: #4ade80;">${overallFound} / ${overallTotal}</span>
+			</div>
+			<div class="progress-bar-container" style="height: 16px;">
+				<div class="progress-bar-fill" style="width: ${overallPercentage}%; background-color: #4ade80;">
+					<span style="font-size: 0.7em; font-weight: bold; color: #0f172a; opacity: ${overallTextOpacity};">
+						${overallPercentage}%
+					</span>
+				</div>
+			</div>
+		`;
+		menu.appendChild(masterDiv);
+	
+		// Add a visual separator between the master row and categories
+		const separator = document.createElement('div');
+		separator.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
+		separator.style.margin = '6px 0 2px 0';
+		menu.appendChild(separator);
+		
+		// --- 2. BUILD CATEGORY HIERARCHY ---
+		FILTER_CATEGORIES.forEach(category => {
+			// Find which items in this category actually exist in the current region/layer
+			const categoryItems = category.items.filter(item => stats[item]);
+			
+			if (categoryItems.length > 0) {
+				
+				// Create Collapsible Category Container (reusing filter menu CSS)
+				const catDiv = document.createElement('div');
+				catDiv.className = 'filter-category'; 
+				
+				// Create Category Header
+				const headerDiv = document.createElement('div');
+				headerDiv.className = 'filter-category-header';
+				
+				const titleSpan = document.createElement('div');
+				titleSpan.className = 'filter-category-title';
+				titleSpan.innerHTML = `<span class="category-chevron">▼</span> ${category.name}`;
+				
+				// Add click listener to toggle collapse
+				titleSpan.onclick = () => {
+					catDiv.classList.toggle('category-collapsed');
+				};
+				
+				headerDiv.appendChild(titleSpan);
+				catDiv.appendChild(headerDiv);
+	
+				// Create Content Container for the items
+				const contentDiv = document.createElement('div');
+				contentDiv.className = 'filter-category-content';
+				
+				// Sort the available items alphabetically
+				categoryItems.sort();
+				
+				categoryItems.forEach(type => {
+					const stat = stats[type];
+					const percentage = Math.round((stat.found / stat.total) * 100) || 0;
+					
+					const color = landmarkColors[type] || landmarkColors["default"];
+					const fileName = type.toLowerCase().replace(/\s+/g, '-');
+					
+					const textOpacity = percentage > 12 ? '1' : '0';
+					
+					const itemDiv = document.createElement('div');
+					itemDiv.className = 'progress-item';
+					itemDiv.innerHTML = `
+						<div class="progress-header">
+							<div class="progress-title">
+								<img src="icons/${fileName}.png" class="progress-icon" alt="${type}">
+								<span>${type}</span>
+							</div>
+							<span class="progress-fraction" style="color: ${color};">${stat.found} / ${stat.total}</span>
+						</div>
+						<div class="progress-bar-container">
+							<div class="progress-bar-fill" style="width: ${percentage}%; background-color: ${color};">
+								<span style="font-size: 0.5em; font-weight: bold; color: #0f172a; opacity: ${textOpacity};">
+									${percentage}%
+								</span>
+							</div>
+						</div>
+					`;
+					
+					// Append items to the contentDiv, NOT the main menu
+					contentDiv.appendChild(itemDiv);
+				});
+	
+				// Append the filled content container to the category div, then to the menu
+				catDiv.appendChild(contentDiv);
+				menu.appendChild(catDiv);
+			}
+		});
+	}
+
 	// ------EVENT LISTENERS------
 	const video = document.getElementById('bgVideo');
 	const loader = document.getElementById('loader');
@@ -1931,7 +2239,7 @@
     window.addEventListener('wheel', (e) => {
 		if (!currentRegion) return;
 		
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu')) return;
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#progressMenu')) return;
 		
 		e.preventDefault();
 		zoomAround(e.deltaY < 0 ? 1.15 : 0.85, e.clientX, e.clientY);
@@ -1940,7 +2248,7 @@
     window.addEventListener('pointerdown', (e) => {
 		if (!currentRegion || e.clientY < 70) return; 
 		
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu')) return;
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#progressMenu') || e.target.closest('#coordLabel')) return;
 	
 		isDragging = true;
 		cancelAnimationFrame(panAnimId);
@@ -1963,7 +2271,7 @@
 
         if (e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#regionMenu') || 
         e.target.closest('#autocompleteResults') || e.target.closest('.ui-panel') || e.target.closest('.btn') || 
-        e.target.closest('.layer-btn')) {
+        e.target.closest('.layer-btn') || e.target.closest('#progressMenu') || e.target.closest('#coordLabel')) {
             isDragging = false;
             return;
         }
@@ -1971,6 +2279,7 @@
 		document.getElementById('layerMenu').style.display = 'none';
 		document.getElementById('filterMenu').style.display = 'none';
 		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
 		document.getElementById('autocompleteResults').style.display = 'none';
 		clearActivePanels();
 
@@ -2073,7 +2382,7 @@
     window.addEventListener('touchmove', (e) => {
 		if (!currentRegion) return;
 		
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu')) return;
+		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#progressMenu')) return;
 	
 		if (e.touches.length === 2) {
 			e.preventDefault();
