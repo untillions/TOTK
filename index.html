@@ -1029,15 +1029,15 @@
 	const FILTER_CONFIG = {
         surface: {
             options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Named Location": "Named Locations" },
-            defaults: ["Tower", "Shrine", "Village", "Named Location"]
+            defaults: ["Tower", "Shrine", "Village"]
         },
         sky: {
             options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Named Location": "Named Locations" },
-            defaults: ["Shrine", "Temple", "Named Location"]
+            defaults: ["Shrine", "Temple"]
         },
         depths: {
             options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Named Location": "Named Locations" },
-            defaults: ["Lightroot", "Forge Construct", "Temple", "Named Location"]
+            defaults: ["Lightroot", "Forge Construct", "Temple"]
         }
     };
     
@@ -1110,6 +1110,22 @@
 		if (document.getElementById('progressMenu').style.display === 'flex') {
 			buildProgressMenu();
 		}
+	}
+
+	function toggleAllLandmarksOfType(type, markAsFound) {
+		const localLandmarks = landmarks.filter(lm => 
+			lm.landmark === type &&
+			[].concat(lm.region).includes(currentRegion.id) &&
+			lm.level.toLowerCase() === currentLayer
+		);
+	
+		localLandmarks.forEach(lm => {
+			const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+			saveProgress(lmId, markAsFound);
+		});
+		
+		redraw();
+		buildProgressMenu(); 
 	}
 
     function startCycleAnimation(containerId, usePlural = false) {
@@ -2181,6 +2197,8 @@
 				categoryItems.forEach(type => {
 					const stat = stats[type];
 					const percentage = Math.round((stat.found / stat.total) * 100) || 0;
+					const isComplete = stat.found === stat.total;
+					const initialIcon = isComplete ? '✗' : '✓';
 					
 					const color = landmarkColors[type] || landmarkColors["default"];
 					const fileName = type.toLowerCase().replace(/\s+/g, '-');
@@ -2195,7 +2213,15 @@
 								<img src="icons/${fileName}.png" class="progress-icon" alt="${type}">
 								<span>${type}</span>
 							</div>
-							<span class="progress-fraction" style="color: ${color};">${stat.found} / ${stat.total}</span>
+							<div style="display: flex; align-items: center; gap: 8px;">
+								<span class="progress-fraction" style="color: ${color};">${stat.found} / ${stat.total}</span>
+								<button 
+									onclick="toggleAllLandmarksOfType('${type}', ${stat.found < stat.total})" 
+									title="${stat.found < stat.total ? 'Mark All Found' : 'Unmark All'}"
+									style="background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: ${color}; cursor: pointer; padding: 0 4px; font-weight: bold; line-height: 1;">
+									${initialIcon}
+								</button>
+							</div>
 						</div>
 						<div class="progress-bar-container">
 							<div class="progress-bar-fill" style="width: ${percentage}%; background-color: ${color};">
