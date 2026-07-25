@@ -959,7 +959,10 @@
     const FILTER_ALIASES = {
 		"Armor Shop": "Shop",
 		"General Shop": "Shop",
-		"Other Shop": "Shop"
+		"Other Shop": "Shop",
+		"Named Location": "Location",
+		"Unnamed Location": "Location",
+		"Special Location": "Location"
 	};
 
     const icons = {};
@@ -969,7 +972,7 @@
         "Lightroot", "Treasure", "Schematic", "Forge & Refinery", "Dragon Tear",
         "Ancient Tablet", "Goddess Statue", "Bargainer Statue", "Temple", "Shop",
         "Armor Shop", "General Shop", "Other Shop", "Inn", "Sage's Will", 
-        "Named Location"
+        "Location", "Named Location", "Unnamed Location", "Special Location"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
@@ -991,7 +994,10 @@
         "Village": "#c6a96a",
         "Stable": "#c6a96a",
         "Temple": "#c6a96a",
+        "Location": "#c6a96a",
         "Named Location": "#c6a96a",
+        "Unnamed Location": "#c6a96a",
+        "Special Location": "#c6a96a",
         "Old Map": "#dd88d3",
         "Treasure": "#c6a96a",
         "Schematic": "#dd87d3",
@@ -1028,15 +1034,15 @@
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Named Location": "Named Locations" },
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Location": "Locations" },
             defaults: ["Tower", "Shrine", "Village"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Named Location": "Named Locations" },
+            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Location": "Locations" },
             defaults: ["Shrine", "Temple"]
         },
         depths: {
-            options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Named Location": "Named Locations" },
+            options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Location": "Locations" },
             defaults: ["Lightroot", "Forge Construct", "Temple"]
         }
     };
@@ -1056,7 +1062,7 @@
         },
         {
 			name: "Completionist",
-            items: ["Named Location", "Korok"]
+            items: ["Location", "Korok"]
         }
     ];
     
@@ -1069,7 +1075,7 @@
         "Treasure": "Treasures", "Schematic": "Schematics", "Forge & Refinery": "Forges & Refineries",
         "Ancient Tablet": "Ancient Tablets", "Great Fairy": "Great Fairies", "Chasm": "Chasms",
         "Temple": "Temples", "Shop": "Shops", "Inn": "Inns", "Sage's Will": "Sage's Wills",
-        "Named Location": "Named Locations"
+        "Location": "Locations"
     };
     const cycleLandmarks = Object.keys(loaderPlurals);
     let lastLandmarkType = null;
@@ -1099,33 +1105,6 @@
 		}
 		
 		localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(currentProgress));
-	}
-
-	function handleLandmarkToggle(landmarkId, checkboxElement) {
-		const isFound = checkboxElement.checked;
-		
-		saveProgress(landmarkId, isFound);
-		redraw(); 
-	
-		if (document.getElementById('progressMenu').style.display === 'flex') {
-			buildProgressMenu();
-		}
-	}
-
-	function toggleAllLandmarksOfType(type, markAsFound) {
-		const localLandmarks = landmarks.filter(lm => 
-			lm.landmark === type &&
-			[].concat(lm.region).includes(currentRegion.id) &&
-			lm.level.toLowerCase() === currentLayer
-		);
-	
-		localLandmarks.forEach(lm => {
-			const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
-			saveProgress(lmId, markAsFound);
-		});
-		
-		redraw();
-		buildProgressMenu(); 
 	}
 
     function startCycleAnimation(containerId, usePlural = false) {
@@ -1193,31 +1172,6 @@
         `;
         return div;
     }
-    
-    let activeFiltersByLayer = {
-        surface: [...FILTER_CONFIG.surface.defaults],
-        sky: [...FILTER_CONFIG.sky.defaults],
-        depths: [...FILTER_CONFIG.depths.defaults]
-    };
-
-    function toggleFilterMenu() {
-		const menu = document.getElementById('filterMenu');
-		const btn = document.getElementById('filterBtn');
-		const isOpening = menu.style.display !== 'flex';
-		
-		document.getElementById('layerMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('autocompleteResults').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
-		
-		if (isOpening) {
-			menu.style.display = 'flex';
-			btn.classList.add('active-panel');
-		} else {
-			menu.style.display = 'none';
-		}
-	}
 	
 	function toggleLayerMenu() {
 		const menu = document.getElementById('layerMenu');
@@ -1238,25 +1192,6 @@
 		}
 	}
 	
-	function toggleRegionMenu() {
-		const menu = document.getElementById('regionMenu');
-		const btn = document.getElementById('regionTitlePanel');
-		const isOpening = menu.style.display !== 'flex';
-		
-		document.getElementById('layerMenu').style.display = 'none';
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('autocompleteResults').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
-		
-		if (isOpening) {
-			menu.style.display = 'flex';
-			btn.classList.add('active-panel');
-		} else {
-			menu.style.display = 'none';
-		}
-	}
-	
 	function clearActivePanels() {
 		document.getElementById('layerBtn').classList.remove('active-panel');
 		document.getElementById('filterBtn').classList.remove('active-panel');
@@ -1264,152 +1199,6 @@
 		document.getElementById('progressBtn').classList.remove('active-panel');
 		document.getElementById('coordLabel').style.display = 'none';
 	}
-
-    function buildFilterMenu() {
-        const menu = document.getElementById('filterMenu');
-        menu.innerHTML = '';
-        const config = FILTER_CONFIG[currentLayer];
-        let layerFilters = activeFiltersByLayer[currentLayer]; 
-        
-        // --- 1. Master Show All / Hide All Row ---
-        const masterRow = document.createElement('div');
-        masterRow.className = 'filter-master-row';
-
-        const showAllBtn = document.createElement('span');
-        showAllBtn.className = 'filter-master-btn show-all';
-        showAllBtn.innerText = 'SHOW ALL';
-        showAllBtn.onclick = () => {
-            activeFiltersByLayer[currentLayer] = Object.keys(config.options);
-            menu.querySelectorAll('.switch input').forEach(cb => cb.checked = true);
-            redraw();
-        };
-
-        const hideAllBtn = document.createElement('span');
-        hideAllBtn.className = 'filter-master-btn hide-all';
-        hideAllBtn.innerText = 'HIDE ALL';
-        hideAllBtn.onclick = () => {
-            activeFiltersByLayer[currentLayer] = [];
-            menu.querySelectorAll('.switch input').forEach(cb => cb.checked = false);
-            redraw();
-        };
-
-        masterRow.appendChild(showAllBtn);
-        masterRow.appendChild(hideAllBtn);
-        menu.appendChild(masterRow);
-
-        // --- 2. Build Category Hierarchies ---
-        FILTER_CATEGORIES.forEach(category => {
-            // Find items in this category that are available on the current layer
-            const availableItems = category.items.filter(item => config.options[item]);
-
-            if (availableItems.length === 0) return; // Skip if layer has none of these
-
-            const catDiv = document.createElement('div');
-            catDiv.className = 'filter-category'; // Expand by default
-
-            // Header (Title, Chevron, and Category Master Toggle)
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'filter-category-header';
-
-            const titleSpan = document.createElement('div');
-            titleSpan.className = 'filter-category-title';
-            titleSpan.innerHTML = `<span class="category-chevron">▼</span> ${category.name}`;
-            titleSpan.onclick = () => {
-                catDiv.classList.toggle('category-collapsed');
-            };
-
-            const switchDiv = document.createElement('label');
-            switchDiv.className = 'switch';
-            
-            const categoryCb = document.createElement('input');
-            categoryCb.type = 'checkbox';
-            // It is checked only if ALL available items in this category are active
-            categoryCb.checked = availableItems.every(item => layerFilters.includes(item));
-            
-            categoryCb.onchange = (e) => {
-                const isChecked = e.target.checked;
-                availableItems.forEach(item => {
-                    if (isChecked) {
-                        if (!activeFiltersByLayer[currentLayer].includes(item)) {
-                            activeFiltersByLayer[currentLayer].push(item);
-                        }
-                    } else {
-                        activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== item);
-                    }
-                });
-                
-                // Visually update all child checkboxes in this category
-                const childBoxes = catDiv.querySelectorAll('.filter-category-content input[type="checkbox"]');
-                childBoxes.forEach(box => box.checked = isChecked);
-                
-                redraw();
-            };
-            
-            const sliderSpan = document.createElement('span');
-            sliderSpan.className = 'slider';
-            switchDiv.appendChild(categoryCb);
-            switchDiv.appendChild(sliderSpan);
-
-            headerDiv.appendChild(titleSpan);
-            headerDiv.appendChild(switchDiv);
-            catDiv.appendChild(headerDiv);
-
-            // Item List Container
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'filter-category-content';
-
-            availableItems.forEach((type, index) => {
-                const labelText = config.options[type];
-                const label = document.createElement('label');
-                label.className = 'filter-label animated-item';
-                label.style.animationDelay = `${index * 0.03}s`; // Sped up the stagger slightly
-                
-                const iconImg = document.createElement('img');
-                const fileName = type.toLowerCase().replace(/\s+/g, '-');
-                iconImg.src = `icons/${fileName}.png`;
-                iconImg.className = 'filter-icon';
-                
-                const itemSwitch = document.createElement('div');
-                itemSwitch.className = 'switch';
-                
-                const itemCb = document.createElement('input');
-                itemCb.type = 'checkbox';
-                itemCb.value = type;
-                itemCb.checked = layerFilters.includes(type);
-                
-                itemCb.onchange = (e) => {
-                    if (e.target.checked) {
-                        if (!activeFiltersByLayer[currentLayer].includes(type)) {
-                            activeFiltersByLayer[currentLayer].push(type);
-                        }
-                    } else {
-                        activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== type);
-                    }
-                    
-                    // Update category master toggle state based on children
-                    const allChecked = availableItems.every(i => activeFiltersByLayer[currentLayer].includes(i));
-                    categoryCb.checked = allChecked;
-                    
-                    redraw();
-                };
-                
-                const itemSlider = document.createElement('span');
-                itemSlider.className = 'slider';
-                
-                itemSwitch.appendChild(itemCb);
-                itemSwitch.appendChild(itemSlider);
-                
-                label.appendChild(iconImg);
-                label.appendChild(document.createTextNode(labelText));
-                label.appendChild(itemSwitch);
-                
-                contentDiv.appendChild(label);
-            });
-
-            catDiv.appendChild(contentDiv);
-            menu.appendChild(catDiv);
-        });
-    }
 
     function formatCoord(val) {
         const sign = val < 0 ? '-' : '';
@@ -1554,6 +1343,8 @@
         
         if (!dashInterval) dashInterval = startCycleAnimation('dashboardDynamicContainer', false);
     }
+    
+    // ----------------------- MAP NAVIGATION & DRAWING -----------------------
 
     function resizeCanvas(resetZoom = false) {
 		if (!currentRegion) return;
@@ -1627,163 +1418,8 @@
 		if (h > window.innerHeight) offsetY = Math.min(0, Math.max(window.innerHeight - h, offsetY));
 		else offsetY = (window.innerHeight - h) / 2;
 	}
-    
-    // --- SEARCH & REGION MENU LOGIC ---	
-	function buildRegionMenu() {
-		const menu = document.getElementById('regionMenu');
-		menu.innerHTML = '';
-		
-		MENU_REGIONS.forEach(menuItem => {
-			const masterRegion = REGIONS.find(r => r.id === menuItem.id);
-			
-			const btn = document.createElement('button');
-			btn.className = 'region-menu-btn' + (currentRegion && currentRegion.id === menuItem.id ? ' active' : '');
-			btn.innerText = menuItem.name;
-			
-			btn.onclick = () => {
-				toggleRegionMenu();
-				loadRegion(masterRegion); 
-			};
-			
-			menu.appendChild(btn);
-		});
-	}
 	
-	const searchInput = document.getElementById('searchInput');
-	const autocompleteResults = document.getElementById('autocompleteResults');
-	
-	searchInput.addEventListener('focus', function() {
-		document.getElementById('layerMenu').style.display = 'none';
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
-		
-		if (this.value.trim() !== '') {
-			autocompleteResults.style.display = 'block';
-		}
-	});
-
-	searchInput.addEventListener('input', function() {
-		const val = this.value.toLowerCase().trim();
-		autocompleteResults.innerHTML = '';
-		if (!val) {
-			autocompleteResults.style.display = 'none';
-			return;
-		}
-	
-		const matches = landmarks.filter(lm => lm.name.toLowerCase().includes(val)).slice(0, 15);
-		if (matches.length === 0) {
-			autocompleteResults.style.display = 'none';
-			return;
-		}
-	
-		matches.forEach(lm => {
-			const item = document.createElement('div');
-			item.className = 'autocomplete-item';
-	
-			const lmColor = landmarkColors[lm.landmark] || landmarkColors["default"];
-			const fileName = lm.landmark.toLowerCase().replace(/\s+/g, '-');
-	
-			item.innerHTML = `
-				<img src="icons/${fileName}.png" style="height: 2em; width: auto; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));">
-				<div>
-					<span style="font-family: 'HyliaSerif', serif; color: ${lmColor}; font-size: 1.05rem; letter-spacing: 0.5px;">${lm.name}</span>
-					<span style="color:#94a3b8; font-weight:bold; font-size: 0.8rem; margin-left: 8px;">${lm.type}</span>
-				</div>
-			`;
-	
-			item.onclick = () => {
-				searchInput.value = '';
-				autocompleteResults.style.display = 'none';
-				navigateToLandmark(lm);
-			};
-	
-			autocompleteResults.appendChild(item);
-		});
-		autocompleteResults.style.display = 'block';
-	});
-	
-	function navigateToLandmark(lm) {
-		const regionArray = [].concat(lm.region);
-		const targetRegionId = regionArray.includes(0) ? 0 : regionArray[0];
-		
-		const region = REGIONS.find(r => r.id === targetRegionId);
-		if (!region) return;
-	
-		const needsLoad = (!currentRegion || currentRegion.id !== region.id || currentLayer !== lm.level.toLowerCase());
-		
-		if (needsLoad) {
-			document.getElementById('coordLabel').style.display = 'none';
-			
-			currentRegion = region;
-			currentLayer = lm.level.toLowerCase();
-			
-			const layerBtn = document.getElementById('layerBtn');
-			if (currentRegion.id === 0) {
-				layerBtn.style.opacity = '0.5';
-				layerBtn.style.pointerEvents = 'none';
-			} else {
-				layerBtn.style.opacity = '1';
-				layerBtn.style.pointerEvents = 'auto';
-			}
-			
-			document.getElementById('regionTitle').innerText = region.name;
-			document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
-			updateLayerUI();
-			
-			document.getElementById('filterMenu').style.display = 'none';
-			buildFilterMenu();
-			buildRegionMenu();
-			
-			document.getElementById('dashboard').style.display = 'none';
-			document.getElementById('mapViewer').style.display = 'block';
-	
-			document.getElementById('loader').style.display = 'flex';
-			const formattedId = currentRegion.id.toString().padStart(2, '0');
-			activeImage = new Image();
-			activeImage.src = `images/region${formattedId}${currentLayer}.png`;
-			activeImage.onload = () => {
-				document.getElementById('loader').style.display = 'none';
-				resizeCanvas(true);
-				executeZoomAndPan(lm);
-			};
-			activeImage.onerror = () => { 
-				document.getElementById('loader').style.display = 'none'; 
-				redraw(); 
-			};
-		} else {
-			executeZoomAndPan(lm);
-		}
-	}
-	
-	function executeZoomAndPan(lm) {
-		const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
-    
-		// Ensure the filter is checked so the landmark is visible
-		if (!activeFiltersByLayer[currentLayer].includes(filterKey)) {
-			activeFiltersByLayer[currentLayer].push(filterKey);
-			const cb = document.querySelector(`#filterMenu input[value="${filterKey}"]`);
-			if (cb) cb.checked = true;
-		}
-	
-		scale = maxScale * 0.2; // Zoom in
-		selectedLandmark = lm;
-		markerX = null;
-		markerY = null;
-		
-		const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
-		const lmImgY = (currentRegion.gameStartY - lm.y) * 1.5;
-	
-		const tooltipShift = window.innerWidth < 600 ? 120 : 150; 
-		
-		const targetOffsetX = (window.innerWidth / 2) - tooltipShift - (lmImgX * scale);
-		const targetOffsetY = (window.innerHeight / 2) - (lmImgY * scale);
-	
-		smoothPanTo(targetOffsetX, targetOffsetY);
-	}
-
-    function redraw() {
+	function redraw() {
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     
 		if (!activeImage.complete || activeImage.naturalWidth === 0) {
@@ -2070,8 +1706,359 @@
         keepInBounds();
         redraw();
     }
+    
+    // ----------------------- SEARCH MENU LOGIC -----------------------
+	
+	const searchInput = document.getElementById('searchInput');
+	const autocompleteResults = document.getElementById('autocompleteResults');
+	
+	searchInput.addEventListener('focus', function() {
+		document.getElementById('layerMenu').style.display = 'none';
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
+		clearActivePanels();
+		
+		if (this.value.trim() !== '') {
+			autocompleteResults.style.display = 'block';
+		}
+	});
 
-    // --- PROGRESS MENU LOGIC ---	
+	searchInput.addEventListener('input', function() {
+		const val = this.value.toLowerCase().trim();
+		autocompleteResults.innerHTML = '';
+		if (!val) {
+			autocompleteResults.style.display = 'none';
+			return;
+		}
+	
+		const matches = landmarks.filter(lm => lm.name.toLowerCase().includes(val)).slice(0, 15);
+		if (matches.length === 0) {
+			autocompleteResults.style.display = 'none';
+			return;
+		}
+	
+		matches.forEach(lm => {
+			const item = document.createElement('div');
+			item.className = 'autocomplete-item';
+	
+			const lmColor = landmarkColors[lm.landmark] || landmarkColors["default"];
+			const fileName = lm.landmark.toLowerCase().replace(/\s+/g, '-');
+	
+			item.innerHTML = `
+				<img src="icons/${fileName}.png" style="height: 2em; width: auto; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));">
+				<div>
+					<span style="font-family: 'HyliaSerif', serif; color: ${lmColor}; font-size: 1.05rem; letter-spacing: 0.5px;">${lm.name}</span>
+					<span style="color:#94a3b8; font-weight:bold; font-size: 0.8rem; margin-left: 8px;">${lm.type}</span>
+				</div>
+			`;
+	
+			item.onclick = () => {
+				searchInput.value = '';
+				autocompleteResults.style.display = 'none';
+				navigateToLandmark(lm);
+			};
+	
+			autocompleteResults.appendChild(item);
+		});
+		autocompleteResults.style.display = 'block';
+	});
+	
+	function navigateToLandmark(lm) {
+		const regionArray = [].concat(lm.region);
+		const targetRegionId = regionArray.includes(0) ? 0 : regionArray[0];
+		
+		const region = REGIONS.find(r => r.id === targetRegionId);
+		if (!region) return;
+	
+		const needsLoad = (!currentRegion || currentRegion.id !== region.id || currentLayer !== lm.level.toLowerCase());
+		
+		if (needsLoad) {
+			document.getElementById('coordLabel').style.display = 'none';
+			
+			currentRegion = region;
+			currentLayer = lm.level.toLowerCase();
+			
+			const layerBtn = document.getElementById('layerBtn');
+			if (currentRegion.id === 0) {
+				layerBtn.style.opacity = '0.5';
+				layerBtn.style.pointerEvents = 'none';
+			} else {
+				layerBtn.style.opacity = '1';
+				layerBtn.style.pointerEvents = 'auto';
+			}
+			
+			document.getElementById('regionTitle').innerText = region.name;
+			document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
+			updateLayerUI();
+			
+			document.getElementById('filterMenu').style.display = 'none';
+			buildFilterMenu();
+			buildRegionMenu();
+			
+			document.getElementById('dashboard').style.display = 'none';
+			document.getElementById('mapViewer').style.display = 'block';
+	
+			document.getElementById('loader').style.display = 'flex';
+			const formattedId = currentRegion.id.toString().padStart(2, '0');
+			activeImage = new Image();
+			activeImage.src = `images/region${formattedId}${currentLayer}.png`;
+			activeImage.onload = () => {
+				document.getElementById('loader').style.display = 'none';
+				resizeCanvas(true);
+				executeZoomAndPan(lm);
+			};
+			activeImage.onerror = () => { 
+				document.getElementById('loader').style.display = 'none'; 
+				redraw(); 
+			};
+		} else {
+			executeZoomAndPan(lm);
+		}
+	}
+	
+	function executeZoomAndPan(lm) {
+		const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
+    
+		// Ensure the filter is checked so the landmark is visible
+		if (!activeFiltersByLayer[currentLayer].includes(filterKey)) {
+			activeFiltersByLayer[currentLayer].push(filterKey);
+			const cb = document.querySelector(`#filterMenu input[value="${filterKey}"]`);
+			if (cb) cb.checked = true;
+		}
+	
+		scale = maxScale * 0.2; // Zoom in
+		selectedLandmark = lm;
+		markerX = null;
+		markerY = null;
+		
+		const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
+		const lmImgY = (currentRegion.gameStartY - lm.y) * 1.5;
+	
+		const tooltipShift = window.innerWidth < 600 ? 120 : 150; 
+		
+		const targetOffsetX = (window.innerWidth / 2) - tooltipShift - (lmImgX * scale);
+		const targetOffsetY = (window.innerHeight / 2) - (lmImgY * scale);
+	
+		smoothPanTo(targetOffsetX, targetOffsetY);
+	}
+    
+    // ----------------------- REGION MENU LOGIC -----------------------
+
+	function toggleRegionMenu() {
+		const menu = document.getElementById('regionMenu');
+		const btn = document.getElementById('regionTitlePanel');
+		const isOpening = menu.style.display !== 'flex';
+		
+		document.getElementById('layerMenu').style.display = 'none';
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('autocompleteResults').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
+		clearActivePanels();
+		
+		if (isOpening) {
+			menu.style.display = 'flex';
+			btn.classList.add('active-panel');
+		} else {
+			menu.style.display = 'none';
+		}
+	}
+
+    function buildRegionMenu() {
+		const menu = document.getElementById('regionMenu');
+		menu.innerHTML = '';
+		
+		MENU_REGIONS.forEach(menuItem => {
+			const masterRegion = REGIONS.find(r => r.id === menuItem.id);
+			
+			const btn = document.createElement('button');
+			btn.className = 'region-menu-btn' + (currentRegion && currentRegion.id === menuItem.id ? ' active' : '');
+			btn.innerText = menuItem.name;
+			
+			btn.onclick = () => {
+				toggleRegionMenu();
+				loadRegion(masterRegion); 
+			};
+			
+			menu.appendChild(btn);
+		});
+	}
+    
+    // ----------------------- PROGRESS MENU LOGIC -----------------------
+
+    let activeFiltersByLayer = {
+        surface: [...FILTER_CONFIG.surface.defaults],
+        sky: [...FILTER_CONFIG.sky.defaults],
+        depths: [...FILTER_CONFIG.depths.defaults]
+    };
+
+    function toggleFilterMenu() {
+		const menu = document.getElementById('filterMenu');
+		const btn = document.getElementById('filterBtn');
+		const isOpening = menu.style.display !== 'flex';
+		
+		document.getElementById('layerMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('autocompleteResults').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
+		clearActivePanels();
+		
+		if (isOpening) {
+			menu.style.display = 'flex';
+			btn.classList.add('active-panel');
+		} else {
+			menu.style.display = 'none';
+		}
+	}
+	
+	function buildFilterMenu() {
+        const menu = document.getElementById('filterMenu');
+        menu.innerHTML = '';
+        const config = FILTER_CONFIG[currentLayer];
+        let layerFilters = activeFiltersByLayer[currentLayer]; 
+        
+        // --- 1. Master Show All / Hide All Row ---
+        const masterRow = document.createElement('div');
+        masterRow.className = 'filter-master-row';
+
+        const showAllBtn = document.createElement('span');
+        showAllBtn.className = 'filter-master-btn show-all';
+        showAllBtn.innerText = 'SHOW ALL';
+        showAllBtn.onclick = () => {
+            activeFiltersByLayer[currentLayer] = Object.keys(config.options);
+            menu.querySelectorAll('.switch input').forEach(cb => cb.checked = true);
+            redraw();
+        };
+
+        const hideAllBtn = document.createElement('span');
+        hideAllBtn.className = 'filter-master-btn hide-all';
+        hideAllBtn.innerText = 'HIDE ALL';
+        hideAllBtn.onclick = () => {
+            activeFiltersByLayer[currentLayer] = [];
+            menu.querySelectorAll('.switch input').forEach(cb => cb.checked = false);
+            redraw();
+        };
+
+        masterRow.appendChild(showAllBtn);
+        masterRow.appendChild(hideAllBtn);
+        menu.appendChild(masterRow);
+
+        // --- 2. Build Category Hierarchies ---
+        FILTER_CATEGORIES.forEach(category => {
+            // Find items in this category that are available on the current layer
+            const availableItems = category.items.filter(item => config.options[item]);
+
+            if (availableItems.length === 0) return; // Skip if layer has none of these
+
+            const catDiv = document.createElement('div');
+            catDiv.className = 'filter-category'; // Expand by default
+
+            // Header (Title, Chevron, and Category Master Toggle)
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'filter-category-header';
+
+            const titleSpan = document.createElement('div');
+            titleSpan.className = 'filter-category-title';
+            titleSpan.innerHTML = `<span class="category-chevron">▼</span> ${category.name}`;
+            titleSpan.onclick = () => {
+                catDiv.classList.toggle('category-collapsed');
+            };
+
+            const switchDiv = document.createElement('label');
+            switchDiv.className = 'switch';
+            
+            const categoryCb = document.createElement('input');
+            categoryCb.type = 'checkbox';
+            // It is checked only if ALL available items in this category are active
+            categoryCb.checked = availableItems.every(item => layerFilters.includes(item));
+            
+            categoryCb.onchange = (e) => {
+                const isChecked = e.target.checked;
+                availableItems.forEach(item => {
+                    if (isChecked) {
+                        if (!activeFiltersByLayer[currentLayer].includes(item)) {
+                            activeFiltersByLayer[currentLayer].push(item);
+                        }
+                    } else {
+                        activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== item);
+                    }
+                });
+                
+                // Visually update all child checkboxes in this category
+                const childBoxes = catDiv.querySelectorAll('.filter-category-content input[type="checkbox"]');
+                childBoxes.forEach(box => box.checked = isChecked);
+                
+                redraw();
+            };
+            
+            const sliderSpan = document.createElement('span');
+            sliderSpan.className = 'slider';
+            switchDiv.appendChild(categoryCb);
+            switchDiv.appendChild(sliderSpan);
+
+            headerDiv.appendChild(titleSpan);
+            headerDiv.appendChild(switchDiv);
+            catDiv.appendChild(headerDiv);
+
+            // Item List Container
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'filter-category-content';
+
+            availableItems.forEach((type, index) => {
+                const labelText = config.options[type];
+                const label = document.createElement('label');
+                label.className = 'filter-label animated-item';
+                label.style.animationDelay = `${index * 0.03}s`; // Sped up the stagger slightly
+                
+                const iconImg = document.createElement('img');
+                const fileName = type.toLowerCase().replace(/\s+/g, '-');
+                iconImg.src = `icons/${fileName}.png`;
+                iconImg.className = 'filter-icon';
+                
+                const itemSwitch = document.createElement('div');
+                itemSwitch.className = 'switch';
+                
+                const itemCb = document.createElement('input');
+                itemCb.type = 'checkbox';
+                itemCb.value = type;
+                itemCb.checked = layerFilters.includes(type);
+                
+                itemCb.onchange = (e) => {
+                    if (e.target.checked) {
+                        if (!activeFiltersByLayer[currentLayer].includes(type)) {
+                            activeFiltersByLayer[currentLayer].push(type);
+                        }
+                    } else {
+                        activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== type);
+                    }
+                    
+                    // Update category master toggle state based on children
+                    const allChecked = availableItems.every(i => activeFiltersByLayer[currentLayer].includes(i));
+                    categoryCb.checked = allChecked;
+                    
+                    redraw();
+                };
+                
+                const itemSlider = document.createElement('span');
+                itemSlider.className = 'slider';
+                
+                itemSwitch.appendChild(itemCb);
+                itemSwitch.appendChild(itemSlider);
+                
+                label.appendChild(iconImg);
+                label.appendChild(document.createTextNode(labelText));
+                label.appendChild(itemSwitch);
+                
+                contentDiv.appendChild(label);
+            });
+
+            catDiv.appendChild(contentDiv);
+            menu.appendChild(catDiv);
+        });
+    }
+
+    // ----------------------- PROGRESS MENU LOGIC -----------------------
+    	
 	function toggleProgressMenu() {
 		const menu = document.getElementById('progressMenu');
 		const btn = document.getElementById('progressBtn');
@@ -2117,7 +2104,7 @@
 		let overallFound = 0;
 	
 		localLandmarks.forEach(lm => {
-			const type = lm.landmark;
+			const type = FILTER_ALIASES[lm.landmark] || lm.landmark;
 			if (!stats[type]) stats[type] = { total: 0, found: 0 };
 			
 			stats[type].total++;
@@ -2242,8 +2229,38 @@
 			}
 		});
 	}
+	
+	function handleLandmarkToggle(landmarkId, checkboxElement) {
+		const isFound = checkboxElement.checked;
+		
+		saveProgress(landmarkId, isFound);
+		redraw(); 
+	
+		if (document.getElementById('progressMenu').style.display === 'flex') {
+			buildProgressMenu();
+		}
+	}
 
-	// ------EVENT LISTENERS------
+	function toggleAllLandmarksOfType(type, markAsFound) {
+		const localLandmarks = landmarks.filter(lm => 
+			// Map the raw landmark name to its alias (if one exists) before comparing
+			(FILTER_ALIASES[lm.landmark] || lm.landmark) === type &&
+			[].concat(lm.region).includes(currentRegion.id) &&
+			lm.level.toLowerCase() === currentLayer
+		);
+	
+		localLandmarks.forEach(lm => {
+			// We still save using the original lm.landmark to maintain consistency in your save data
+			const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+			saveProgress(lmId, markAsFound);
+		});
+		
+		redraw();
+		buildProgressMenu(); 
+	}
+
+	// ----------------------- OTHER EVENT LISTENERS -----------------------
+	
 	const video = document.getElementById('bgVideo');
 	const loader = document.getElementById('loader');
 	
@@ -2377,11 +2394,11 @@
                 
                 // To add back the click to view coordinates functionality, just switch the commented lines below:
                 
-                markerX = (e.clientX - offsetX) / scale;
-                markerY = (e.clientY - offsetY) / scale;
-            	// markerX = null;
-                // markerY = null;
-                // document.getElementById('coordLabel').style.display = 'none';
+                // markerX = (e.clientX - offsetX) / scale;
+                // markerY = (e.clientY - offsetY) / scale;
+            	markerX = null;
+                markerY = null;
+                document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
         }
