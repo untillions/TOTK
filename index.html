@@ -1148,50 +1148,6 @@
         }, 2000); 
     }
 
-    function createCycleItem(usePlural) {
-    	let type = null;
-		do {
-            type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
-        } while (type === lastLandmarkType && cycleLandmarks.length > 1);
-
-        // Update the tracker
-        lastLandmarkType = type;
-        // const type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
-        const color = landmarkColors[type] || landmarkColors["default"];
-        
-        const displayName = usePlural ? loaderPlurals[type] : type;
-        
-        const fileName = type.toLowerCase().replace(/\s+/g, '-');
-        const formattedName = displayName.replace(' ', '<br>');
-
-        const div = document.createElement('div');
-        div.className = 'cycle-slide';
-        div.innerHTML = `
-            <img src="icons/${fileName}.png">
-            <span style="color: ${color}; font-family: 'HyliaSerif', serif; letter-spacing: 1px; line-height: 1.1;">${formattedName}</span>
-        `;
-        return div;
-    }
-	
-	function toggleLayerMenu() {
-		const menu = document.getElementById('layerMenu');
-		const btn = document.getElementById('layerBtn');
-		const isOpening = menu.style.display !== 'flex';
-		
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('autocompleteResults').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
-		
-		if (isOpening) {
-			menu.style.display = 'flex';
-			btn.classList.add('active-panel');
-		} else {
-			menu.style.display = 'none';
-		}
-	}
-	
 	function clearActivePanels() {
 		document.getElementById('layerBtn').classList.remove('active-panel');
 		document.getElementById('filterBtn').classList.remove('active-panel');
@@ -1199,141 +1155,6 @@
 		document.getElementById('progressBtn').classList.remove('active-panel');
 		document.getElementById('coordLabel').style.display = 'none';
 	}
-
-    function formatCoord(val) {
-        const sign = val < 0 ? '-' : '';
-        return sign + Math.abs(Math.round(val)).toString().padStart(4, '0');
-    }
-    
-    function executeArrowNavigation(arr) {
-		const targetRegion = REGIONS.find(r => r.id === arr.toRegion);
-		if (!targetRegion) return;
-		
-		selectedLandmark = null;
-		markerX = null;
-		markerY = null;
-		document.getElementById('coordLabel').style.display = 'none';
-		
-		currentRegion = targetRegion;
-		currentLayer = arr.toLevel.toLowerCase();
-		
-		scale = -1; 
-		offsetX = 0;
-		offsetY = 0;
-		
-		document.getElementById('regionTitle').innerText = targetRegion.name;
-		document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
-		updateLayerUI();
-		
-		const layerBtn = document.getElementById('layerBtn');
-		if (currentRegion.id === 0) {
-			layerBtn.style.opacity = '0.5';
-			layerBtn.style.pointerEvents = 'none';
-		} else {
-			layerBtn.style.opacity = '1';
-			layerBtn.style.pointerEvents = 'auto';
-		}
-		
-		buildFilterMenu();
-		buildRegionMenu();
-		updateMapAsset(); 
-	}
-    
-    function loadRegion(region) {
-        currentRegion = region;
-        
-        clearInterval(dashInterval);
-        dashInterval = null;
-        
-        const layerBtn = document.getElementById('layerBtn');
-		if (currentRegion.id === 0) {
-			currentLayer = 'sky';
-			layerBtn.style.opacity = '0.5';
-			layerBtn.style.pointerEvents = 'none';
-		} else {
-			layerBtn.style.opacity = '1';
-			layerBtn.style.pointerEvents = 'auto';
-		}
-		
-        markerX = null;
-        markerY = null;
-        selectedLandmark = null;
-        coordLabel.style.display = 'none';
-        
-        document.getElementById('regionTitle').innerText = region.name;
-        document.getElementById('dashboard').style.display = 'none';
-        document.getElementById('mapViewer').style.display = 'block';
-        
-        document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
-        
-        updateLayerUI();
-        scale = -1; 
-        updateMapAsset();
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
-		buildFilterMenu();
-		buildRegionMenu();
-    }
-
-    function setLayer(layer) {
-        if (currentLayer === layer) {
-            document.getElementById('layerMenu').style.display = 'none';
-            return;
-        }
-        currentLayer = layer;
-        
-        // Update the main layer button image to reflect current state
-        document.getElementById('currentLayerIcon').src = `icons/${layer}.png`;
-        
-        markerX = null;
-        markerY = null;
-        selectedLandmark = null;
-        coordLabel.style.display = 'none';
-        
-        updateLayerUI();
-        updateMapAsset();
-        
-        document.getElementById('filterMenu').style.display = 'none';
-        document.getElementById('layerMenu').style.display = 'none';
-        buildFilterMenu();
-    }
-
-    function updateLayerUI() {
-		document.querySelectorAll('#layerMenu .layer-btn').forEach(btn => {
-			btn.classList.remove('active');
-			if(btn.innerText.toLowerCase().includes(currentLayer)) {
-				btn.classList.add('active');
-			}
-		});
-	}
-
-    function updateMapAsset() {
-        document.getElementById('loader').style.display = 'flex';
-        loaderInterval = startCycleAnimation('loaderDynamicContainer', true);
- 
-        const formattedId = currentRegion.id.toString().padStart(2, '0');
-        const srcPath = `images/region${formattedId}${currentLayer}.png`;
-        activeImage = new Image();
-        activeImage.onload = () => {
-            document.getElementById('loader').style.display = 'none'; 
-            clearInterval(loaderInterval);
-            
-            if (scale === -1) {
-                resizeCanvas(true); 
-            } else {
-                redraw();
-            }
-        };
-        activeImage.onerror = () => { 
-            document.getElementById('loader').style.display = 'none'; 
-            clearInterval(loaderInterval);
-            redraw(); 
-        };
-        
-		activeImage.src = srcPath;
-    }
 
     function exitToDashboard() {
         document.getElementById('mapViewer').style.display = 'none';
@@ -1406,6 +1227,16 @@
             }
         }
         panAnimId = requestAnimationFrame(step);
+    }
+    
+    function zoomAround(zoomFactor, centerX, centerY) {
+        const oldScale = scale;
+        scale = Math.min(maxScale, Math.max(minScale, scale * zoomFactor));
+        const actualFactor = scale / oldScale;
+        offsetX = centerX - (centerX - offsetX) * actualFactor;
+        offsetY = centerY - (centerY - offsetY) * actualFactor;
+        keepInBounds();
+        redraw();
     }
     
     function keepInBounds() {
@@ -1696,15 +1527,165 @@
             coordLabel.style.display = 'none';
         }
     }
+    
+    function formatCoord(val) {
+        const sign = val < 0 ? '-' : '';
+        return sign + Math.abs(Math.round(val)).toString().padStart(4, '0');
+    }
+    
+    function createCycleItem(usePlural) {
+    	let type = null;
+		do {
+            type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
+        } while (type === lastLandmarkType && cycleLandmarks.length > 1);
 
-    function zoomAround(zoomFactor, centerX, centerY) {
-        const oldScale = scale;
-        scale = Math.min(maxScale, Math.max(minScale, scale * zoomFactor));
-        const actualFactor = scale / oldScale;
-        offsetX = centerX - (centerX - offsetX) * actualFactor;
-        offsetY = centerY - (centerY - offsetY) * actualFactor;
-        keepInBounds();
-        redraw();
+        // Update the tracker
+        lastLandmarkType = type;
+        // const type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
+        const color = landmarkColors[type] || landmarkColors["default"];
+        
+        const displayName = usePlural ? loaderPlurals[type] : type;
+        
+        const fileName = type.toLowerCase().replace(/\s+/g, '-');
+        const formattedName = displayName.replace(' ', '<br>');
+
+        const div = document.createElement('div');
+        div.className = 'cycle-slide';
+        div.innerHTML = `
+            <img src="icons/${fileName}.png">
+            <span style="color: ${color}; font-family: 'HyliaSerif', serif; letter-spacing: 1px; line-height: 1.1;">${formattedName}</span>
+        `;
+        return div;
+    }
+
+    function executeArrowNavigation(arr) {
+		const targetRegion = REGIONS.find(r => r.id === arr.toRegion);
+		if (!targetRegion) return;
+		
+		selectedLandmark = null;
+		markerX = null;
+		markerY = null;
+		document.getElementById('coordLabel').style.display = 'none';
+		
+		currentRegion = targetRegion;
+		currentLayer = arr.toLevel.toLowerCase();
+		
+		scale = -1; 
+		offsetX = 0;
+		offsetY = 0;
+		
+		document.getElementById('regionTitle').innerText = targetRegion.name;
+		document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
+		updateLayerUI();
+		
+		const layerBtn = document.getElementById('layerBtn');
+		if (currentRegion.id === 0) {
+			layerBtn.style.opacity = '0.5';
+			layerBtn.style.pointerEvents = 'none';
+		} else {
+			layerBtn.style.opacity = '1';
+			layerBtn.style.pointerEvents = 'auto';
+		}
+		
+		buildFilterMenu();
+		buildRegionMenu();
+		updateMapAsset(); 
+	}
+    
+    function loadRegion(region) {
+        currentRegion = region;
+        
+        clearInterval(dashInterval);
+        dashInterval = null;
+        
+        const layerBtn = document.getElementById('layerBtn');
+		if (currentRegion.id === 0) {
+			currentLayer = 'sky';
+			layerBtn.style.opacity = '0.5';
+			layerBtn.style.pointerEvents = 'none';
+		} else {
+			layerBtn.style.opacity = '1';
+			layerBtn.style.pointerEvents = 'auto';
+		}
+		
+        markerX = null;
+        markerY = null;
+        selectedLandmark = null;
+        coordLabel.style.display = 'none';
+        
+        document.getElementById('regionTitle').innerText = region.name;
+        document.getElementById('dashboard').style.display = 'none';
+        document.getElementById('mapViewer').style.display = 'block';
+        
+        document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
+        
+        updateLayerUI();
+        scale = -1; 
+        updateMapAsset();
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
+		clearActivePanels();
+		buildFilterMenu();
+		buildRegionMenu();
+    }
+
+    function setLayer(layer) {
+        if (currentLayer === layer) {
+            document.getElementById('layerMenu').style.display = 'none';
+            return;
+        }
+        currentLayer = layer;
+        
+        // Update the main layer button image to reflect current state
+        document.getElementById('currentLayerIcon').src = `icons/${layer}.png`;
+        
+        markerX = null;
+        markerY = null;
+        selectedLandmark = null;
+        coordLabel.style.display = 'none';
+        
+        updateLayerUI();
+        updateMapAsset();
+        
+        document.getElementById('filterMenu').style.display = 'none';
+        document.getElementById('layerMenu').style.display = 'none';
+        buildFilterMenu();
+    }
+
+    function updateLayerUI() {
+		document.querySelectorAll('#layerMenu .layer-btn').forEach(btn => {
+			btn.classList.remove('active');
+			if(btn.innerText.toLowerCase().includes(currentLayer)) {
+				btn.classList.add('active');
+			}
+		});
+	}
+
+    function updateMapAsset() {
+        document.getElementById('loader').style.display = 'flex';
+        loaderInterval = startCycleAnimation('loaderDynamicContainer', true);
+ 
+        const formattedId = currentRegion.id.toString().padStart(2, '0');
+        const srcPath = `images/region${formattedId}${currentLayer}.png`;
+        activeImage = new Image();
+        activeImage.onload = () => {
+            document.getElementById('loader').style.display = 'none'; 
+            clearInterval(loaderInterval);
+            
+            if (scale === -1) {
+                resizeCanvas(true); 
+            } else {
+                redraw();
+            }
+        };
+        activeImage.onerror = () => { 
+            document.getElementById('loader').style.display = 'none'; 
+            clearInterval(loaderInterval);
+            redraw(); 
+        };
+        
+		activeImage.src = srcPath;
     }
     
     // ----------------------- SEARCH MENU LOGIC -----------------------
@@ -1843,8 +1824,27 @@
 		smoothPanTo(targetOffsetX, targetOffsetY);
 	}
     
-    // ----------------------- REGION MENU LOGIC -----------------------
+    // ----------------------- LAYER & REGION MENU LOGIC -----------------------
 
+	function toggleLayerMenu() {
+		const menu = document.getElementById('layerMenu');
+		const btn = document.getElementById('layerBtn');
+		const isOpening = menu.style.display !== 'flex';
+		
+		document.getElementById('filterMenu').style.display = 'none';
+		document.getElementById('regionMenu').style.display = 'none';
+		document.getElementById('autocompleteResults').style.display = 'none';
+		document.getElementById('progressMenu').style.display = 'none';
+		clearActivePanels();
+		
+		if (isOpening) {
+			menu.style.display = 'flex';
+			btn.classList.add('active-panel');
+		} else {
+			menu.style.display = 'none';
+		}
+	}
+	
 	function toggleRegionMenu() {
 		const menu = document.getElementById('regionMenu');
 		const btn = document.getElementById('regionTitlePanel');
@@ -2394,11 +2394,11 @@
                 
                 // To add back the click to view coordinates functionality, just switch the commented lines below:
                 
-                // markerX = (e.clientX - offsetX) / scale;
-                // markerY = (e.clientY - offsetY) / scale;
-            	markerX = null;
-                markerY = null;
-                document.getElementById('coordLabel').style.display = 'none';
+                markerX = (e.clientX - offsetX) / scale;
+                markerY = (e.clientY - offsetY) / scale;
+            	// markerX = null;
+                // markerY = null;
+                // document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
         }
