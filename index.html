@@ -924,7 +924,7 @@
         { id: 10, name: "Lanayru Wetlands", gameStartX: 1, gameStartY: 1503 },
         { id: 11, name: "Mount Lanayru & Naydra Snowfield", gameStartX: 1880, gameStartY: 0 },
         { id: 12, name: "East Necluda & Eventide Island", gameStartX: 1127, gameStartY: -1127 },
-        { id: 13, name: "Faron Grasslands & Lake Hylia", gameStartX: -1503, gameStartY: -752 },
+        { id: 13, name: "Faron Grasslands & Lake Hylia", gameStartX: -1503, gameStartY: -564 },
         { id: 14, name: "Gerudo Canyon & Gerudo Desert", gameStartX: -5639, gameStartY: -1129 },
         { id: 15, name: "Gerudo Highlands", gameStartX: -5640, gameStartY: 752 }
     ];
@@ -1148,12 +1148,46 @@
         }, 2000); 
     }
 
-	function clearActivePanels() {
-		document.getElementById('layerBtn').classList.remove('active-panel');
-		document.getElementById('filterBtn').classList.remove('active-panel');
-		document.getElementById('regionTitlePanel').classList.remove('active-panel');
-		document.getElementById('progressBtn').classList.remove('active-panel');
-		document.getElementById('coordLabel').style.display = 'none';
+	function resetAllActivePanels(exemptMenuName) {
+		const itemsToReset = [
+			'layerMenu',
+			'filterMenu',
+			'regionMenu',
+			'autocompleteResults',
+			'progressMenu',
+			'regionTitlePanel'
+		];
+	
+		// Hide all menus except the exempt one
+		for (const id of itemsToReset) {
+			if (id !== exemptMenuName) {
+				const el = document.getElementById(id);
+				if (el) el.style.display = 'none';
+			}
+		}
+	
+		// Remove active-panel classes everywhere except exempt
+		const activeIds = [
+			'layerBtn',
+			'filterBtn',
+			'regionTitlePanel',
+			'progressBtn'
+		];
+	
+		for (const id of activeIds) {
+			const el = document.getElementById(id);
+			if (!el) continue;
+			if (id !== exemptMenuName) el.classList.remove('active-panel');
+		}
+	
+		// Reset coord label
+		const coordEl = document.getElementById('coordLabel');
+		if (coordEl) coordEl.style.display = 'none';
+	
+		// Clear selection/marker state
+		selectedLandmark = null;
+		markerX = null;
+		markerY = null;
 	}
 
     function exitToDashboard() {
@@ -1350,12 +1384,12 @@
                 
                 if (validZoomLevels.includes(currentZoomLevel)) {
                     ctx.globalAlpha = 1.0; // Ensure text is fully visible
-                    ctx.shadowColor = 'transparent'; 
+                    /* ctx.shadowColor = 'transparent'; 
                     
                     const sizeKey = lm.size?.toUpperCase() || "M";
                     
                     // Define standard static pixel sizes based on the S, M, L property
-                    const fixedSizeMap = { "S": 12, "M": 15, "L": 18 };
+                    const fixedSizeMap = { "S": 12, "M": 14, "L": 16 };
                     const fixedFontSize = fixedSizeMap[sizeKey];
                     
                     ctx.textAlign = 'center';
@@ -1365,7 +1399,43 @@
                     ctx.lineWidth = Math.max(1, fixedFontSize * 0.25);
                     
                     ctx.strokeText(lm.name, screenX, screenY);
-                    ctx.fillText(lm.name, screenX, screenY);
+                    ctx.fillText(lm.name, screenX, screenY); */
+                    ctx.shadowColor = 'transparent';
+
+					const sizeKey = lm.size?.toUpperCase() || "M";
+					
+					// Define standard static pixel sizes based on the S, M, L property
+					const fixedSizeMap = { "S": 12, "M": 14, "L": 16 };
+					const fixedFontSize = fixedSizeMap[sizeKey];
+					
+					ctx.textAlign = 'center';
+					ctx.lineJoin = 'round';
+					
+					// Font
+					ctx.font = `${fixedFontSize}px "Segoe UI", sans-serif`;
+					
+					// Stroke widths (tuned relative to font size)
+					const outerLineWidth = Math.max(1.5, fixedFontSize * 0.28);
+					const innerLineWidth = Math.max(0.8, fixedFontSize * 0.12);
+					
+					// Colors
+					const fillColor = '#b9a66a';
+					const outerStrokeColor = 'rgba(0,0,0,0.75)';     // adjust as desired
+					const innerStrokeColor = 'rgba(59, 52, 28, 1)'; // your original stroke color
+					
+					// Outer stroke
+					ctx.strokeStyle = outerStrokeColor;
+					ctx.lineWidth = outerLineWidth;
+					ctx.strokeText(lm.name, screenX, screenY);
+					
+					// Inner stroke
+					ctx.strokeStyle = innerStrokeColor;
+					ctx.lineWidth = innerLineWidth;
+					ctx.strokeText(lm.name, screenX, screenY);
+					
+					// Fill
+					ctx.fillStyle = fillColor;
+					ctx.fillText(lm.name, screenX, screenY);
                 }
             }
 
@@ -1622,10 +1692,7 @@
         updateLayerUI();
         scale = -1; 
         updateMapAsset();
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
+		resetAllActivePanels('all');
 		buildFilterMenu();
 		buildRegionMenu();
     }
@@ -1694,11 +1761,7 @@
 	const autocompleteResults = document.getElementById('autocompleteResults');
 	
 	searchInput.addEventListener('focus', function() {
-		document.getElementById('layerMenu').style.display = 'none';
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
+		resetAllActivePanels('autocompleteResults');
 		
 		if (this.value.trim() !== '') {
 			autocompleteResults.style.display = 'block';
@@ -1831,11 +1894,7 @@
 		const btn = document.getElementById('layerBtn');
 		const isOpening = menu.style.display !== 'flex';
 		
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('autocompleteResults').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
+		resetAllActivePanels('layerMenu');
 		
 		if (isOpening) {
 			menu.style.display = 'flex';
@@ -1850,11 +1909,7 @@
 		const btn = document.getElementById('regionTitlePanel');
 		const isOpening = menu.style.display !== 'flex';
 		
-		document.getElementById('layerMenu').style.display = 'none';
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('autocompleteResults').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
+		resetAllActivePanels('regionMenu');
 		
 		if (isOpening) {
 			menu.style.display = 'flex';
@@ -1897,11 +1952,7 @@
 		const btn = document.getElementById('filterBtn');
 		const isOpening = menu.style.display !== 'flex';
 		
-		document.getElementById('layerMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('autocompleteResults').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		clearActivePanels();
+		resetAllActivePanels('filterMenu');
 		
 		if (isOpening) {
 			menu.style.display = 'flex';
@@ -2064,11 +2115,7 @@
 		const btn = document.getElementById('progressBtn');
 		const isOpening = menu.style.display !== 'flex';
 		
-		document.getElementById('layerMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('autocompleteResults').style.display = 'none';
-		clearActivePanels();
+		resetAllActivePanels('progressMenu');
 		
 		if (isOpening) {
 			buildProgressMenu(); // Calculate stats before showing
@@ -2319,12 +2366,7 @@
             return;
         }
         
-		document.getElementById('layerMenu').style.display = 'none';
-		document.getElementById('filterMenu').style.display = 'none';
-		document.getElementById('regionMenu').style.display = 'none';
-		document.getElementById('progressMenu').style.display = 'none';
-		document.getElementById('autocompleteResults').style.display = 'none';
-		clearActivePanels();
+		resetAllActivePanels('all');
 
         if (dragMoveCounter < 5) {
             const clickTolerance = 15;
