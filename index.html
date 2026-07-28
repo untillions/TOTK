@@ -1035,15 +1035,15 @@
 	const FILTER_CONFIG = {
         surface: {
             options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Location": "Locations" },
-            defaults: ["Tower", "Shrine", "Village"]
+            defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm"]
         },
         sky: {
             options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Location": "Locations" },
-            defaults: ["Shrine", "Temple"]
+            defaults: ["Shrine", "Dispenser"]
         },
         depths: {
             options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Location": "Locations" },
-            defaults: ["Lightroot", "Forge Construct", "Temple"]
+            defaults: ["Lightroot", "Forge Construct", "Chasm"]
         }
     };
     
@@ -1328,9 +1328,12 @@
         // --- DRAW LANDMARKS ---
         const visibleLandmarks = landmarks.filter(lm => {
 			const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
-			return [].concat(lm.region).includes(currentRegion.id) &&
-				   lm.level.toLowerCase() === currentLayer &&
-				   activeFiltersByLayer[currentLayer].includes(filterKey);
+			
+			const regionMatch = getRegions(lm.region).includes(currentRegion.id);
+			const filterMatch = activeFiltersByLayer[currentLayer].includes(filterKey);
+			const layerMatch = getLevels(lm.level).includes(currentLayer);			
+
+			return regionMatch && layerMatch && filterMatch;
 		});
         
         for (let lm of visibleLandmarks) {
@@ -1353,7 +1356,11 @@
 
             // Make icon 50% transparent if found
             if (isFound) {
-                ctx.globalAlpha = 0.65;
+            	if (lm.landmark === "Named Location"){
+            		ctx.globalAlpha = 0.33;
+            	} else {
+					ctx.globalAlpha = 0.66;
+            	}
             } else {
                 ctx.globalAlpha = 1.0;
             }
@@ -1374,8 +1381,7 @@
             }
 
             // --- UPDATED: Draw Fully Visible Text for Found "Named Location" landmarks ---
-            if (lm.landmark === "Named Location" && isFound) {
-                
+            if (isFound && (lm.landmark === "Named Location" || lm.landmark === "Village" || lm.landmark === "Cave" || lm.landmark === "Chasm")) {
                 // Safely handle missing zooms, single integers, or arrays
                 let validZoomLevels = [1, 2, 3, 4];
                 if (lm.zoom !== undefined) {
@@ -1383,32 +1389,24 @@
                 }
                 
                 if (validZoomLevels.includes(currentZoomLevel)) {
-                    ctx.globalAlpha = 1.0; // Ensure text is fully visible
-                    /* ctx.shadowColor = 'transparent'; 
-                    
-                    const sizeKey = lm.size?.toUpperCase() || "M";
-                    
-                    // Define standard static pixel sizes based on the S, M, L property
-                    const fixedSizeMap = { "S": 12, "M": 14, "L": 16 };
-                    const fixedFontSize = fixedSizeMap[sizeKey];
-                    
-                    ctx.textAlign = 'center';
-                    ctx.fillStyle = '#b9a66a'; 
-                    ctx.strokeStyle = 'rgba(59, 52, 28, 1)';
-                    ctx.font = `${fixedFontSize}px "Segoe UI", sans-serif`; 
-                    ctx.lineWidth = Math.max(1, fixedFontSize * 0.25);
-                    
-                    ctx.strokeText(lm.name, screenX, screenY);
-                    ctx.fillText(lm.name, screenX, screenY); */
+                    ctx.globalAlpha = 1.0; 
                     ctx.shadowColor = 'transparent';
 
-					const sizeKey = lm.size?.toUpperCase() || "M";
+					const sizeKey = lm.size?.toUpperCase() || "S";
 					
 					// Define standard static pixel sizes based on the S, M, L property
 					const fixedSizeMap = { "S": 12, "M": 14, "L": 16 };
 					const fixedFontSize = fixedSizeMap[sizeKey];
 					
 					ctx.textAlign = 'center';
+					let textY = screenY;
+
+					if (lm.landmark === "Named Location") {
+					  ctx.textBaseline = 'middle';
+					} else {
+					  ctx.textBaseline = 'top';
+					  textY += 12;
+					}
 					ctx.lineJoin = 'round';
 					
 					// Font
@@ -1420,22 +1418,22 @@
 					
 					// Colors
 					const fillColor = '#b9a66a';
-					const outerStrokeColor = 'rgba(0,0,0,0.75)';     // adjust as desired
-					const innerStrokeColor = 'rgba(59, 52, 28, 1)'; // your original stroke color
+					const outerStrokeColor = 'rgba(0,0,0,0.75)';
+					const innerStrokeColor = 'rgba(59, 52, 28, 1)';
 					
 					// Outer stroke
 					ctx.strokeStyle = outerStrokeColor;
 					ctx.lineWidth = outerLineWidth;
-					ctx.strokeText(lm.name, screenX, screenY);
+					ctx.strokeText(lm.name, screenX, textY);
 					
 					// Inner stroke
 					ctx.strokeStyle = innerStrokeColor;
 					ctx.lineWidth = innerLineWidth;
-					ctx.strokeText(lm.name, screenX, screenY);
+					ctx.strokeText(lm.name, screenX, textY);
 					
 					// Fill
 					ctx.fillStyle = fillColor;
-					ctx.fillText(lm.name, screenX, screenY);
+					ctx.fillText(lm.name, screenX, textY);
                 }
             }
 
@@ -1719,6 +1717,16 @@
         document.getElementById('layerMenu').style.display = 'none';
         buildFilterMenu();
     }
+    
+    function getLevels(level) {
+		return Array.isArray(level)
+			? level.map(l => l.toLowerCase())
+			: [(level || "").toLowerCase()];
+	}
+	
+	function getRegions(region) {
+		return [].concat(region);
+	}
 
     function updateLayerUI() {
 		document.querySelectorAll('#layerMenu .layer-btn').forEach(btn => {
@@ -1815,14 +1823,17 @@
 		const region = REGIONS.find(r => r.id === targetRegionId);
 		if (!region) return;
 	
-		const needsLoad = (!currentRegion || currentRegion.id !== region.id || currentLayer !== lm.level.toLowerCase());
-		
+		const needsLoad = (!currentRegion || currentRegion.id !== region.id || !getLevels(lm.level).includes(currentLayer));
+     	
 		if (needsLoad) {
 			document.getElementById('coordLabel').style.display = 'none';
 			
-			currentRegion = region;
-			currentLayer = lm.level.toLowerCase();
-			
+			currentRegion = region;			
+			const levels = getLevels(lm.level);
+			currentLayer = levels.includes(currentLayer)
+				? currentLayer
+				: levels[0];
+					
 			const layerBtn = document.getElementById('layerBtn');
 			if (currentRegion.id === 0) {
 				layerBtn.style.opacity = '0.5';
@@ -2136,8 +2147,8 @@
 		
 		// Filter landmarks for the exact region and layer currently being viewed
 		const localLandmarks = landmarks.filter(lm => 
-			[].concat(lm.region).includes(currentRegion.id) &&
-			lm.level.toLowerCase() === currentLayer
+			getRegions(lm.region).includes(currentRegion.id) &&
+			getLevels(lm.level).includes(currentLayer)
 		);
 		
 		if (localLandmarks.length === 0) {
@@ -2292,8 +2303,8 @@
 		const localLandmarks = landmarks.filter(lm => 
 			// Map the raw landmark name to its alias (if one exists) before comparing
 			(FILTER_ALIASES[lm.landmark] || lm.landmark) === type &&
-			[].concat(lm.region).includes(currentRegion.id) &&
-			lm.level.toLowerCase() === currentLayer
+			getRegions(lm.region).includes(currentRegion.id) &&
+			getLevels(lm.level).includes(currentLayer)
 		);
 	
 		localLandmarks.forEach(lm => {
@@ -2396,11 +2407,14 @@
 			}
 			
 			let clickedLandmark = null;
-            const visibleLandmarks = landmarks.filter(lm => {
+			const visibleLandmarks = landmarks.filter(lm => {
 				const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
-				return [].concat(lm.region).includes(currentRegion.id) &&
-					   lm.level.toLowerCase() === currentLayer &&
-					   activeFiltersByLayer[currentLayer].includes(filterKey);
+			
+				return (
+					getRegions(lm.region).includes(currentRegion.id) &&
+					getLevels(lm.level).includes(currentLayer) &&
+					activeFiltersByLayer[currentLayer].includes(filterKey)
+				);
 			});
 
             for (let lm of visibleLandmarks) {
