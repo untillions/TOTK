@@ -258,29 +258,51 @@
         canvas:active { cursor: grabbing; }
 
         /* --- BOTTOM PANEL --- */
-        #bottomLeftPanel {
+		#bottomPanel {
 			position: fixed;
 			bottom: 25px;
-			left: 25px;
+			left: 0;
+			width: 100%;
+			padding: 0 25px;
+			box-sizing: border-box;
 			z-index: 10;
+			pointer-events: none;
 		}
-		
+		#totalCompletion {
+			color: #85e0fe;
+			font-size: 0.9rem;
+			line-height: 1;
+			white-space: nowrap;
+			text-shadow: 1px 1px 4px rgba(0, 0, 0, 1);
+			text-align: right;
+			margin-bottom: 10px;
+			pointer-events: none;
+		}
+		#bottomRow {
+			width: 100%;
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			align-items: end;
+			column-gap: 15px;
+		}
+		#bottomLeftPanel {
+			justify-self: start;
+			pointer-events: auto;
+		}
+		#regionPanel {
+			position: relative;
+			justify-self: center;
+			pointer-events: auto;
+		}
 		#bottomRightPanel {
-			position: fixed;
-			bottom: 25px;
-			right: 25px;
-			z-index: 10;
+			position: relative;
+			justify-self: end;
+			pointer-events: auto;
 		}
-		
 		#regionTitlePanel {
-			position: fixed;
-			bottom: 25px;
-			left: 50%;
-			transform: translateX(-50%);
-			z-index: 10;
 			cursor: pointer;
 			padding: 5px 15px;
-			max-width: calc(100vw - 130px); 
+			max-width: calc(100vw - 180px);
 			box-sizing: border-box;
 		}
         #regionTitle {
@@ -511,7 +533,7 @@
         #layerPanel {
             position: absolute;
             top: calc(15px + env(safe-area-inset-top));
-            left: 15px;
+            left: 25px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -533,7 +555,7 @@
         #filterPanel {
             position: absolute;
 			top: calc(15px + env(safe-area-inset-top));
-            right: 15px;
+            right: 25px;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -657,7 +679,7 @@
 			display: flex;
 			flex-direction: column;
 			width: 350px;
-			max-width: calc(100vw - 150px); 
+			max-width: calc(100vw - 170px); 
 		}
 		#searchInput {
 			background: rgba(30, 41, 59, 0.85);
@@ -888,22 +910,36 @@
 			<div id="filterMenu"></div>
 		</div>
 		
-		<div id="bottomLeftPanel">
-			<button class="layer-btn" onclick="exitToDashboard()">
-				<img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
-			</button>
-		</div>
+		<div id="bottomPanel">
+
+			<div id="totalCompletion">
+				0.00/100%
+			</div>
 		
-		<div id="regionTitlePanel" class="layer-btn" onclick="toggleRegionMenu()">
-			<h2 id="regionTitle" style="margin: 0;">Region Name</h2>
-		</div>
-		<div id="regionMenu"></div>
+			<div id="bottomRow">
 		
-		<div id="bottomRightPanel">
-			<button class="layer-btn" id="progressBtn" onclick="toggleProgressMenu()">
-				<img src="icons/progress.png" alt="Progress" style="width: 30px; height: 30px;">
-			</button>
-			<div id="progressMenu"></div>
+				<div id="bottomLeftPanel">
+					<button class="layer-btn" onclick="exitToDashboard()">
+						<img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
+					</button>
+				</div>
+		
+				<div id="regionPanel">
+					<div id="regionTitlePanel" class="layer-btn" onclick="toggleRegionMenu()">
+						<h2 id="regionTitle" style="margin: 0;">Region Name</h2>
+					</div>
+					<div id="regionMenu"></div>
+				</div>
+		
+				<div id="bottomRightPanel">
+					<button class="layer-btn" id="progressBtn" onclick="toggleProgressMenu()">
+						<img src="icons/progress.png" alt="Progress" style="width: 30px; height: 30px;">
+					</button>
+					<div id="progressMenu"></div>
+				</div>
+		
+			</div>
+		
 		</div>
 	</div>
 
@@ -972,7 +1008,7 @@
         "Lightroot", "Treasure", "Schematic", "Forge & Refinery", "Dragon Tear",
         "Ancient Tablet", "Goddess Statue", "Bargainer Statue", "Temple", "Shop",
         "Armor Shop", "General Shop", "Other Shop", "Inn", "Sage's Will", 
-        "Location", "Named Location", "Unnamed Location", "Special Location"
+        "Location", "Named Location", "Unnamed Location", "Special Location", "Korok"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
@@ -1006,6 +1042,7 @@
         "General Shop": "#dd87d3",
         "Other Shop": "#dd87d3",
         "Inn": "#dd87d3",
+        "Korok": "#61cc74",
         "default": "#facc15"
     };
     
@@ -1034,12 +1071,12 @@
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Location": "Locations" },
-            defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Location": "Locations", "Korok": "Koroks" },
+            defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm", "Korok"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Location": "Locations" },
-            defaults: ["Shrine", "Dispenser"]
+            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Location": "Locations", "Korok": "Koroks" },
+            defaults: ["Shrine", "Dispenser", "Korok"]
         },
         depths: {
             options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Location": "Locations" },
@@ -1075,7 +1112,7 @@
         "Treasure": "Treasures", "Schematic": "Schematics", "Forge & Refinery": "Forges & Refineries",
         "Ancient Tablet": "Ancient Tablets", "Great Fairy": "Great Fairies", "Chasm": "Chasms",
         "Temple": "Temples", "Shop": "Shops", "Inn": "Inns", "Sage's Will": "Sage's Wills",
-        "Location": "Locations"
+        "Location": "Locations", "Korok": "Koroks"
     };
     const cycleLandmarks = Object.keys(loaderPlurals);
     let lastLandmarkType = null;
@@ -1105,6 +1142,36 @@
 		}
 		
 		localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(currentProgress));
+	}
+
+	function updateTotalCompletion() {
+		const completionLabel = document.getElementById('totalCompletion');
+		if (!completionLabel) return;
+	
+		const progressData = loadProgress();
+	
+		let totalWeight = 0;
+		let foundWeight = 0;
+	
+		landmarks.forEach(lm => {
+			const weight = lm.weight === undefined ? 1 : Number(lm.weight);
+	
+			if (!Number.isFinite(weight) || weight < 0) return;
+	
+			totalWeight += weight;
+	
+			const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+	
+			if (progressData[lmId]) {
+				foundWeight += weight;
+			}
+		});
+	
+		const percentage = totalWeight > 0
+			? (foundWeight / totalWeight) * 100
+			: 0;
+	
+		completionLabel.textContent = `${percentage.toFixed(2)}/100%`;
 	}
 
     function startCycleAnimation(containerId, usePlural = false) {
@@ -1155,7 +1222,7 @@
 			'regionMenu',
 			'autocompleteResults',
 			'progressMenu',
-			'regionTitlePanel'
+			'regionTitleMenu'
 		];
 	
 		// Hide all menus except the exempt one
@@ -1688,6 +1755,7 @@
         document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
         
         updateLayerUI();
+        updateTotalCompletion();
         scale = -1; 
         updateMapAsset();
 		resetAllActivePanels('all');
@@ -2292,6 +2360,7 @@
 		const isFound = checkboxElement.checked;
 		
 		saveProgress(landmarkId, isFound);
+		updateTotalCompletion();
 		redraw(); 
 	
 		if (document.getElementById('progressMenu').style.display === 'flex') {
@@ -2313,6 +2382,7 @@
 			saveProgress(lmId, markAsFound);
 		});
 		
+		updateTotalCompletion();
 		redraw();
 		buildProgressMenu(); 
 	}
