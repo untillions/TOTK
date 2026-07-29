@@ -1447,8 +1447,8 @@
                 ctx.fill();
             }
 
-            // --- UPDATED: Draw Fully Visible Text for Found "Named Location" landmarks ---
-            if (isFound && (lm.landmark === "Named Location" || lm.landmark === "Village" || lm.landmark === "Cave" || lm.landmark === "Chasm")) {
+            // --- Draw Fully Visible Text for Found Landmarks ---
+            if (isFound && (lm.landmark === "Named Location" || lm.landmark === "Village" || lm.landmark === "Cave" || lm.landmark === "Chasm" || lm.landmark === "Well")) {
                 // Safely handle missing zooms, single integers, or arrays
                 let validZoomLevels = [1, 2, 3, 4];
                 if (lm.zoom !== undefined) {
@@ -1462,7 +1462,7 @@
 					const sizeKey = lm.size?.toUpperCase() || "S";
 					
 					// Define standard static pixel sizes based on the S, M, L property
-					const fixedSizeMap = { "S": 12, "M": 14, "L": 16 };
+					const fixedSizeMap = { "XS": 10, "S": 12, "M": 14, "L": 16 };
 					const fixedFontSize = fixedSizeMap[sizeKey];
 					
 					ctx.textAlign = 'center';
