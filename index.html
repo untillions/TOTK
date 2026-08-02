@@ -124,7 +124,7 @@
 			position: relative;
 			width: 100%;
 			max-width: 800px;
-			height: 260px; /* Comfortably holds the 200px asset + title buffer */
+			height: 260px;
 			margin-top: 1vh;
 			z-index: 2;
 			display: flex;
@@ -153,23 +153,22 @@
 			overflow: hidden;
 			opacity: 0;
 			animation: waitForLine 0.1s linear 1s forwards;
+			box-sizing: border-box;
+			display: flex;
 		}
 		.hero-top {
 			height: 80%;
 			padding-bottom: 5px;
+			align-items: flex-end;
+			justify-content: flex-start;
+			padding-left: 5%;
 		}
 		.hero-bottom {
 			height: 20%;
 			padding-top: 5px;
-		}
-		
-		/* Left-justified Logo Container */
-		.hero-top {
-			display: flex;
-			align-items: flex-end;
-			justify-content: flex-start;
-			padding-left: 5%;
-			box-sizing: border-box;
+			align-items: flex-start;
+			justify-content: flex-end;
+			padding-right: 5%;
 		}
 		
 		.hero-logo {
@@ -177,15 +176,6 @@
 			width: auto;
 			transform: translateY(100%); /* Start hidden under the center line */
 			animation: revealUp 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
-		}
-		
-		/* Right-justified Title Container */
-		.hero-bottom {
-			display: flex;
-			align-items: flex-start;
-			justify-content: flex-end;
-			padding-right: 5%;
-			box-sizing: border-box;
 		}
 		
 		.hero-title {
@@ -811,7 +801,7 @@
 				margin-bottom: 20px;
 			}
 			.hero-logo {
-				max-height: 150px;
+				max-height: 140px;
 			}
 			.hero-title {
 				font-size: 1.5rem;
