@@ -3003,11 +3003,11 @@
                 
                 // To add back the click to view coordinates functionality, just switch the commented lines below:
                 
-                markerX = (e.clientX - offsetX) / scale;
-                markerY = (e.clientY - offsetY) / scale;
-            	// markerX = null;
-                // markerY = null;
-                // document.getElementById('coordLabel').style.display = 'none';
+                // markerX = (e.clientX - offsetX) / scale;
+                // markerY = (e.clientY - offsetY) / scale;
+            	markerX = null;
+                markerY = null;
+                document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
         }
