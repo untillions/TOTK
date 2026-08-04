@@ -394,7 +394,7 @@
 			line-height: 1.4;
 			pointer-events: auto; 
 			display: none; 
-			max-width: 220px;
+			max-width: 240px;
 			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
 		}
 		.game-coords {
@@ -1380,22 +1380,127 @@
 		const groupCenterX = (selectedImgX + tempImgX) / 2;
 		const groupCenterY = (selectedImgY + tempImgY) / 2;
 	
-		// Leave room on the right for coordLabel
-		const labelSpace = window.innerWidth < 600 ? 125 : 175;
-	
+		// ---------------------------------------------------------
+		// PHONE / SMALL SCREEN
+		// ---------------------------------------------------------
+		
+		if (window.innerWidth <= 600) {
+		
+			// Reserve approximately 190px at the bottom for coordLabel.
+			// This leaves a comfortable gap between the Korok setup
+			// and the label.
+			const reservedLabelSpace = 210;
+
+			const availableMapHeight =
+				window.innerHeight - reservedLabelSpace;
+			
+			const targetScreenX =
+				window.innerWidth / 2;
+			
+			const targetScreenY =
+				availableMapHeight / 2;
+		
+			const targetOffsetX =
+				targetScreenX - (groupCenterX * scale);
+		
+			const targetOffsetY =
+				targetScreenY - (groupCenterY * scale);
+		
+			smoothPanTo(targetOffsetX, targetOffsetY);
+		
+			return;
+		}
+		
+		// ---------------------------------------------------------
+		// TABLET / DESKTOP
+		// ---------------------------------------------------------
+		
+		const labelSpace = window.innerWidth < 900 ? 150 : 175;
+		
 		const targetScreenX =
 			(window.innerWidth - labelSpace) / 2;
-	
+		
 		const targetScreenY =
 			window.innerHeight / 2;
-	
+		
 		const targetOffsetX =
 			targetScreenX - (groupCenterX * scale);
-	
+		
 		const targetOffsetY =
 			targetScreenY - (groupCenterY * scale);
-	
+		
 		smoothPanTo(targetOffsetX, targetOffsetY);
+	}
+	
+	function positionKorokCoordLabel(screenX, screenY, tempScreenX, tempScreenY, minRectX, maxRectX, minRectY, maxRectY) {
+		const isSmallScreen = window.innerWidth <= 600;
+		const labelGap = 3;
+	
+		// ---------------------------------------------------------
+		// PHONE / SMALL SCREEN
+		// ---------------------------------------------------------
+		// Always put the label BELOW the entire Korok setup.
+
+		if (isSmallScreen) {
+			const labelWidth = 240;
+	
+			const labelLeft =
+				(window.innerWidth - labelWidth) / 2;
+	
+			const labelTop =
+				maxRectY + labelGap;
+	
+			coordLabel.style.left = `${labelLeft}px`;
+			coordLabel.style.top = `${labelTop}px`;
+			coordLabel.style.width = `${labelWidth}px`;
+			coordLabel.style.boxSizing = 'border-box';
+	
+			return;
+		}
+	
+		// ---------------------------------------------------------
+		// TABLET / DESKTOP
+		// ---------------------------------------------------------
+	
+		const dx = screenX - tempScreenX;
+		const dy = screenY - tempScreenY;
+	
+		const slope = Math.abs(dy / dx);
+	
+		// ---------------------------------------------------------
+		// SHALLOW ARROW
+		// ---------------------------------------------------------
+		
+		if (slope <= 1) {
+			const labelWidth = window.innerWidth < 900 ? 240 : 260;
+	
+			// Align with the left edge of the rectangle.
+			const labelLeft = minRectX;
+	
+			// 10px below the rectangle's lowest point.
+			const labelTop = maxRectY + labelGap;
+	
+			coordLabel.style.left = `${labelLeft}px`;
+			coordLabel.style.top = `${labelTop}px`;
+			coordLabel.style.width = `${labelWidth}px`;
+			coordLabel.style.boxSizing = 'border-box';
+	
+			return;
+		}
+	
+		// ---------------------------------------------------------
+		// STEEP ARROW
+		// ---------------------------------------------------------
+
+		const labelWidth = window.innerWidth < 900 ? 240 : 260;
+	
+		const labelLeft = maxRectX + labelGap;
+		const labelTop = minRectY;
+	
+		coordLabel.style.left = `${labelLeft}px`;
+		coordLabel.style.top = `${labelTop}px`;
+		coordLabel.style.width = `${labelWidth}px`;
+		coordLabel.style.boxSizing = 'border-box';
 	}
     
     function zoomAround(zoomFactor, centerX, centerY) {
@@ -1661,56 +1766,106 @@
 				const dy = screenY - tempScreenY;
 				const distance = Math.hypot(dx, dy);
 			
-				if (distance > 1) {
+				// ---------------------------------------------------------
+				// DRAW ARROW FROM TEMPORARY ICON → SELECTED LANDMARK
+				// ---------------------------------------------------------
+				
+				// Minimum on-screen distance required before drawing an arrow.
+				// This is measured AFTER zoom/scaling, so it is a true
+				// screen-pixel distance at the current zoom level.
+				const minArrowDistance = 40;
+				
+				if (distance >= minArrowDistance) {
+				
 					const angle = Math.atan2(dy, dx);
-			
-					// Keep the arrow from running underneath either icon
+				
+					// Keep the arrow from running underneath either icon.
 					const startOffset = 17;
 					const endOffset = 17;
-			
-					const startX = tempScreenX + Math.cos(angle) * startOffset;
-					const startY = tempScreenY + Math.sin(angle) * startOffset;
-			
-					const endX = screenX - Math.cos(angle) * endOffset;
-					const endY = screenY - Math.sin(angle) * endOffset;
-			
+				
+					const startX =
+						tempScreenX + Math.cos(angle) * startOffset;
+				
+					const startY =
+						tempScreenY + Math.sin(angle) * startOffset;
+				
+					// The exact tip of the arrow.
+					// This is deliberately calculated separately from
+					// the arrowhead's two rear corners.
+					const arrowTipX =
+						screenX - Math.cos(angle) * endOffset;
+				
+					const arrowTipY =
+						screenY - Math.sin(angle) * endOffset;
+					
+					const shaftEndGap = 3;
+					
+					const shaftEndX =
+						arrowTipX - Math.cos(angle) * shaftEndGap;
+					
+					const shaftEndY =
+						arrowTipY - Math.sin(angle) * shaftEndGap;
+						
 					ctx.save();
-			
+				
 					ctx.strokeStyle = '#61cc74';
 					ctx.fillStyle = '#61cc74';
 					ctx.lineWidth = 3;
 					ctx.lineCap = 'round';
 					ctx.lineJoin = 'round';
-					
+				
 					// Match the shadow used by the map icons
 					ctx.shadowBlur = 12;
 					ctx.shadowOffsetX = 0;
 					ctx.shadowOffsetY = 0;
 					ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-					
-					// Arrow shaft
+				
+					// ---------------------------------------------------------
+					// ARROW SHAFT
+					// ---------------------------------------------------------
+				
 					ctx.beginPath();
 					ctx.moveTo(startX, startY);
-					ctx.lineTo(endX, endY);
+					ctx.lineTo(shaftEndX, shaftEndY);
 					ctx.stroke();
-			
-					// Arrowhead
-					const arrowHeadLength = 10;
+				
+					// ---------------------------------------------------------
+					// ARROWHEAD
+					// ---------------------------------------------------------
+				
+					const arrowHeadLength = 11;
 					const arrowHeadAngle = Math.PI / 6;
-			
+				
+					const leftX =
+						arrowTipX -
+						arrowHeadLength * Math.cos(angle - arrowHeadAngle);
+				
+					const leftY =
+						arrowTipY -
+						arrowHeadLength * Math.sin(angle - arrowHeadAngle);
+				
+					const rightX =
+						arrowTipX -
+						arrowHeadLength * Math.cos(angle + arrowHeadAngle);
+				
+					const rightY =
+						arrowTipY -
+						arrowHeadLength * Math.sin(angle + arrowHeadAngle);
+				
 					ctx.beginPath();
-					ctx.moveTo(endX, endY);
-					ctx.lineTo(
-						endX - arrowHeadLength * Math.cos(angle - arrowHeadAngle),
-						endY - arrowHeadLength * Math.sin(angle - arrowHeadAngle)
-					);
-					ctx.lineTo(
-						endX - arrowHeadLength * Math.cos(angle + arrowHeadAngle),
-						endY - arrowHeadLength * Math.sin(angle + arrowHeadAngle)
-					);
+				
+					// Exact tip
+					ctx.moveTo(arrowTipX, arrowTipY);
+				
+					// Back-left corner
+					ctx.lineTo(leftX, leftY);
+				
+					// Back-right corner
+					ctx.lineTo(rightX, rightY);
+				
 					ctx.closePath();
 					ctx.fill();
-			
+				
 					ctx.restore();
 				}
 			
@@ -1817,12 +1972,6 @@
 				// POSITION COORDINATE LABEL
 				// ---------------------------------------------------------
 				
-				const labelGap = 12;
-				const labelWidth = window.innerWidth < 600 ? 220 : 240;
-				
-				// The rectangle's rightmost extent in screen coordinates.
-				// Since the rectangle is rotated, calculate its four corners
-				// to determine the actual bounding box.
 				const halfW = rectWidth / 2;
 				const halfH = rectHeight / 2;
 				
@@ -1835,26 +1984,33 @@
 				
 				let minRectX = Infinity;
 				let maxRectX = -Infinity;
+				let minRectY = Infinity;
+				let maxRectY = -Infinity;
 				
 				for (const [x, y] of corners) {
 					const rotatedX =
 						centerX + (x * Math.cos(angle) - y * Math.sin(angle));
 				
+					const rotatedY =
+						centerY + (x * Math.sin(angle) + y * Math.cos(angle));
+				
 					minRectX = Math.min(minRectX, rotatedX);
 					maxRectX = Math.max(maxRectX, rotatedX);
+					minRectY = Math.min(minRectY, rotatedY);
+					maxRectY = Math.max(maxRectY, rotatedY);
 				}
 				
-				// Put label to the right of the entire rotated rectangle
-				let labelLeft = maxRectX + labelGap;
+				positionKorokCoordLabel(
+					screenX,
+					screenY,
+					tempScreenX,
+					tempScreenY,
+					minRectX,
+					maxRectX,
+					minRectY,
+					maxRectY
+				);
 				
-				// If the label would run off the right side,
-				// place it to the left of the entire rectangle instead.
-				if (labelLeft + labelWidth > window.innerWidth - 10) {
-					labelLeft = minRectX - labelWidth - labelGap;
-				}
-				
-				coordLabel.style.left = `${Math.max(10, labelLeft)}px`;
-				coordLabel.style.top = `${centerY - 20}px`;
 				coordLabel.style.borderColor = lmColor;
 			
 			} else {
