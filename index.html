@@ -520,6 +520,27 @@
 			gap: 10px;
 			padding-bottom: 20px;
 		}
+		#listHideFound{
+			text-align:right;
+			margin-top:10px;
+			margin-bottom:8px;
+		}
+		#listHideFound{
+			position:relative;
+			z-index:99999;
+		}
+		#listHideFoundRow{
+			display:inline-flex;
+			align-items:center;
+			justify-content:flex-end;
+			gap:12px;
+		}
+		#listHideFoundLabel{
+			text-align:right;
+			line-height:1.15;
+			font-size:.9rem;
+			font-weight:600;
+		}
 		
 		/* Each filter hierarchy section */
 		.list-category {
@@ -1056,6 +1077,15 @@
 			<div id="listHeader">
 				<h1 id="listRegionTitle">Region Name</h1>
 				<div id="listLayerSubtitle">Surface</div>
+				<div id="listHideFound">
+					<div id="listHideFoundRow">
+						<span id="listHideFoundLabel">Hide found<br>landmarks</span>
+						<label class="switch">
+							<input type="checkbox" id="hideFoundCheckbox" onchange="toggleHideFound()">
+							<span class="slider"></span>
+						</label>
+					</div>
+				</div>
 			</div>
 	
 			<div id="landmarkList"></div>
@@ -1266,11 +1296,13 @@
     let isDragging = false, startX, startY, initialPinchDist = 0, initialScale = 1;
     let dragMoveCounter = 0; 
 
-    // MARKER STATE
+    // --- GLOBAL VARIABLES ---
     let markerX = null;
     let markerY = null;
     let selectedLandmark = null;
     let korokTempMarker = null;
+    let mobileKorokLabelOffsetX = null;
+    let hideFoundInList = localStorage.getItem("hideFoundInList") === "true";
 
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
@@ -1487,19 +1519,13 @@
     // ----------------------- LIST VIEW -----------------------
     
     function buildLandmarkCardHTML(landmark) {
-		const lmColor =
-			landmarkColors[landmark.landmark] ||
-			landmarkColors["default"];
-	
-		const fileName =
-			landmark.landmark.toLowerCase().replace(/\s+/g, '-');
-	
-		const lmId =
-			`${landmark.landmark}_${landmark.x}_${landmark.y}`;
-	
+		const lmColor = landmarkColors[landmark.landmark] || landmarkColors["default"];
+		const fileName = landmark.landmark.toLowerCase().replace(/\s+/g, '-');
+		const lmId = `${landmark.landmark}_${landmark.x}_${landmark.y}`;
+		
 		const progressData = loadProgress();
 		const isFound = progressData[lmId] || false;
-	
+		
 		let detailHtml = '';
 	
 		if (landmark.details) {
@@ -1705,6 +1731,14 @@
 		});
 	}
 	
+	function toggleHideFound(){
+	
+		hideFoundInList = document.getElementById("hideFoundCheckbox").checked;
+		localStorage.setItem("hideFoundInList", hideFoundInList);
+		
+		renderLandmarkList();
+	}
+	
 	function renderLandmarkList() {
 		const list = document.getElementById('landmarkList');
 	
@@ -1734,13 +1768,22 @@
 		/* Build the exact same hierarchy as the filter menu */
 		FILTER_CATEGORIES.forEach(category => {
 	
+			const progressData = loadProgress();
 			const categoryLandmarks = visibleLandmarks.filter(lm => {
-	
+			
 				const filterKey =
 					FILTER_ALIASES[lm.landmark] ||
 					lm.landmark;
-	
-				return category.items.includes(filterKey);
+			
+				if (!category.items.includes(filterKey))
+					return false;
+			
+				if (hideFoundInList) {
+					const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+					if (progressData[lmId]) return false;
+				}
+			
+				return true;
 			});
 	
 			if (categoryLandmarks.length === 0) return;
@@ -1787,6 +1830,7 @@
 	
 		if (viewMode === 'list') {
 			renderLandmarkList();
+			document.getElementById("listViewer").scrollTop = 0;
 		} else {
 			redraw();
 		}
@@ -1956,18 +2000,21 @@
 
 		if (isSmallScreen) {
 			const labelWidth = 240;
-	
-			const labelLeft =
-				(window.innerWidth - labelWidth) / 2;
-	
-			const labelTop =
-				maxRectY + labelGap;
-	
+
+			const screenLabelCenterX = window.innerWidth / 2;
+		
+			if (mobileKorokLabelOffsetX === null) {
+				mobileKorokLabelOffsetX = screenLabelCenterX;
+			}
+		
+			const labelLeft = mobileKorokLabelOffsetX - (labelWidth / 2);
+			const labelTop = maxRectY + labelGap;
+		
 			coordLabel.style.left = `${labelLeft}px`;
 			coordLabel.style.top = `${labelTop}px`;
 			coordLabel.style.width = `${labelWidth}px`;
 			coordLabel.style.boxSizing = 'border-box';
-	
+		
 			return;
 		}
 	
@@ -2719,8 +2766,8 @@
 		coordLabel.style.display = 'none';
 	
 		document.getElementById('regionTitle').innerText = region.name;
-	
 		document.getElementById('listRegionTitle').innerText = region.name;
+		document.getElementById("hideFoundCheckbox").checked = hideFoundInList;
 	
 		document.getElementById('listLayerSubtitle').innerText =
 			currentLayer.charAt(0).toUpperCase() +
@@ -2743,6 +2790,7 @@
 		buildRegionMenu();
 	
 		renderLandmarkList();
+		document.getElementById("listViewer").scrollTop = 0;
 	}
 
     function setLayer(layer) {
@@ -2771,6 +2819,7 @@
 		
 		if (viewMode === 'list') {
 			renderLandmarkList();
+			document.getElementById("listViewer").scrollTop = 0;
 		}
     }
     
@@ -2879,6 +2928,7 @@
 		
 		if (viewMode === 'list') {
 			renderLandmarkList();
+			document.getElementById("listViewer").scrollTop = 0;
 		}
 		
 		autocompleteResults.innerHTML = '';
@@ -3620,6 +3670,7 @@
                 selectedLandmark = clickedLandmark;
                 markerX = null; 
                 markerY = null;
+				mobileKorokLabelOffsetX = null;
                 
                 updateKorokTempMarker();
                 panToSelectedLandmark();
@@ -3633,6 +3684,7 @@
                 // markerY = (e.clientY - offsetY) / scale;
             	markerX = null;
                 markerY = null;
+				mobileKorokLabelOffsetX = null;
                 document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
@@ -3681,6 +3733,24 @@
 	}, { passive: false });
 
     window.addEventListener('resize', () => resizeCanvas(false));
+    
+    document.getElementById("listViewer").addEventListener("pointerdown", e => {
+
+        if(viewMode !== "list") return;
+
+        if(
+            e.target.closest("#regionMenu") ||
+            e.target.closest("#autocompleteResults") ||
+            e.target.closest("#filterMenu") ||
+            e.target.closest("#layerMenu") ||
+            e.target.closest("#progressMenu")
+        ){
+            return;
+        }
+
+        resetAllActivePanels("all");
+    });
+    
 </script>
 </body>
 </html>
