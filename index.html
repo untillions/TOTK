@@ -521,25 +521,27 @@
 			padding-bottom: 20px;
 		}
 		#listHideFound{
-			text-align:right;
-			margin-top:10px;
-			margin-bottom:8px;
-		}
-		#listHideFound{
-			position:relative;
-			z-index:99999;
+			text-align: right;
+			margin-top: 10px;
+			margin-bottom: 8px;
+			position: relative;
+			z-index: 99999;
 		}
 		#listHideFoundRow{
-			display:inline-flex;
-			align-items:center;
-			justify-content:flex-end;
-			gap:12px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 12px;
+		}
+		#listHideFoundRow,
+		#listHideFoundRow * {
+			pointer-events: auto;
 		}
 		#listHideFoundLabel{
-			text-align:right;
-			line-height:1.15;
-			font-size:.9rem;
-			font-weight:600;
+			text-align: right;
+			line-height: 1.15;
+			font-size: 0.7rem;
+			font-weight: bold;
 		}
 		
 		/* Each filter hierarchy section */
@@ -1227,8 +1229,8 @@
 		"Named Location": "Location",
 		"Unnamed Location": "Location",
 		"Special Location": "Location",
-		"Korok x1": "Korok",
-		"Korok x2": "Korok"
+		"Korok x1": "Korok Seed",
+		"Korok x2": "Korok Seed"
 	};
 
     const icons = {};
@@ -1238,7 +1240,7 @@
         "Lightroot", "Treasure", "Schematic", "Forge & Refinery", "Dragon Tear",
         "Ancient Tablet", "Goddess Statue", "Bargainer Statue", "Temple", "Shop",
         "Armor Shop", "General Shop", "Other Shop", "Inn", "Sage's Will", 
-        "Location", "Named Location", "Unnamed Location", "Special Location", "Korok", 
+        "Location", "Named Location", "Unnamed Location", "Special Location", "Korok Seed", 
         "Korok x1", "Korok x2"
     ];
     const landmarkColors = {
@@ -1273,7 +1275,7 @@
         "General Shop": "#dd87d3",
         "Other Shop": "#dd87d3",
         "Inn": "#dd87d3",
-        "Korok": "#61cc74",
+        "Korok Seed": "#61cc74",
         "Korok x1": "#61cc74",
         "Korok x2": "#61cc74",
         "default": "#facc15"
@@ -1301,18 +1303,17 @@
     let markerY = null;
     let selectedLandmark = null;
     let korokTempMarker = null;
-    let mobileKorokLabelOffsetX = null;
     let hideFoundInList = localStorage.getItem("hideFoundInList") === "true";
 
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Location": "Locations", "Korok": "Koroks" },
-            defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm", "Korok"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Location": "Locations", "Korok Seed": "Korok Seeds" },
+            defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm", "Korok Seed"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Location": "Locations", "Korok": "Koroks" },
-            defaults: ["Shrine", "Dispenser", "Korok"]
+            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Location": "Locations", "Korok Seed": "Korok Seeds" },
+            defaults: ["Shrine", "Dispenser", "Korok Seed"]
         },
         depths: {
             options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Location": "Locations" },
@@ -1335,7 +1336,7 @@
         },
         {
 			name: "Completionist",
-            items: ["Location", "Korok"]
+            items: ["Location", "Korok Seed"]
         }
     ];
     
@@ -1348,7 +1349,7 @@
         "Treasure": "Treasures", "Schematic": "Schematics", "Forge & Refinery": "Forges & Refineries",
         "Ancient Tablet": "Ancient Tablets", "Great Fairy": "Great Fairies", "Chasm": "Chasms",
         "Temple": "Temples", "Shop": "Shops", "Inn": "Inns", "Sage's Will": "Sage's Wills",
-        "Location": "Locations", "Korok": "Koroks"
+        "Location": "Locations", "Korok Seed": "Korok Seeds"
     };
     
     const cycleLandmarks = Object.keys(loaderPlurals);
@@ -1894,8 +1895,8 @@
             redraw();
 
             if (progress < 1) {
-                panAnimId = requestAnimationFrame(step);
-            }
+				panAnimId = requestAnimationFrame(step);
+			}
         }
         panAnimId = requestAnimationFrame(step);
     }
@@ -1903,35 +1904,24 @@
     function panToSelectedLandmark() {
 		if (!selectedLandmark || !currentRegion) return;
 	
-		const selectedImgX =
-			(selectedLandmark.x - currentRegion.gameStartX) * 1.5;
-	
-		const selectedImgY =
-			(currentRegion.gameStartY - selectedLandmark.y) * 1.5;
+		const selectedImgX = (selectedLandmark.x - currentRegion.gameStartX) * 1.5;
+		const selectedImgY = (currentRegion.gameStartY - selectedLandmark.y) * 1.5;
 	
 		// Normal landmark: use the existing behavior
 		if (!korokTempMarker) {
 			const tooltipShift = window.innerWidth < 600 ? 120 : 150;
 	
-			const targetOffsetX =
-				(window.innerWidth / 2) -
-				tooltipShift -
-				(selectedImgX * scale);
-	
-			const targetOffsetY =
-				(window.innerHeight / 2) -
-				(selectedImgY * scale);
+			const targetOffsetX = (window.innerWidth / 2) - tooltipShift - (selectedImgX * scale);
+			const targetOffsetY = (window.innerHeight / 2) - (selectedImgY * scale);
 	
 			smoothPanTo(targetOffsetX, targetOffsetY);
 			return;
 		}
 	
 		// Temporary marker's image coordinates
-		const tempImgX =
-			(korokTempMarker.x - currentRegion.gameStartX) * 1.5;
+		const tempImgX = (korokTempMarker.x - currentRegion.gameStartX) * 1.5;
 	
-		const tempImgY =
-			(currentRegion.gameStartY - korokTempMarker.y) * 1.5;
+		const tempImgY = (currentRegion.gameStartY - korokTempMarker.y) * 1.5;
 	
 		// Center between the two points
 		const groupCenterX = (selectedImgX + tempImgX) / 2;
@@ -1943,26 +1933,15 @@
 		
 		if (window.innerWidth <= 600) {
 		
-			// Reserve approximately 190px at the bottom for coordLabel.
-			// This leaves a comfortable gap between the Korok setup
-			// and the label.
 			const reservedLabelSpace = 210;
-
-			const availableMapHeight =
-				window.innerHeight - reservedLabelSpace;
+			const availableMapHeight = window.innerHeight - reservedLabelSpace;
 			
-			const targetScreenX =
-				window.innerWidth / 2;
+			const targetScreenX = window.innerWidth / 2;
+			const targetScreenY = availableMapHeight / 2;
+		
+			const targetOffsetX = targetScreenX - (groupCenterX * scale);
+			const targetOffsetY = targetScreenY - (groupCenterY * scale);
 			
-			const targetScreenY =
-				availableMapHeight / 2;
-		
-			const targetOffsetX =
-				targetScreenX - (groupCenterX * scale);
-		
-			const targetOffsetY =
-				targetScreenY - (groupCenterY * scale);
-		
 			smoothPanTo(targetOffsetX, targetOffsetY);
 		
 			return;
@@ -1974,17 +1953,11 @@
 		
 		const labelSpace = window.innerWidth < 900 ? 150 : 175;
 		
-		const targetScreenX =
-			(window.innerWidth - labelSpace) / 2;
+		const targetScreenX = (window.innerWidth - labelSpace) / 2;
+		const targetScreenY = window.innerHeight / 2;
 		
-		const targetScreenY =
-			window.innerHeight / 2;
-		
-		const targetOffsetX =
-			targetScreenX - (groupCenterX * scale);
-		
-		const targetOffsetY =
-			targetScreenY - (groupCenterY * scale);
+		const targetOffsetX = targetScreenX - (groupCenterX * scale);
+		const targetOffsetY = targetScreenY - (groupCenterY * scale);
 		
 		smoothPanTo(targetOffsetX, targetOffsetY);
 	}
@@ -2000,20 +1973,16 @@
 
 		if (isSmallScreen) {
 			const labelWidth = 240;
-
-			const screenLabelCenterX = window.innerWidth / 2;
+			const groupCenterX = (minRectX + maxRectX) / 2;
 		
-			if (mobileKorokLabelOffsetX === null) {
-				mobileKorokLabelOffsetX = screenLabelCenterX;
-			}
-		
-			const labelLeft = mobileKorokLabelOffsetX - (labelWidth / 2);
+			const labelCenterX = groupCenterX;
+			const labelLeft = labelCenterX - (labelWidth / 2);
 			const labelTop = maxRectY + labelGap;
 		
 			coordLabel.style.left = `${labelLeft}px`;
 			coordLabel.style.top = `${labelTop}px`;
 			coordLabel.style.width = `${labelWidth}px`;
-			coordLabel.style.boxSizing = 'border-box';
+			coordLabel.style.boxSizing = "border-box";
 		
 			return;
 		}
@@ -2474,10 +2443,7 @@
 				const centerY = (screenY + tempScreenY) / 2;
 				
 				// Exact angle between the temporary icon and selected landmark
-				const angle = Math.atan2(
-					screenY - tempScreenY,
-					screenX - tempScreenX
-				);
+				const angle = Math.atan2(screenY - tempScreenY, screenX - tempScreenX);
 				
 				// Extend the rectangle 18px beyond each icon
 				const padding = 18;
@@ -2562,16 +2528,8 @@
 					maxRectY = Math.max(maxRectY, rotatedY);
 				}
 				
-				positionKorokCoordLabel(
-					screenX,
-					screenY,
-					tempScreenX,
-					tempScreenY,
-					minRectX,
-					maxRectX,
-					minRectY,
-					maxRectY
-				);
+				positionKorokCoordLabel(screenX, screenY, tempScreenX, tempScreenY,
+					minRectX, maxRectX, minRectY, maxRectY);
 				
 				coordLabel.style.borderColor = lmColor;
 			
@@ -2588,7 +2546,7 @@
 				coordLabel.style.top = `${screenY - 20}px`;
 				coordLabel.style.borderColor = lmColor;
 			}
-                        
+            
             coordLabel.innerHTML = buildLandmarkCardHTML(selectedLandmark);
 			coordLabel.style.display = 'block';
 			
@@ -2974,13 +2932,8 @@
 			const regionArray = [].concat(lm.region);
 		
 			if (!currentRegion || !regionArray.includes(currentRegion.id)) {
-				const targetRegionId =
-					regionArray.includes(0)
-						? 0
-						: regionArray[0];
-		
-				const region =
-					REGIONS.find(r => r.id === targetRegionId);
+				const targetRegionId = regionArray.includes(0) ? 0 : regionArray[0];
+				const region = REGIONS.find(r => r.id === targetRegionId);
 		
 				if (region) {
 					currentRegion = region;
@@ -2993,20 +2946,24 @@
 				currentLayer = levels[0];
 			}
 		
-			const filterKey =
-				FILTER_ALIASES[lm.landmark] ||
-				lm.landmark;
+			const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
 		
 			if (!activeFiltersByLayer[currentLayer].includes(filterKey)) {
 				activeFiltersByLayer[currentLayer].push(filterKey);
 			}
 		
-			document.getElementById('currentLayerIcon').src =
-				`icons/${currentLayer}.png`;
+			document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
+			document.getElementById('regionTitle').innerText = currentRegion.name;
 		
-			document.getElementById('regionTitle').innerText =
-				currentRegion.name;
-		
+			const layerBtn = document.getElementById('layerBtn');
+			if (currentRegion.id === 0) {
+				layerBtn.style.opacity = '0.5';
+				layerBtn.style.pointerEvents = 'none';
+			} else {
+				layerBtn.style.opacity = '1';
+				layerBtn.style.pointerEvents = 'auto';
+			}
+			
 			buildFilterMenu();
 			buildRegionMenu();
 			renderLandmarkList();
@@ -3670,7 +3627,6 @@
                 selectedLandmark = clickedLandmark;
                 markerX = null; 
                 markerY = null;
-				mobileKorokLabelOffsetX = null;
                 
                 updateKorokTempMarker();
                 panToSelectedLandmark();
@@ -3684,7 +3640,6 @@
                 // markerY = (e.clientY - offsetY) / scale;
             	markerX = null;
                 markerY = null;
-				mobileKorokLabelOffsetX = null;
                 document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
