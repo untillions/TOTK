@@ -377,7 +377,7 @@
         .active-panel {
 			outline: 1px solid #4ade80 !important;
 			outline-offset: -1px;
-			border-radius: 6px; /* Matches your general UI rounding */
+			border-radius: 6px;
 		}
         
         /* Coordinate/Landmark tooltip label overlay */
@@ -397,6 +397,7 @@
 			max-width: 240px;
 			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
 		}
+
 		.game-coords {
 			color: #ffffff;
 			font-weight: bold;
@@ -416,6 +417,338 @@
             margin-bottom: 2px;
             letter-spacing: 1px;
         }
+        		
+		.tooltip-header {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-bottom: 6px;
+			border-bottom: 1px solid rgba(255,255,255,0.1);
+			padding-bottom: 4px;
+		}
+		.landmark-title {
+			font-family: 'HyliaSerif', serif;
+			font-weight: normal;
+			font-size: 1.1rem;
+			display: block;
+			margin-bottom: 2px;
+			letter-spacing: 1px;
+		}
+		.game-coords {
+			color: #ffffff;
+			font-weight: bold;
+			display: block;
+			margin-bottom: 4px;
+		}
+		.img-coords {
+			color: #94a3b8;
+			font-size: 0.75rem;
+			display: block;
+		}
+		.landmark-found-row {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			margin-top: 12px;
+			gap: 8px;
+		}
+		.landmark-found-label {
+			font-size: 0.7rem;
+			font-weight: bold;
+			color: #e2e8f0;
+		}
+		
+		/* List View */
+		
+		#listViewer {
+			display: none;
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+		
+			overflow-y: auto;
+			overflow-x: hidden;
+		
+			-webkit-overflow-scrolling: touch;
+			touch-action: pan-y;
+		
+			padding:
+				calc(82px + env(safe-area-inset-top))
+				25px
+				calc(120px + env(safe-area-inset-bottom))
+				25px;
+		
+			z-index: 2;
+		}
+		#listViewer,
+		#listViewer * {
+			box-sizing: border-box;
+		}
+		#listHeader {
+			width: 100%;
+			max-width: 760px;
+			margin: 0 auto 20px auto;
+			text-align: center;
+			pointer-events: none;
+		}
+		#listRegionTitle {
+			font-family: 'HyliaSerif', serif;
+			color: #FAF7DF;
+			font-size: 1.8rem;
+			font-weight: normal;
+			letter-spacing: 1px;
+			margin: 0;
+			text-shadow: 2px 2px 3px black;
+		}
+		#listLayerSubtitle {
+			color: #94a3b8;
+			font-size: 0.95rem;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			margin-top: 4px;
+			text-shadow: 1px 1px 3px black;
+		}
+		#landmarkList {
+			width: 100%;
+			max-width: 760px;
+			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			padding-bottom: 20px;
+		}
+		#listHideFound{
+			text-align: right;
+			margin-top: 10px;
+			margin-bottom: 8px;
+			position: relative;
+			z-index: 99999;
+		}
+		#listHideFoundRow{
+			display: inline-flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 12px;
+		}
+		#listHideFoundRow,
+		#listHideFoundRow * {
+			pointer-events: auto;
+		}
+		#listHideFoundLabel{
+			text-align: right;
+			line-height: 1.15;
+			font-size: 0.7rem;
+			font-weight: bold;
+		}
+		
+		/* Each filter hierarchy section */
+		.list-category {
+			margin-bottom: 8px;
+		}
+		.list-category-header {
+			display: flex;
+			align-items: center;
+			padding: 8px 4px;
+			color: #94a3b8;
+			font-size: 0.9rem;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			border-bottom: 1px solid rgba(255,255,255,0.08);
+			user-select: none;
+		}
+		.list-category-title {
+			display: flex;
+			align-items: center;
+		}
+		.list-category-content {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			padding-top: 8px;
+		}
+		.list-empty {
+			color: #94a3b8;
+			text-align: center;
+			padding: 30px 15px;
+			font-size: 0.9rem;
+		}
+		
+		.list-landmark-card {
+			width: 100%;
+			max-width: 100%;
+			box-sizing: border-box;
+		
+			background: rgba(15, 23, 42, 0.95);
+			border: 1px solid var(--landmark-color, #4ade80);
+			color: #e2e8f0;
+		
+			padding: 8px 14px;
+			border-radius: 6px;
+		
+			font-family: monospace;
+			font-size: 0.85rem;
+			line-height: 1.4;
+		
+			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+		
+			transition: background 0.15s ease;
+		}
+		
+		.list-landmark-card:hover {
+			background: rgba(30, 41, 59, 0.98);
+		}
+		
+		/* --- PROGRESS VIEW --- */
+		#progressViewer {
+			display: none;
+			position: relative;
+			width: 100vw;
+			height: 100vh;
+		}
+		#progressScroll {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+ 
+			overflow-y: auto;
+			overflow-x: hidden;
+ 
+			-webkit-overflow-scrolling: touch;
+			touch-action: pan-y;
+ 
+			background: #0b0f19;
+ 
+			padding:
+				calc(25px + env(safe-area-inset-top))
+				20px
+				calc(100px + env(safe-area-inset-bottom))
+				20px;
+ 
+			z-index: 2;
+		}
+		#progressScroll,
+		#progressScroll * {
+			box-sizing: border-box;
+		}
+		#progressHeader {
+			width: 100%;
+			max-width: 760px;
+			margin: 0 auto 20px auto;
+			text-align: center;
+		}
+		#progressPageTitle {
+			font-family: 'HyliaSerif', serif;
+			color: #FAF7DF;
+			font-size: 1.8rem;
+			font-weight: normal;
+			letter-spacing: 1px;
+			margin: 0 0 8px 0;
+			text-shadow: 2px 2px 3px black;
+		}
+		#progressOverallLine {
+			color: #85e0fe;
+			font-size: 1rem;
+			font-weight: bold;
+			text-shadow: 1px 1px 4px rgba(0, 0, 0, 1);
+		}
+		.progress-section {
+			width: 100%;
+			max-width: 760px;
+			margin: 0 auto 28px auto;
+		}
+		.progress-section-title {
+			font-family: 'HyliaSerif', serif;
+			color: #4ade80;
+			font-size: 1.2rem;
+			font-weight: normal;
+			letter-spacing: 0.5px;
+			margin: 0 0 10px 0;
+			border-bottom: 1px solid rgba(255,255,255,0.08);
+			padding-bottom: 6px;
+		}
+		.progress-table-wrap {
+			width: 100%;
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+			border: 1px solid #334155;
+			border-radius: 8px;
+			background: rgba(15, 23, 42, 0.95);
+			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+		}
+		.progress-table {
+			width: 100%;
+			min-width: 440px;
+			border-collapse: collapse;
+			font-family: monospace;
+			font-size: 0.8rem;
+			color: #e2e8f0;
+		}
+		.progress-table th {
+			position: sticky;
+			top: 0;
+			background: #1e293b;
+			color: #94a3b8;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			font-size: 0.68rem;
+			text-align: left;
+			padding: 8px 10px;
+			border-bottom: 1px solid #334155;
+			white-space: nowrap;
+		}
+		.progress-table td {
+			padding: 7px 10px;
+			border-bottom: 1px solid rgba(255,255,255,0.06);
+			white-space: nowrap;
+			vertical-align: middle;
+		}
+		.progress-table tbody tr:last-child td {
+			border-bottom: none;
+		}
+		.progress-landmark-cell {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+		.progress-landmark-cell img {
+			height: 1.6em;
+			width: auto;
+			flex-shrink: 0;
+			filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+		}
+		.progress-layer-cell img {
+			height: 1.4em;
+			width: auto;
+			display: block;
+		}
+		.progress-category-row td {
+			background: rgba(30, 41, 59, 0.85);
+			color: #94a3b8;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			font-size: 0.68rem;
+			padding: 6px 10px;
+		}
+		.progress-total-row td {
+			background: rgba(74, 222, 128, 0.12);
+			color: #4ade80;
+			font-weight: bold;
+			border-top: 2px solid #4ade80;
+			border-bottom: none;
+		}
+		#progressHomePanel {
+			position: fixed;
+			bottom: calc(25px + env(safe-area-inset-bottom));
+			left: 25px;
+			z-index: 10;
+		}
         
         /* --- LOADER --- */
         #loader {
@@ -821,6 +1154,36 @@
 				width: 90%;
 				line-height: 1.4;
 			}
+			#listViewer {
+				padding-left: 15px;
+				padding-right: 15px;
+				padding-top: calc(78px + env(safe-area-inset-top));
+				padding-bottom: calc(115px + env(safe-area-inset-bottom));
+			}
+			#listRegionTitle {
+				font-size: 1.45rem;
+			}
+			#listLayerSubtitle {
+				font-size: 0.8rem;
+			}
+			#landmarkList {
+				gap: 8px;
+			}
+			#progressScroll {
+				padding-left: 15px;
+				padding-right: 15px;
+			}
+			#progressPageTitle {
+				font-size: 1.45rem;
+			}
+			.progress-table {
+				font-size: 0.72rem;
+				min-width: 400px;
+			}
+			.progress-table th,
+			.progress-table td {
+				padding: 6px 8px;
+			}
 
 		}
                 
@@ -853,13 +1216,13 @@
 		
 		<div class="dashboard-btn-wrapper">
 			<div class="dashboard-btn-group">
-				<button class="layer-btn staggered-item" style="--delay: 2;" onclick="loadRegion(REGIONS[0])">
+				<button class="layer-btn staggered-item" style="--delay: 2;" onclick="loadMapView(REGIONS[0])">
 					<img src="icons/map.png"> <span>View<br>Map</span>
 				</button>
-				<button class="layer-btn staggered-item" style="--delay: 3;" onclick="">
+				<button class="layer-btn staggered-item" style="--delay: 3;" onclick="loadListView(REGIONS[0])">
 					<img src="icons/list.png"> <span>View<br>List</span>
 				</button>
-				<button class="layer-btn staggered-item" style="--delay: 4;" onclick="">
+				<button class="layer-btn staggered-item" style="--delay: 4;" onclick="loadProgressView()">
 					<img src="icons/progress2.png"> <span>View<br>Progress</span>
 				</button>
 			</div>
@@ -871,7 +1234,27 @@
 	</div>
 	
 	<div id="mapViewer">
+
 		<canvas id="mapCanvas"></canvas>
+	
+		<div id="listViewer">
+			<div id="listHeader">
+				<h1 id="listRegionTitle">Region Name</h1>
+				<div id="listLayerSubtitle">Surface</div>
+				<div id="listHideFound">
+					<div id="listHideFoundRow">
+						<span id="listHideFoundLabel">Hide found<br>landmarks</span>
+						<label class="switch">
+							<input type="checkbox" id="hideFoundCheckbox" onchange="toggleHideFound()">
+							<span class="slider"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+	
+			<div id="landmarkList"></div>
+		</div>
+	
 		<div id="coordLabel"></div>
 		<div id="loader">
 			<img src="icons/loading.png" class="spinner" alt="...">
@@ -930,6 +1313,57 @@
 		
 			</div>
 		
+		</div>
+	</div>
+	
+	<div id="progressViewer">
+		<div id="progressScroll">
+ 
+			<div id="progressHeader">
+				<h1 id="progressPageTitle">Progress Tracker</h1>
+				<div id="progressOverallLine">Overall Map Completion: <span id="progressOverallValue">0.00/100%</span></div>
+			</div>
+ 
+			<div class="progress-section">
+				<h2 class="progress-section-title">Completion By Region</h2>
+				<div class="progress-table-wrap">
+					<table class="progress-table" id="regionProgressTable">
+						<thead>
+							<tr>
+								<th>Region</th>
+								<th>Layer</th>
+								<th>Completed</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody id="regionProgressBody"></tbody>
+					</table>
+				</div>
+			</div>
+ 
+			<div class="progress-section">
+				<h2 class="progress-section-title">Completion by Landmark</h2>
+				<div class="progress-table-wrap">
+					<table class="progress-table" id="landmarkProgressTable">
+						<thead>
+							<tr>
+								<th>Landmark</th>
+								<th>Found</th>
+								<th>Total</th>
+								<th>Percent</th>
+							</tr>
+						</thead>
+						<tbody id="landmarkProgressBody"></tbody>
+					</table>
+				</div>
+			</div>
+ 
+		</div>
+ 
+		<div id="progressHomePanel">
+			<button class="layer-btn" onclick="exitToDashboard()">
+				<img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
+			</button>
 		</div>
 	</div>
 
@@ -998,6 +1432,7 @@
     let currentRegion = null;
     let currentLayer = 'sky'; 
     let activeImage = new Image();
+    let viewMode = 'map';
     
     // Landmark Icons Dictionary
     const FILTER_ALIASES = {
@@ -1007,8 +1442,8 @@
 		"Named Location": "Location",
 		"Unnamed Location": "Location",
 		"Special Location": "Location",
-		"Korok x1": "Korok",
-		"Korok x2": "Korok"
+		"Korok x1": "Korok Seed",
+		"Korok x2": "Korok Seed"
 	};
 
     const icons = {};
@@ -1018,7 +1453,7 @@
         "Lightroot", "Treasure", "Schematic", "Forge & Refinery", "Dragon Tear",
         "Ancient Tablet", "Goddess Statue", "Bargainer Statue", "Temple", "Shop",
         "Armor Shop", "General Shop", "Other Shop", "Inn", "Sage's Will", 
-        "Location", "Named Location", "Unnamed Location", "Special Location", "Korok", 
+        "Location", "Named Location", "Unnamed Location", "Special Location", "Korok Seed", 
         "Korok x1", "Korok x2"
     ];
     const landmarkColors = {
@@ -1053,7 +1488,7 @@
         "General Shop": "#dd87d3",
         "Other Shop": "#dd87d3",
         "Inn": "#dd87d3",
-        "Korok": "#61cc74",
+        "Korok Seed": "#61cc74",
         "Korok x1": "#61cc74",
         "Korok x2": "#61cc74",
         "default": "#facc15"
@@ -1076,21 +1511,22 @@
     let isDragging = false, startX, startY, initialPinchDist = 0, initialScale = 1;
     let dragMoveCounter = 0; 
 
-    // MARKER STATE
+    // --- GLOBAL VARIABLES ---
     let markerX = null;
     let markerY = null;
     let selectedLandmark = null;
     let korokTempMarker = null;
+    let hideFoundInList = localStorage.getItem("hideFoundInList") === "true";
 
     // --- FILTERING STATE ---
 	const FILTER_CONFIG = {
         surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Location": "Locations", "Korok": "Koroks" },
-            defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm", "Korok"]
+            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", "Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", "Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries", "Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs", "Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies", "Location": "Locations", "Korok Seed": "Korok Seeds" },
+            defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm", "Korok Seed"]
         },
         sky: {
-            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Location": "Locations", "Korok": "Koroks" },
-            defaults: ["Shrine", "Dispenser", "Korok"]
+            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", "Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", "Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", "Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", "Location": "Locations", "Korok Seed": "Korok Seeds" },
+            defaults: ["Shrine", "Dispenser", "Korok Seed"]
         },
         depths: {
             options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", "Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", "Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Location": "Locations" },
@@ -1104,7 +1540,7 @@
             items: ["Tower", "Shrine", "Lightroot", "Village", "Stable"]
         },
         {
-            name: "Collectables",
+            name: "Collectibles",
             items: ["Cave", "Well", "Dragon Tear", "Hudson Sign", "Old Map", "Ancient Tablet", "Sage's Will", "Treasure", "Schematic"]
         },
         {
@@ -1113,7 +1549,7 @@
         },
         {
 			name: "Completionist",
-            items: ["Location", "Korok"]
+            items: ["Location", "Korok Seed"]
         }
     ];
     
@@ -1126,8 +1562,9 @@
         "Treasure": "Treasures", "Schematic": "Schematics", "Forge & Refinery": "Forges & Refineries",
         "Ancient Tablet": "Ancient Tablets", "Great Fairy": "Great Fairies", "Chasm": "Chasms",
         "Temple": "Temples", "Shop": "Shops", "Inn": "Inns", "Sage's Will": "Sage's Wills",
-        "Location": "Locations", "Korok": "Koroks"
+        "Location": "Locations", "Korok Seed": "Korok Seeds"
     };
+    
     const cycleLandmarks = Object.keys(loaderPlurals);
     let lastLandmarkType = null;
 	const PROGRESS_STORAGE_KEY = "totk_companion_progress";
@@ -1273,15 +1710,347 @@
 	}
 
     function exitToDashboard() {
-        document.getElementById('mapViewer').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'flex';
-        currentRegion = null;
-        coordLabel.style.display = 'none';
-        
-        if (!dashInterval) dashInterval = startCycleAnimation('dashboardDynamicContainer', false);
-    }
+		document.getElementById('mapViewer').style.display = 'none';
+		document.getElementById('dashboard').style.display = 'flex';
+	
+		document.getElementById('mapCanvas').style.display = 'block';
+		document.getElementById('listViewer').style.display = 'none';
+	
+		viewMode = 'map';
+	
+		currentRegion = null;
+		coordLabel.style.display = 'none';
+	
+		if (!dashInterval) {
+			dashInterval =
+				startCycleAnimation(
+					'dashboardDynamicContainer',
+					false
+				);
+		}
+	}
     
-    // ----------------------- MAP NAVIGATION & DRAWING -----------------------
+    // ----------------------- LIST VIEW -----------------------
+    
+    function buildLandmarkCardHTML(landmark) {
+		const lmColor = landmarkColors[landmark.landmark] || landmarkColors["default"];
+		const fileName = landmark.landmark.toLowerCase().replace(/\s+/g, '-');
+		const lmId = `${landmark.landmark}_${landmark.x}_${landmark.y}`;
+		
+		const progressData = loadProgress();
+		const isFound = progressData[lmId] || false;
+		
+		let detailHtml = '';
+	
+		if (landmark.details) {
+	
+			if (
+				["Dispenser", "Armor Shop", "General Shop"]
+					.includes(landmark.landmark)
+			) {
+	
+				let folder = "items";
+	
+				if (landmark.landmark === "Dispenser") {
+					folder = "zonai";
+				} else if (
+					landmark.landmark === "Armor Shop" ||
+					landmark.landmark === "General Shop"
+				) {
+					folder = "armor";
+				}
+	
+				const items = landmark.details
+					.split(',')
+					.map(item => item.trim());
+	
+				const imgTags = items.map(item => {
+					const itemFileName =
+						item.toLowerCase().replace(/\s+/g, '-');
+	
+					return `
+						<div
+							style="
+								width: 40px;
+								height: 40px;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+							"
+							title="${item}"
+						>
+							<img
+								src="images/${folder}/${itemFileName}.png"
+								alt=""
+								style="
+									max-width: 100%;
+									max-height: 100%;
+									object-fit: contain;
+								"
+							>
+						</div>
+					`;
+				});
+	
+				detailHtml = `
+					<div
+						style="
+							margin-top: 2px;
+							display: flex;
+							flex-wrap: wrap;
+							gap: 8px;
+							align-items: center;
+						"
+					>
+						${imgTags.join('')}
+					</div>
+				`;
+	
+			} else {
+	
+				detailHtml = `
+					<span
+						class="img-coords"
+						style="margin-top:6px; display:block;"
+					>
+						${landmark.details}
+					</span>
+				`;
+			}
+		}
+	
+		return `
+			<div
+				data-landmark-id="${lmId}"
+				style="--landmark-color: ${lmColor};"
+			>
+	
+				<div class="tooltip-header">
+	
+					<img
+						src="icons/${fileName}.png"
+						style="
+							height: 2.8em;
+							width: auto;
+							filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+						"
+					>
+	
+					<div>
+	
+						<span
+							class="landmark-title"
+							style="color: ${lmColor};"
+						>
+							${landmark.name}
+						</span>
+	
+						<span
+							style="
+								color:#94a3b8;
+								font-weight:bold;
+								font-size:0.8rem;
+							"
+						>
+							${landmark.type}
+						</span>
+	
+					</div>
+	
+				</div>
+	
+				<span class="game-coords">
+					(${formatCoord(landmark.x)},
+					${formatCoord(landmark.y)},
+					${formatCoord(landmark.z)})
+				</span>
+	
+				${detailHtml}
+	
+				<div class="landmark-found-row">
+	
+					<span class="landmark-found-label">
+						Found?
+					</span>
+	
+					<label class="switch" style="margin-left:0;">
+	
+						<input
+							type="checkbox"
+							class="landmark-found-checkbox"
+							${isFound ? 'checked' : ''}
+						>
+	
+						<span class="slider"></span>
+	
+					</label>
+	
+				</div>
+	
+			</div>
+		`;
+	}
+	
+	function attachLandmarkToggle(card, landmark) {
+		const checkbox =
+			card.querySelector('.landmark-found-checkbox');
+	
+		if (!checkbox) return;
+	
+		const lmId =
+			`${landmark.landmark}_${landmark.x}_${landmark.y}`;
+	
+		checkbox.addEventListener('change', () => {
+			handleLandmarkToggle(lmId, checkbox);
+		});
+	}
+	
+	function getVisibleListLandmarks() {
+		if (!currentRegion) return [];
+	
+		const searchTerm =
+			document.getElementById('searchInput')
+				.value
+				.toLowerCase()
+				.trim();
+	
+		return landmarks.filter(lm => {
+	
+			const filterKey =
+				FILTER_ALIASES[lm.landmark] ||
+				lm.landmark;
+	
+			const regionMatch =
+				getRegions(lm.region)
+					.includes(currentRegion.id);
+	
+			const layerMatch =
+				getLevels(lm.level)
+					.includes(currentLayer);
+	
+			const filterMatch =
+				activeFiltersByLayer[currentLayer]
+					.includes(filterKey);
+	
+			const searchMatch =
+				!searchTerm ||
+				lm.name.toLowerCase().includes(searchTerm);
+	
+			return (
+				regionMatch &&
+				layerMatch &&
+				filterMatch &&
+				searchMatch
+			);
+		});
+	}
+	
+	function toggleHideFound(){
+	
+		hideFoundInList = document.getElementById("hideFoundCheckbox").checked;
+		localStorage.setItem("hideFoundInList", hideFoundInList);
+		
+		renderLandmarkList();
+	}
+	
+	function renderLandmarkList() {
+		const list = document.getElementById('landmarkList');
+	
+		if (!list || !currentRegion) return;
+	
+		list.innerHTML = '';
+	
+		document.getElementById('listRegionTitle').textContent =
+			currentRegion.name;
+	
+		document.getElementById('listLayerSubtitle').textContent =
+			currentLayer.charAt(0).toUpperCase() +
+			currentLayer.slice(1);
+	
+		const visibleLandmarks = getVisibleListLandmarks();
+	
+		if (visibleLandmarks.length === 0) {
+			list.innerHTML = `
+				<div class="list-empty">
+					No landmarks match the current
+					layer, region, filters, or search.
+				</div>
+			`;
+			return;
+		}
+	
+		/* Build the exact same hierarchy as the filter menu */
+		FILTER_CATEGORIES.forEach(category => {
+	
+			const progressData = loadProgress();
+			const categoryLandmarks = visibleLandmarks.filter(lm => {
+			
+				const filterKey =
+					FILTER_ALIASES[lm.landmark] ||
+					lm.landmark;
+			
+				if (!category.items.includes(filterKey))
+					return false;
+			
+				if (hideFoundInList) {
+					const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+					if (progressData[lmId]) return false;
+				}
+			
+				return true;
+			});
+	
+			if (categoryLandmarks.length === 0) return;
+	
+			const categoryDiv = document.createElement('div');
+			categoryDiv.className = 'list-category';
+			
+			const header = document.createElement('div');
+			header.className = 'list-category-header';
+			
+			header.innerHTML = `
+				<div class="list-category-title">
+					<span>${category.name}</span>
+				</div>
+			`;
+			
+			const content = document.createElement('div');
+			content.className = 'list-category-content';
+	
+			/* Keep list order stable and easy to scan */
+			categoryLandmarks.sort((a, b) => a.name.localeCompare(b.name)).forEach(lm => {
+					const wrapper = document.createElement('div');
+	
+					wrapper.className = 'list-landmark-card';
+					const lmColor = landmarkColors[lm.landmark] || landmarkColors["default"];
+					
+					wrapper.style.setProperty('--landmark-color', lmColor);
+					wrapper.dataset.landmarkId = `${lm.landmark}_${lm.x}_${lm.y}`;
+					wrapper.innerHTML = buildLandmarkCardHTML(lm);
+					
+					attachLandmarkToggle(wrapper, lm);
+					content.appendChild(wrapper);
+				});
+	
+			categoryDiv.appendChild(header);
+			categoryDiv.appendChild(content);
+	
+			list.appendChild(categoryDiv);
+		});
+	}
+	
+	function refreshCurrentView() {
+		updateTotalCompletion();
+	
+		if (viewMode === 'list') {
+			renderLandmarkList();
+			document.getElementById("listViewer").scrollTop = 0;
+		} else {
+			redraw();
+		}
+	}
+    
+    // ----------------------- MAP VIEW -----------------------
 
     function resizeCanvas(resetZoom = false) {
 		if (!currentRegion) return;
@@ -1339,8 +2108,8 @@
             redraw();
 
             if (progress < 1) {
-                panAnimId = requestAnimationFrame(step);
-            }
+				panAnimId = requestAnimationFrame(step);
+			}
         }
         panAnimId = requestAnimationFrame(step);
     }
@@ -1348,35 +2117,24 @@
     function panToSelectedLandmark() {
 		if (!selectedLandmark || !currentRegion) return;
 	
-		const selectedImgX =
-			(selectedLandmark.x - currentRegion.gameStartX) * 1.5;
-	
-		const selectedImgY =
-			(currentRegion.gameStartY - selectedLandmark.y) * 1.5;
+		const selectedImgX = (selectedLandmark.x - currentRegion.gameStartX) * 1.5;
+		const selectedImgY = (currentRegion.gameStartY - selectedLandmark.y) * 1.5;
 	
 		// Normal landmark: use the existing behavior
 		if (!korokTempMarker) {
 			const tooltipShift = window.innerWidth < 600 ? 120 : 150;
 	
-			const targetOffsetX =
-				(window.innerWidth / 2) -
-				tooltipShift -
-				(selectedImgX * scale);
-	
-			const targetOffsetY =
-				(window.innerHeight / 2) -
-				(selectedImgY * scale);
+			const targetOffsetX = (window.innerWidth / 2) - tooltipShift - (selectedImgX * scale);
+			const targetOffsetY = (window.innerHeight / 2) - (selectedImgY * scale);
 	
 			smoothPanTo(targetOffsetX, targetOffsetY);
 			return;
 		}
 	
 		// Temporary marker's image coordinates
-		const tempImgX =
-			(korokTempMarker.x - currentRegion.gameStartX) * 1.5;
+		const tempImgX = (korokTempMarker.x - currentRegion.gameStartX) * 1.5;
 	
-		const tempImgY =
-			(currentRegion.gameStartY - korokTempMarker.y) * 1.5;
+		const tempImgY = (currentRegion.gameStartY - korokTempMarker.y) * 1.5;
 	
 		// Center between the two points
 		const groupCenterX = (selectedImgX + tempImgX) / 2;
@@ -1388,26 +2146,15 @@
 		
 		if (window.innerWidth <= 600) {
 		
-			// Reserve approximately 190px at the bottom for coordLabel.
-			// This leaves a comfortable gap between the Korok setup
-			// and the label.
 			const reservedLabelSpace = 210;
-
-			const availableMapHeight =
-				window.innerHeight - reservedLabelSpace;
+			const availableMapHeight = window.innerHeight - reservedLabelSpace;
 			
-			const targetScreenX =
-				window.innerWidth / 2;
+			const targetScreenX = window.innerWidth / 2;
+			const targetScreenY = availableMapHeight / 2;
+		
+			const targetOffsetX = targetScreenX - (groupCenterX * scale);
+			const targetOffsetY = targetScreenY - (groupCenterY * scale);
 			
-			const targetScreenY =
-				availableMapHeight / 2;
-		
-			const targetOffsetX =
-				targetScreenX - (groupCenterX * scale);
-		
-			const targetOffsetY =
-				targetScreenY - (groupCenterY * scale);
-		
 			smoothPanTo(targetOffsetX, targetOffsetY);
 		
 			return;
@@ -1419,17 +2166,11 @@
 		
 		const labelSpace = window.innerWidth < 900 ? 150 : 175;
 		
-		const targetScreenX =
-			(window.innerWidth - labelSpace) / 2;
+		const targetScreenX = (window.innerWidth - labelSpace) / 2;
+		const targetScreenY = window.innerHeight / 2;
 		
-		const targetScreenY =
-			window.innerHeight / 2;
-		
-		const targetOffsetX =
-			targetScreenX - (groupCenterX * scale);
-		
-		const targetOffsetY =
-			targetScreenY - (groupCenterY * scale);
+		const targetOffsetX = targetScreenX - (groupCenterX * scale);
+		const targetOffsetY = targetScreenY - (groupCenterY * scale);
 		
 		smoothPanTo(targetOffsetX, targetOffsetY);
 	}
@@ -1445,18 +2186,17 @@
 
 		if (isSmallScreen) {
 			const labelWidth = 240;
-	
-			const labelLeft =
-				(window.innerWidth - labelWidth) / 2;
-	
-			const labelTop =
-				maxRectY + labelGap;
-	
+			const groupCenterX = (minRectX + maxRectX) / 2;
+		
+			const labelCenterX = groupCenterX;
+			const labelLeft = labelCenterX - (labelWidth / 2);
+			const labelTop = maxRectY + labelGap;
+		
 			coordLabel.style.left = `${labelLeft}px`;
 			coordLabel.style.top = `${labelTop}px`;
 			coordLabel.style.width = `${labelWidth}px`;
-			coordLabel.style.boxSizing = 'border-box';
-	
+			coordLabel.style.boxSizing = "border-box";
+		
 			return;
 		}
 	
@@ -1527,6 +2267,8 @@
 	}
 	
 	function redraw() {
+		if (!currentRegion || viewMode !== 'map') return;
+		
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     
 		if (!activeImage.complete || activeImage.naturalWidth === 0) {
@@ -1914,10 +2656,7 @@
 				const centerY = (screenY + tempScreenY) / 2;
 				
 				// Exact angle between the temporary icon and selected landmark
-				const angle = Math.atan2(
-					screenY - tempScreenY,
-					screenX - tempScreenX
-				);
+				const angle = Math.atan2(screenY - tempScreenY, screenX - tempScreenX);
 				
 				// Extend the rectangle 18px beyond each icon
 				const padding = 18;
@@ -2002,16 +2741,8 @@
 					maxRectY = Math.max(maxRectY, rotatedY);
 				}
 				
-				positionKorokCoordLabel(
-					screenX,
-					screenY,
-					tempScreenX,
-					tempScreenY,
-					minRectX,
-					maxRectX,
-					minRectY,
-					maxRectY
-				);
+				positionKorokCoordLabel(screenX, screenY, tempScreenX, tempScreenY,
+					minRectX, maxRectX, minRectY, maxRectY);
 				
 				coordLabel.style.borderColor = lmColor;
 			
@@ -2028,58 +2759,11 @@
 				coordLabel.style.top = `${screenY - 20}px`;
 				coordLabel.style.borderColor = lmColor;
 			}
-                        
-            let detailHtml = '';
-			if (selectedLandmark.details) {
-				if (["Dispenser", "Armor Shop", "General Shop"].includes(selectedLandmark.landmark)) {
-					
-					let folder = "items";
-					if (selectedLandmark.landmark === "Dispenser") folder = "zonai";
-					else if (selectedLandmark.landmark === "Armor Shop") folder = "armor";
+            
+            coordLabel.innerHTML = buildLandmarkCardHTML(selectedLandmark);
+			coordLabel.style.display = 'block';
 			
-					const items = selectedLandmark.details.split(',').map(item => item.trim());
-					
-					const imgTags = items.map(item => {
-						const fileName = item.toLowerCase().replace(/\s+/g, '-'); 
-						return `
-							<div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" title="${item}">
-								<img src="images/${folder}/${fileName}.png" alt="${item}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-							</div>
-						`;
-					});
-					
-					detailHtml = `<div style="margin-top: 2px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">${imgTags.join('')}</div>`;
-				} else {
-					detailHtml = `<span class="img-coords" style="margin-top:6px; display:block;">${selectedLandmark.details}</span>`;
-				}
-			}
-            
-            // Format the icon filename
-            const fileName = selectedLandmark.landmark.toLowerCase().replace(/\s+/g, '-');
-            
-            // Check status of the currently selected landmark
-            const lmId = `${selectedLandmark.landmark}_${selectedLandmark.x}_${selectedLandmark.y}`;
-            const isFound = progressData[lmId] || false;
-            
-            coordLabel.innerHTML = `
-                <div class="tooltip-header">
-                    <img src="icons/${fileName}.png" style="height: 2.8em; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
-                    <div>
-                        <span class="landmark-title" style="color: ${lmColor};">${selectedLandmark.name}</span>
-                        <span style="color:#94a3b8; font-weight:bold; font-size: 0.8rem;">${selectedLandmark.type}</span>
-                    </div>
-                </div>
-                <span class="game-coords">(${formatCoord(selectedLandmark.x)}, ${formatCoord(selectedLandmark.y)}, ${formatCoord(selectedLandmark.z)})</span>
-                ${detailHtml}
-                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 12px; gap: 8px;">
-                    <span style="font-size: 0.7rem; font-weight: bold; color: #e2e8f0;">Found?</span>
-                    <label class="switch" style="margin-left: 0;">
-                        <input type="checkbox" onchange="handleLandmarkToggle('${lmId}', this)" ${isFound ? 'checked' : ''}>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            `;
-            coordLabel.style.display = 'block';
+			attachLandmarkToggle(coordLabel, selectedLandmark);
 
         } 
         else if (markerX !== null && markerY !== null) {
@@ -2182,7 +2866,9 @@
 		updateMapAsset(); 
 	}
     
-    function loadRegion(region) {
+    function loadMapView(region) {
+		viewMode = 'map';
+
         currentRegion = region;
         
         clearInterval(dashInterval);
@@ -2207,6 +2893,9 @@
         document.getElementById('regionTitle').innerText = region.name;
         document.getElementById('dashboard').style.display = 'none';
         document.getElementById('mapViewer').style.display = 'block';
+        document.getElementById('mapCanvas').style.display = 'block';
+		document.getElementById('listViewer').style.display = 'none';
+		document.getElementById('totalCompletion').style.display = 'block';
         
         document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
         
@@ -2218,6 +2907,62 @@
 		buildFilterMenu();
 		buildRegionMenu();
     }
+    
+    function loadListView(region) {
+		viewMode = 'list';
+	
+		currentRegion = region;
+	
+		clearInterval(dashInterval);
+		dashInterval = null;
+	
+		// Great Sky Island only has Sky.
+		const layerBtn =
+			document.getElementById('layerBtn');
+	
+		if (currentRegion.id === 0) {
+			currentLayer = 'sky';
+			layerBtn.style.opacity = '0.5';
+			layerBtn.style.pointerEvents = 'none';
+		} else {
+			layerBtn.style.opacity = '1';
+			layerBtn.style.pointerEvents = 'auto';
+		}
+	
+		markerX = null;
+		markerY = null;
+		selectedLandmark = null;
+		korokTempMarker = null;
+	
+		coordLabel.style.display = 'none';
+	
+		document.getElementById('regionTitle').innerText = region.name;
+		document.getElementById('listRegionTitle').innerText = region.name;
+		document.getElementById("hideFoundCheckbox").checked = hideFoundInList;
+	
+		document.getElementById('listLayerSubtitle').innerText =
+			currentLayer.charAt(0).toUpperCase() +
+			currentLayer.slice(1);
+	
+		document.getElementById('dashboard').style.display = 'none';
+		document.getElementById('mapViewer').style.display = 'block';
+	
+		document.getElementById('mapCanvas').style.display = 'none';
+		document.getElementById('listViewer').style.display = 'block';
+		document.getElementById('totalCompletion').style.display = 'none';
+	
+		document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
+	
+		updateLayerUI();
+		updateTotalCompletion();
+		resetAllActivePanels('all');
+	
+		buildFilterMenu();
+		buildRegionMenu();
+	
+		renderLandmarkList();
+		document.getElementById("listViewer").scrollTop = 0;
+	}
 
     function setLayer(layer) {
         if (currentLayer === layer) {
@@ -2239,8 +2984,14 @@
         updateMapAsset();
         
         document.getElementById('filterMenu').style.display = 'none';
-        document.getElementById('layerMenu').style.display = 'none';
-        buildFilterMenu();
+		document.getElementById('layerMenu').style.display = 'none';
+		
+		buildFilterMenu();
+		
+		if (viewMode === 'list') {
+			renderLandmarkList();
+			document.getElementById("listViewer").scrollTop = 0;
+		}
     }
     
     function getLevels(level) {
@@ -2345,6 +3096,12 @@
 
 	searchInput.addEventListener('input', function() {
 		const val = this.value.toLowerCase().trim();
+		
+		if (viewMode === 'list') {
+			renderLandmarkList();
+			document.getElementById("listViewer").scrollTop = 0;
+		}
+		
 		autocompleteResults.innerHTML = '';
 		if (!val) {
 			autocompleteResults.style.display = 'none';
@@ -2384,6 +3141,76 @@
 	});
 	
 	function navigateToLandmark(lm) {
+		if (viewMode === 'list') {
+			const regionArray = [].concat(lm.region);
+		
+			if (!currentRegion || !regionArray.includes(currentRegion.id)) {
+				const targetRegionId = regionArray.includes(0) ? 0 : regionArray[0];
+				const region = REGIONS.find(r => r.id === targetRegionId);
+		
+				if (region) {
+					currentRegion = region;
+				}
+			}
+		
+			const levels = getLevels(lm.level);
+		
+			if (!levels.includes(currentLayer)) {
+				currentLayer = levels[0];
+			}
+		
+			const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
+		
+			if (!activeFiltersByLayer[currentLayer].includes(filterKey)) {
+				activeFiltersByLayer[currentLayer].push(filterKey);
+			}
+		
+			document.getElementById('currentLayerIcon').src = `icons/${currentLayer}.png`;
+			document.getElementById('regionTitle').innerText = currentRegion.name;
+		
+			const layerBtn = document.getElementById('layerBtn');
+			if (currentRegion.id === 0) {
+				layerBtn.style.opacity = '0.5';
+				layerBtn.style.pointerEvents = 'none';
+			} else {
+				layerBtn.style.opacity = '1';
+				layerBtn.style.pointerEvents = 'auto';
+			}
+			
+			buildFilterMenu();
+			buildRegionMenu();
+			renderLandmarkList();
+		
+			setTimeout(() => {
+				const cards =
+					document.querySelectorAll(
+						'#landmarkList .list-landmark-card'
+					);
+		
+				for (const card of cards) {
+					if (card.dataset.landmarkId ===
+						`${lm.landmark}_${lm.x}_${lm.y}`) {
+		
+						card.scrollIntoView({
+							behavior: 'smooth',
+							block: 'center'
+						});
+		
+						card.style.outline =
+							'2px solid #4ade80';
+		
+						setTimeout(() => {
+							card.style.outline = '';
+						}, 1200);
+		
+						break;
+					}
+				}
+			}, 50);
+		
+			return;
+		}
+		
 		const regionArray = [].concat(lm.region);
 		const targetRegionId = regionArray.includes(0) ? 0 : regionArray[0];
 		
@@ -2502,7 +3329,12 @@
 			
 			btn.onclick = () => {
 				toggleRegionMenu();
-				loadRegion(masterRegion); 
+			
+				if (viewMode === 'list') {
+					loadListView(masterRegion);
+				} else {
+					loadMapView(masterRegion);
+				}
 			};
 			
 			menu.appendChild(btn);
@@ -2548,7 +3380,7 @@
         showAllBtn.onclick = () => {
             activeFiltersByLayer[currentLayer] = Object.keys(config.options);
             menu.querySelectorAll('.switch input').forEach(cb => cb.checked = true);
-            redraw();
+            refreshCurrentView();
         };
 
         const hideAllBtn = document.createElement('span');
@@ -2557,7 +3389,7 @@
         hideAllBtn.onclick = () => {
             activeFiltersByLayer[currentLayer] = [];
             menu.querySelectorAll('.switch input').forEach(cb => cb.checked = false);
-            redraw();
+            refreshCurrentView();
         };
 
         masterRow.appendChild(showAllBtn);
@@ -2609,7 +3441,7 @@
                 const childBoxes = catDiv.querySelectorAll('.filter-category-content input[type="checkbox"]');
                 childBoxes.forEach(box => box.checked = isChecked);
                 
-                redraw();
+                refreshCurrentView();
             };
             
             const sliderSpan = document.createElement('span');
@@ -2657,7 +3489,7 @@
                     const allChecked = availableItems.every(i => activeFiltersByLayer[currentLayer].includes(i));
                     categoryCb.checked = allChecked;
                     
-                    redraw();
+                    refreshCurrentView();
                 };
                 
                 const itemSlider = document.createElement('span');
@@ -2849,13 +3681,19 @@
 	
 	function handleLandmarkToggle(landmarkId, checkboxElement) {
 		const isFound = checkboxElement.checked;
-		
+	
 		saveProgress(landmarkId, isFound);
+	
 		updateTotalCompletion();
-		redraw(); 
 	
 		if (document.getElementById('progressMenu').style.display === 'flex') {
 			buildProgressMenu();
+		}
+	
+		if (viewMode === 'list') {
+			renderLandmarkList();
+		} else {
+			redraw();
 		}
 	}
 
@@ -2899,6 +3737,7 @@
 	}
 
     window.addEventListener('wheel', (e) => {
+    	if (viewMode === 'list') return;
 		if (!currentRegion) return;
 		
 		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#progressMenu')) return;
@@ -2908,6 +3747,8 @@
 	}, { passive: false });
 
     window.addEventListener('pointerdown', (e) => {
+    	if (viewMode === 'list') return;
+    	
 		if (!currentRegion || e.clientY < 70) return; 
 		
 		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#progressMenu') || e.target.closest('#coordLabel')) return;
@@ -2920,7 +3761,9 @@
 	});
 
     window.addEventListener('pointermove', (e) => {
+    	if (viewMode === 'list') return;
         if (!isDragging || (e.pointerType === 'touch' && e.buttons === 0)) return;
+        
         dragMoveCounter++; 
         offsetX = e.clientX - startX;
         offsetY = e.clientY - startY;
@@ -2929,6 +3772,7 @@
     });
 
     window.addEventListener('pointerup', (e) => {
+    	if (viewMode === 'list') return;
         if (!currentRegion) return;
 
         if (e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#regionMenu') || 
@@ -3057,6 +3901,24 @@
 	}, { passive: false });
 
     window.addEventListener('resize', () => resizeCanvas(false));
+    
+    document.getElementById("listViewer").addEventListener("pointerdown", e => {
+
+        if(viewMode !== "list") return;
+
+        if(
+            e.target.closest("#regionMenu") ||
+            e.target.closest("#autocompleteResults") ||
+            e.target.closest("#filterMenu") ||
+            e.target.closest("#layerMenu") ||
+            e.target.closest("#progressMenu")
+        ){
+            return;
+        }
+
+        resetAllActivePanels("all");
+    });
+    
 </script>
 </body>
 </html>

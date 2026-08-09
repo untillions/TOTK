@@ -351,7 +351,7 @@
         .btn:hover { background: #475569; }
 
         .layer-btn {
-            background: rgba(30, 41, 59, 0.85); /* Slightly transparent like the glass menus */
+            background: rgba(30, 41, 59, 0.85);
             backdrop-filter: blur(8px);
             border: 1px solid #475569;
             color: #94a3b8;
@@ -487,10 +487,19 @@
 			box-sizing: border-box;
 		}
 		#listHeader {
-			width: 100%;
+			position: sticky;
+			top: 0px;
+			z-index: 10;
+			
+			width: 75%;
 			max-width: 760px;
-			margin: 0 auto 20px auto;
+			margin: 0 auto;
+			padding: 5px;
 			text-align: center;
+			
+			background: #0b0f19;
+			border: 1px solid #4ade80;
+			border-radius: 6px;
 			pointer-events: none;
 		}
 		#listRegionTitle {
@@ -503,7 +512,7 @@
 			text-shadow: 2px 2px 3px black;
 		}
 		#listLayerSubtitle {
-			color: #94a3b8;
+			color: #4ade80;
 			font-size: 0.95rem;
 			font-weight: bold;
 			text-transform: uppercase;
@@ -525,7 +534,6 @@
 			margin-top: 10px;
 			margin-bottom: 8px;
 			position: relative;
-			z-index: 99999;
 		}
 		#listHideFoundRow{
 			display: inline-flex;
@@ -601,7 +609,191 @@
 		.list-landmark-card:hover {
 			background: rgba(30, 41, 59, 0.98);
 		}
-        
+
+		/* --- PROGRESS VIEW --- */
+		#progressViewer {
+			display: none;
+			position: relative;
+			width: 100vw;
+			height: 100vh;
+		}
+		#progressScroll {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+
+			overflow-y: auto;
+			overflow-x: hidden;
+
+			-webkit-overflow-scrolling: touch;
+			touch-action: pan-y;
+
+			background: #0b0f19;
+
+			padding:
+				calc(25px + env(safe-area-inset-top))
+				20px
+				calc(100px + env(safe-area-inset-bottom))
+				20px;
+
+			z-index: 2;
+		}
+		#progressScroll,
+		#progressScroll * {
+			box-sizing: border-box;
+		}
+		#progressHeader {
+			width: 100%;
+			max-width: 760px;
+			margin: 0 auto 20px auto;
+			text-align: center;
+		}
+		#progressPageTitle {
+			font-family: 'HyliaSerif', serif;
+			color: #FAF7DF;
+			font-size: 1.8rem;
+			font-weight: normal;
+			letter-spacing: 1px;
+			margin: 0 0 8px 0;
+			text-shadow: 2px 2px 3px black;
+		}
+		#progressOverallLine {
+			color: #85e0fe;
+			font-size: 1rem;
+			font-weight: 300;
+			text-shadow: 1px 1px 4px rgba(0, 0, 0, 1);
+		}
+		.progress-section {
+			width: 100%;
+			max-width: 760px;
+			margin: 0 auto 28px auto;
+		}
+		.progress-section-title {
+			font-family: 'HyliaSerif', serif;
+			color: #4ade80;
+			font-size: 1.2rem;
+			font-weight: normal;
+			letter-spacing: 0.5px;
+			margin: 0 0 10px 0;
+			border-bottom: 1px solid rgba(255,255,255,0.08);
+			padding-bottom: 6px;
+		}
+		.progress-table-wrap {
+			width: 100%;
+			max-width: 350px;
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+			border: 1px solid #334155;
+			border-radius: 8px;
+			background: rgba(15, 23, 42, 0.95);
+			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+		}
+		.progress-table {
+			width: 100%;
+			min-width: 350px;
+			table-layout: fixed;
+			border-collapse: collapse;
+			font-family: monospace;
+			font-size: 0.8rem;
+			color: #e2e8f0;
+		}
+		.progress-table th {
+			position: sticky;
+			top: 0;
+			background: #1e293b;
+			color: #94a3b8;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			font-size: 0.68rem;
+			text-align: left;
+			padding: 8px 8px;
+			border-bottom: 1px solid #334155;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		#regionProgressTable th:nth-child(n+2),
+		#regionProgressTable td:nth-child(n+2),
+		#landmarkProgressTable th:nth-child(n+2),
+		#landmarkProgressTable td:nth-child(n+2) {
+			text-align: center;
+		}
+		.progress-table td {
+			padding: 7px 8px;
+			border-bottom: 1px solid rgba(255,255,255,0.06);
+			white-space: nowrap;
+			vertical-align: middle;
+		}
+		.progress-table tbody tr:last-child td {
+			border-bottom: none;
+		}
+
+		#regionProgressTable td:nth-child(1),
+		#landmarkProgressTable td:nth-child(1) {
+			white-space: normal;
+			word-break: break-word;
+		}
+
+		#regionProgressTable th:nth-child(1), #regionProgressTable td:nth-child(1) { width: 38.46%; }
+		#regionProgressTable th:nth-child(2), #regionProgressTable td:nth-child(2) { width: 15.38%; }
+		#regionProgressTable th:nth-child(3), #regionProgressTable td:nth-child(3) { width: 23.08%; }
+		#regionProgressTable th:nth-child(4), #regionProgressTable td:nth-child(4) { width: 23.08%; }
+
+		#landmarkProgressTable th:nth-child(1), #landmarkProgressTable td:nth-child(1) { width: 38.46%; }
+		#landmarkProgressTable th:nth-child(2), #landmarkProgressTable td:nth-child(2) { width: 18.18%; }
+		#landmarkProgressTable th:nth-child(3), #landmarkProgressTable td:nth-child(3) { width: 18.18%; }
+		#landmarkProgressTable th:nth-child(4), #landmarkProgressTable td:nth-child(4) { width: 25.17%; }
+
+		.progress-landmark-cell {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			white-space: normal;
+		}
+		.progress-landmark-cell img {
+			height: 1.6em;
+			width: auto;
+			flex-shrink: 0;
+			align-self: center;
+			filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+		}
+		.progress-landmark-cell span {
+			flex: 1 1 auto;
+			min-width: 0;
+		}
+		.progress-layer-cell {
+			text-align: center;
+		}
+		.progress-layer-cell img {
+			height: 1.4em;
+			width: auto;
+			display: inline-block;
+		}
+		.progress-category-row td {
+			background: rgba(30, 41, 59, 0.85);
+			color: #94a3b8;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			font-size: 0.68rem;
+			padding: 6px 10px;
+		}
+		.progress-total-row td {
+			background: rgba(74, 222, 128, 0.12);
+			color: #4ade80;
+			font-weight: bold;
+			border-top: 2px solid #4ade80;
+			border-bottom: none;
+		}
+		#progressHomePanel {
+			position: fixed;
+			bottom: calc(25px + env(safe-area-inset-bottom));
+			left: 25px;
+			z-index: 10;
+		}
+
         /* --- LOADER --- */
         #loader {
             position: absolute;
@@ -1023,6 +1215,21 @@
 				gap: 8px;
 			}
 
+			#progressScroll {
+				padding-left: 15px;
+				padding-right: 15px;
+			}
+			#progressPageTitle {
+				font-size: 1.45rem;
+			}
+			.progress-table {
+				font-size: 0.72rem;
+			}
+			.progress-table th,
+			.progress-table td {
+				padding: 6px 8px;
+			}
+
 		}
                 
     </style>
@@ -1060,7 +1267,7 @@
 				<button class="layer-btn staggered-item" style="--delay: 3;" onclick="loadListView(REGIONS[0])">
 					<img src="icons/list.png"> <span>View<br>List</span>
 				</button>
-				<button class="layer-btn staggered-item" style="--delay: 4;" onclick="">
+				<button class="layer-btn staggered-item" style="--delay: 4;" onclick="loadProgressView()">
 					<img src="icons/progress2.png"> <span>View<br>Progress</span>
 				</button>
 			</div>
@@ -1079,14 +1286,14 @@
 			<div id="listHeader">
 				<h1 id="listRegionTitle">Region Name</h1>
 				<div id="listLayerSubtitle">Surface</div>
-				<div id="listHideFound">
-					<div id="listHideFoundRow">
-						<span id="listHideFoundLabel">Hide found<br>landmarks</span>
-						<label class="switch">
-							<input type="checkbox" id="hideFoundCheckbox" onchange="toggleHideFound()">
-							<span class="slider"></span>
-						</label>
-					</div>
+			</div>
+			<div id="listHideFound">
+				<div id="listHideFoundRow">
+					<span id="listHideFoundLabel">Hide found<br>landmarks</span>
+					<label class="switch">
+						<input type="checkbox" id="hideFoundCheckbox" onchange="toggleHideFound()">
+						<span class="slider"></span>
+					</label>
 				</div>
 			</div>
 	
@@ -1151,6 +1358,57 @@
 		
 			</div>
 		
+		</div>
+	</div>
+
+	<div id="progressViewer">
+		<div id="progressScroll">
+
+			<div id="progressHeader">
+				<h1 id="progressPageTitle">Progress Tracker</h1>
+				<div id="progressOverallLine">Overall Map Completion: <span id="progressOverallValue">0.00/100%</span></div>
+			</div>
+
+			<div class="progress-section">
+				<h2 class="progress-section-title">Completion By Region</h2>
+				<div class="progress-table-wrap">
+					<table class="progress-table" id="regionProgressTable">
+						<thead>
+							<tr>
+								<th>Region</th>
+								<th>Layer</th>
+								<th>Found</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody id="regionProgressBody"></tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="progress-section">
+				<h2 class="progress-section-title">Completion by Landmark</h2>
+				<div class="progress-table-wrap">
+					<table class="progress-table" id="landmarkProgressTable">
+						<thead>
+							<tr>
+								<th>Landmark</th>
+								<th>Found</th>
+								<th>Total</th>
+								<th>Percent</th>
+							</tr>
+						</thead>
+						<tbody id="landmarkProgressBody"></tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+
+		<div id="progressHomePanel">
+			<button class="layer-btn" onclick="exitToDashboard()">
+				<img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
+			</button>
 		</div>
 	</div>
 
@@ -1303,6 +1561,7 @@
     let markerY = null;
     let selectedLandmark = null;
     let korokTempMarker = null;
+    let mobileKorokLabelOffsetX = null;
     let hideFoundInList = localStorage.getItem("hideFoundInList") === "true";
 
     // --- FILTERING STATE ---
@@ -1338,6 +1597,22 @@
 			name: "Completionist",
             items: ["Location", "Korok Seed"]
         }
+    ];
+
+    // Landmark types pulled out of their normal FILTER_CATEGORIES group and
+    // shown in their own "Non-Map Completion Landmarks" section on the
+    // Progress view, since they aren't tied to a single pinpoint the way
+    // most other landmarks are.
+    const NON_MAP_TYPES = [
+        "Cherry Tree", "Goddess Statue", "Hudson Sign",
+        "Old Map", "Treasure", "Sage's Will", "Schematic"
+    ];
+
+    // Layers shown as rows in the Progress view's region table.
+    const PROGRESS_LAYERS = [
+        { key: 'sky', label: 'Sky', icon: 'icons/sky.png' },
+        { key: 'surface', label: 'Surface', icon: 'icons/surface.png' },
+        { key: 'depths', label: 'Depths', icon: 'icons/depths.png' }
     ];
     
     let dashInterval, loaderInterval;
@@ -1382,10 +1657,7 @@
 		localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(currentProgress));
 	}
 
-	function updateTotalCompletion() {
-		const completionLabel = document.getElementById('totalCompletion');
-		if (!completionLabel) return;
-	
+	function computeOverallCompletion() {
 		const progressData = loadProgress();
 	
 		let totalWeight = 0;
@@ -1408,6 +1680,15 @@
 		const percentage = totalWeight > 0
 			? (foundWeight / totalWeight) * 100
 			: 0;
+	
+		return { totalWeight, foundWeight, percentage };
+	}
+
+	function updateTotalCompletion() {
+		const completionLabel = document.getElementById('totalCompletion');
+		if (!completionLabel) return;
+	
+		const { percentage } = computeOverallCompletion();
 	
 		completionLabel.textContent = `${percentage.toFixed(2)}/100%`;
 	}
@@ -1498,6 +1779,7 @@
 
     function exitToDashboard() {
 		document.getElementById('mapViewer').style.display = 'none';
+		document.getElementById('progressViewer').style.display = 'none';
 		document.getElementById('dashboard').style.display = 'flex';
 	
 		document.getElementById('mapCanvas').style.display = 'block';
@@ -1836,6 +2118,211 @@
 			redraw();
 		}
 	}
+
+	// ----------------------- PROGRESS VIEW -----------------------
+
+	function loadProgressView() {
+		clearInterval(dashInterval);
+		dashInterval = null;
+
+		document.getElementById('dashboard').style.display = 'none';
+		document.getElementById('mapViewer').style.display = 'none';
+		document.getElementById('progressViewer').style.display = 'block';
+
+		buildProgressView();
+
+		document.getElementById('progressScroll').scrollTop = 0;
+	}
+
+	function buildProgressView() {
+		const { percentage } = computeOverallCompletion();
+
+		document.getElementById('progressOverallValue').textContent =
+			`${percentage.toFixed(2)}/100%`;
+
+		renderRegionProgressTable();
+		renderLandmarkProgressTable();
+	}
+
+	function buildRegionProgressRows(gameTotalWeight) {
+		const progressData = loadProgress();
+		const rows = [];
+
+		REGIONS.forEach(region => {
+
+			// Great Sky Island (id 0) only has a Sky layer in this app.
+			const layersForRegion = region.id === 0
+				? PROGRESS_LAYERS.filter(l => l.key === 'sky')
+				: PROGRESS_LAYERS;
+
+			layersForRegion.forEach(layerInfo => {
+
+				let regionLayerTotal = 0;
+				let regionLayerFound = 0;
+
+				landmarks.forEach(lm => {
+					const weight = lm.weight === undefined ? 1 : Number(lm.weight);
+					if (!Number.isFinite(weight) || weight < 0) return;
+
+					// Some landmarks are tagged with more than one region (or,
+					// in principle, more than one layer) so they still show up
+					// correctly no matter which region/layer someone is
+					// browsing. For a completion breakdown, though, each
+					// landmark should only count toward ONE slice of the
+					// overall 100% - otherwise boundary landmarks get counted
+					// once per region they're tagged with and inflate every
+					// row they touch. Only credit each landmark to its
+					// primary (first-listed) region and layer.
+					const primaryRegion = getRegions(lm.region)[0];
+					const primaryLayer = getLevels(lm.level)[0];
+
+					const inRegion = primaryRegion === region.id;
+					const inLayer = primaryLayer === layerInfo.key;
+
+					if (!inRegion || !inLayer) return;
+
+					regionLayerTotal += weight;
+
+					const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+					if (progressData[lmId]) {
+						regionLayerFound += weight;
+					}
+				});
+
+				const totalPct = gameTotalWeight > 0
+					? (regionLayerTotal / gameTotalWeight) * 100
+					: 0;
+
+				const completedPct = gameTotalWeight > 0
+					? (regionLayerFound / gameTotalWeight) * 100
+					: 0;
+
+				rows.push({
+					regionName: region.name,
+					layer: layerInfo,
+					totalPct,
+					completedPct
+				});
+			});
+		});
+
+		return rows;
+	}
+
+	function renderRegionProgressTable() {
+		const body = document.getElementById('regionProgressBody');
+		if (!body) return;
+
+		const { totalWeight, percentage } = computeOverallCompletion();
+		const rows = buildRegionProgressRows(totalWeight);
+
+		const rowsHtml = rows.map((row, i) => {
+			// Only render the Region cell on the first row of each region's
+			// group of layer-rows, and have it span down over the rest -
+			// rows after that just omit the column entirely.
+			const isFirstOfRegion = i === 0 || rows[i - 1].regionName !== row.regionName;
+
+			const regionCell = isFirstOfRegion
+				? `<td rowspan="${rows.filter(r => r.regionName === row.regionName).length}">${row.regionName}</td>`
+				: '';
+
+			return `
+				<tr>
+					${regionCell}
+					<td class="progress-layer-cell">
+						<img src="${row.layer.icon}" alt="${row.layer.label}" title="${row.layer.label}">
+					</td>
+					<td>${row.completedPct.toFixed(2)}%</td>
+					<td>${row.totalPct.toFixed(2)}%</td>
+				</tr>
+			`;
+		}).join('');
+
+		const totalRowHtml = `
+			<tr class="progress-total-row">
+				<td colspan="2">TOTAL</td>
+				<td>${percentage.toFixed(2)}%</td>
+				<td>100.00%</td>
+			</tr>
+		`;
+
+		body.innerHTML = rowsHtml + totalRowHtml;
+	}
+
+	function buildLandmarkProgressCategories() {
+		const categories = FILTER_CATEGORIES.map(category => ({
+			name: category.name,
+			items: category.items.filter(item => !NON_MAP_TYPES.includes(item))
+		}));
+
+		categories.push({
+			name: "Non-Map Completion Landmarks",
+			items: NON_MAP_TYPES
+		});
+
+		return categories;
+	}
+
+	function renderLandmarkProgressTable() {
+		const body = document.getElementById('landmarkProgressBody');
+		if (!body) return;
+
+		const progressData = loadProgress();
+		const categories = buildLandmarkProgressCategories();
+
+		let html = '';
+
+		categories.forEach(category => {
+
+			const typeRows = category.items.map(type => {
+				const typeLandmarks = landmarks.filter(lm =>
+					(FILTER_ALIASES[lm.landmark] || lm.landmark) === type
+				);
+
+				const total = typeLandmarks.length;
+				if (total === 0) return null;
+
+				const found = typeLandmarks.filter(lm =>
+					progressData[`${lm.landmark}_${lm.x}_${lm.y}`]
+				).length;
+
+				const percent = (found / total) * 100;
+				const color = landmarkColors[type] || landmarkColors["default"];
+				const fileName = type.toLowerCase().replace(/\s+/g, '-');
+				const label = loaderPlurals[type] || type;
+
+				return { total, found, percent, color, fileName, label };
+			}).filter(Boolean);
+
+			if (typeRows.length === 0) return;
+
+			typeRows.sort((a, b) => a.label.localeCompare(b.label));
+
+			html += `
+				<tr class="progress-category-row">
+					<td colspan="4">${category.name}</td>
+				</tr>
+			`;
+
+			typeRows.forEach(row => {
+				html += `
+					<tr>
+						<td>
+							<div class="progress-landmark-cell">
+								<img src="icons/${row.fileName}.png" alt="${row.label}">
+								<span style="color:${row.color};">${row.label}</span>
+							</div>
+						</td>
+						<td>${row.found}</td>
+						<td>${row.total}</td>
+						<td>${row.percent.toFixed(2)}%</td>
+					</tr>
+				`;
+			});
+		});
+
+		body.innerHTML = html;
+	}
     
     // ----------------------- MAP VIEW -----------------------
 
@@ -1973,9 +2460,14 @@
 
 		if (isSmallScreen) {
 			const labelWidth = 240;
+		
 			const groupCenterX = (minRectX + maxRectX) / 2;
 		
-			const labelCenterX = groupCenterX;
+			if (mobileKorokLabelOffsetX === null) {
+				mobileKorokLabelOffsetX = (window.innerWidth / 2) - groupCenterX;
+			}
+		
+			const labelCenterX = groupCenterX + mobileKorokLabelOffsetX;
 			const labelLeft = labelCenterX - (labelWidth / 2);
 			const labelTop = maxRectY + labelGap;
 		
@@ -1983,7 +2475,7 @@
 			coordLabel.style.top = `${labelTop}px`;
 			coordLabel.style.width = `${labelWidth}px`;
 			coordLabel.style.boxSizing = "border-box";
-		
+			
 			return;
 		}
 	
@@ -2754,12 +3246,14 @@
     function setLayer(layer) {
         if (currentLayer === layer) {
             document.getElementById('layerMenu').style.display = 'none';
+            document.getElementById('layerBtn').classList.remove('active');
             return;
         }
         currentLayer = layer;
         
         // Update the main layer button image to reflect current state
         document.getElementById('currentLayerIcon').src = `icons/${layer}.png`;
+        document.getElementById('layerBtn').classList.remove('active');
         
         markerX = null;
         markerY = null;
@@ -3627,6 +4121,7 @@
                 selectedLandmark = clickedLandmark;
                 markerX = null; 
                 markerY = null;
+				mobileKorokLabelOffsetX = null;
                 
                 updateKorokTempMarker();
                 panToSelectedLandmark();
@@ -3640,6 +4135,7 @@
                 // markerY = (e.clientY - offsetY) / scale;
             	markerX = null;
                 markerY = null;
+				mobileKorokLabelOffsetX = null;
                 document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
