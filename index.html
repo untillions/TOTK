@@ -892,7 +892,7 @@
 		}
 		.armor-set-row {
 			display: grid;
-			grid-template-columns: 1fr 2fr;
+			grid-template-columns: 1fr 2.25fr;
 			align-items: stretch;
 			gap: 10px;
 			width: 100%;
@@ -1006,9 +1006,9 @@
 			background: rgba(0, 0, 0, 0.8);
 			color: #ffffff;
 			font-weight: bold;
-			font-size: 0.93rem;
+			font-size: 0.7rem;
 			padding: 1px 6px;
-			border-radius: 5px;
+			border-radius: 6px;
 			line-height: 1.4;
 			white-space: nowrap;
 		}
@@ -1027,11 +1027,11 @@
 			align-self: flex-start;
 			background: #31435D;
 			color: #e2e8f0;
-			font-size: 0.825rem;
+			font-size: 0.7rem;
 			text-transform: capitalize;
 			text-align: left;
 			padding: 2px 8px;
-			border-radius: 10px;
+			border-radius: 6px;
 			margin-bottom: 3px;
 			white-space: normal;
 			word-break: break-word;
@@ -1039,10 +1039,9 @@
 			box-sizing: border-box;
 		}
 		.armor-ability-badge img {
-			height: 20px;
+			height: 17px;
 			width: auto;
 			vertical-align: middle;
-			margin-right: 4px;
 		}
 		.armor-stars {
 			display: flex;
@@ -1073,18 +1072,25 @@
 			font-weight: 900;
 			color: var(--set-color, #4ade80);
 			margin-right: 4px;
+			margin-top: 8px;
 		}
 		.armor-materials {
 			color: #94a3b8;
-			font-size: 0.87rem;
-			text-align: center;
+			font-size: 0.7rem;
+			text-align: left;
 			line-height: 1.3;
+			margin-top: -4px;
 			margin-bottom: 4px;
 			white-space: normal;
 			word-break: break-word;
 		}
 		.armor-materials-heading {
 			color: #FAF7DF;
+			font-weight: bold;
+		}
+		.armor-materials-stars {
+			font-size: 2.25em;
+			line-height: 1;
 		}
 		.armor-materials.fully-upgraded {
 			color: #4ade80;
@@ -1572,7 +1578,7 @@
 				font-size: 0.95rem;
 			}
 			.armor-materials {
-				font-size: 0.78rem;
+				font-size: 0.7rem;
 			}
 
 		}
@@ -2571,9 +2577,10 @@
 					`;
 				} else {
 					const matText = (piece.materials[state.stars] || '').replace(/\n/g, '<br>');
+					const nextLevelStars = '★'.repeat(state.stars + 1);
 					materialsHTML = `
 						<div class="armor-materials">
-							<span class="armor-materials-heading">For Next ★ Level:</span><br>
+							<span class="armor-materials-heading">For <span class="armor-materials-stars">${nextLevelStars}</span>:</span><br>
 							${matText}
 						</div>
 					`;
@@ -2683,7 +2690,7 @@
 				break;
 			}
 		}
-		if (prefixWords.length) return prefixWords.join(' ');
+		if (prefixWords.length) return prefixWords.join(' ') + ' Set';
 
 		// Otherwise try a common trailing phrase (e.g. "Cap/Tunic/Trousers of the Hero").
 		const revLists = wordLists.map(w => w.slice().reverse());
@@ -2696,10 +2703,15 @@
 				break;
 			}
 		}
-		if (suffixWords.length) return suffixWords.reverse().join(' ');
+		if (suffixWords.length) {
+			const suffixName = suffixWords.reverse().join(' ')
+				.replace(/^of the /i, '')
+				.replace(/^of /i, '');
+			return suffixName + ' Set';
+		}
 
 		// Fall back to the shared image filename, capitalized.
-		return setBase.charAt(0).toUpperCase() + setBase.slice(1);
+		return setBase.charAt(0).toUpperCase() + setBase.slice(1) + ' Set';
 	}
 
 	function renderArmoryList() {
