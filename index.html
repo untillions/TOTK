@@ -656,6 +656,7 @@
 			font-size: 1.8rem;
 			font-weight: normal;
 			letter-spacing: 1px;
+			text-align: center;
 			margin: 0 0 8px 0;
 			text-shadow: 2px 2px 3px black;
 		}
@@ -676,6 +677,7 @@
 			font-size: 1.2rem;
 			font-weight: normal;
 			letter-spacing: 0.5px;
+			text-align: center;
 			margin: 0 0 10px 0;
 			border-bottom: 1px solid rgba(255,255,255,0.08);
 			padding-bottom: 6px;
@@ -683,6 +685,8 @@
 		.progress-table-wrap {
 			width: 100%;
 			max-width: 350px;
+			margin-left: auto;
+			margin-right: auto;
 			overflow-x: auto;
 			-webkit-overflow-scrolling: touch;
 			border: 1px solid #334155;
@@ -1593,7 +1597,7 @@
             	"Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", 
             	"Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", 
             	"Location": "Locations", "Korok Seed": "Korok Seeds", "Flux Construct": "Flux Constructs",
-            	"Gleeok": "Gleeoks", "Side Quest": "Side Quests"},
+            	"Gleeok": "Gleeoks" },
             defaults: ["Shrine", "Dispenser", "Gleeok"]
         },
         depths: {
@@ -1613,7 +1617,7 @@
         },
         {
             name: "Quests",
-            items: ["Side Quests", "Flux Construct", "Frox", "Gleeok", "Hinox", "Lynel", "Molduga", "Talus"]
+            items: ["Side Quest", "Flux Construct", "Frox", "Gleeok", "Hinox", "Lynel", "Molduga", "Talus"]
         },
         {
             name: "Collectibles",
@@ -2015,25 +2019,11 @@
 	
 		return landmarks.filter(lm => {
 	
-			const filterKey =
-				FILTER_ALIASES[lm.landmark] ||
-				lm.landmark;
-	
-			const regionMatch =
-				getRegions(lm.region)
-					.includes(currentRegion.id);
-	
-			const layerMatch =
-				getLevels(lm.level)
-					.includes(currentLayer);
-	
-			const filterMatch =
-				activeFiltersByLayer[currentLayer]
-					.includes(filterKey);
-	
-			const searchMatch =
-				!searchTerm ||
-				lm.name.toLowerCase().includes(searchTerm);
+			const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
+			const regionMatch = getRegions(lm.region).includes(currentRegion.id);
+			const layerMatch = getLevels(lm.level).includes(currentLayer);
+			const filterMatch = activeFiltersByLayer[currentLayer].includes(filterKey);
+			const searchMatch = !searchTerm || lm.name.toLowerCase().includes(searchTerm) || lm.type.toLowerCase().includes(searchTerm);
 	
 			return (
 				regionMatch &&
@@ -2262,8 +2252,12 @@
 					<td class="progress-layer-cell">
 						<img src="${row.layer.icon}" alt="${row.layer.label}" title="${row.layer.label}">
 					</td>
-					<td>${row.completedPct.toFixed(2)}%</td>
-					<td>${row.totalPct.toFixed(2)}%</td>
+					<td style="color: ${row.completedPct.toFixed(2) === row.totalPct.toFixed(2) ? '#4ade80' : ''};">
+						${row.completedPct.toFixed(2)}%
+					</td>
+					<td style="color: ${row.completedPct.toFixed(2) === row.totalPct.toFixed(2) ? '#4ade80' : ''};">
+						${row.totalPct.toFixed(2)}%
+					</td>
 				</tr>
 			`;
 		}).join('');
@@ -2298,6 +2292,9 @@
 		if (!body) return;
 
 		const progressData = loadProgress();
+		const totalLandmarks = landmarks.length;
+		const foundLandmarks = landmarks.filter(lm => progressData[`${lm.landmark}_${lm.x}_${lm.y}`]).length;
+
 		const categories = buildLandmarkProgressCategories();
 
 		let html = '';
@@ -2345,11 +2342,24 @@
 						</td>
 						<td>${row.found}</td>
 						<td>${row.total}</td>
-						<td>${row.percent.toFixed(2)}%</td>
+						<td style="color: ${row.percent.toFixed(2) === '100.00' ? '#4ade80' : ''};">
+							${row.percent.toFixed(2)}%
+						</td>
 					</tr>
 				`;
 			});
 		});
+		
+		const percentage = totalLandmarks > 0 ? (foundLandmarks / totalLandmarks) * 100 : 0;
+	
+		html += `
+			<tr class="progress-total-row">
+				<td>TOTAL</td>
+				<td>${foundLandmarks}</td>
+				<td>${totalLandmarks}</td>
+				<td>${percentage.toFixed(2)}%</td>
+			</tr>
+		`;
 
 		body.innerHTML = html;
 	}
@@ -3335,7 +3345,7 @@
 			return;
 		}
 	
-		const matches = landmarks.filter(lm => lm.name.toLowerCase().includes(val)).slice(0, 15);
+		const matches = landmarks.filter(lm => lm.name.toLowerCase().includes(val) || lm.type.toLowerCase().includes(val)).slice(0, 15);
 		if (matches.length === 0) {
 			autocompleteResults.style.display = 'none';
 			return;
@@ -3568,7 +3578,7 @@
 		});
 	}
     
-    // ----------------------- PROGRESS MENU LOGIC -----------------------
+    // ----------------------- FILTER MENU LOGIC -----------------------
 
     let activeFiltersByLayer = {
         surface: [...FILTER_CONFIG.surface.defaults],
