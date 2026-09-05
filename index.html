@@ -798,6 +798,242 @@
 			z-index: 10;
 		}
 
+		/* --- ARMORY VIEW --- */
+		#armoryViewer {
+			display: none;
+			position: relative;
+			width: 100vw;
+			height: 100vh;
+		}
+		#armoryScroll {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+
+			overflow-y: auto;
+			overflow-x: hidden;
+
+			-webkit-overflow-scrolling: touch;
+			touch-action: pan-y;
+
+			background: #0b0f19;
+
+			padding:
+				calc(25px + env(safe-area-inset-top))
+				20px
+				calc(100px + env(safe-area-inset-bottom))
+				20px;
+
+			z-index: 2;
+		}
+		#armoryScroll,
+		#armoryScroll * {
+			box-sizing: border-box;
+		}
+		#armoryHeader {
+			width: 100%;
+			max-width: 760px;
+			margin: 0 auto 20px auto;
+			text-align: center;
+		}
+		#armoryPageTitle {
+			font-family: 'HyliaSerif', serif;
+			color: #FAF7DF;
+			font-size: 1.8rem;
+			font-weight: normal;
+			letter-spacing: 1px;
+			text-align: center;
+			margin: 0 0 8px 0;
+			text-shadow: 2px 2px 3px black;
+		}
+		#armorySubtitle {
+			color: #4ade80;
+			font-size: 0.95rem;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			text-shadow: 1px 1px 3px black;
+		}
+		#armoryList {
+			width: 100%;
+			max-width: 760px;
+			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			padding-bottom: 20px;
+		}
+		.armor-set-row {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 10px;
+			width: 100%;
+		}
+		.armor-card {
+			width: 100%;
+			max-width: 100%;
+			box-sizing: border-box;
+
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			background: rgba(15, 23, 42, 0.95);
+			border: 1px solid var(--set-color, #4ade80);
+			color: #e2e8f0;
+
+			padding: 8px 6px;
+			border-radius: 6px;
+
+			font-family: monospace;
+			font-size: 0.85rem;
+			line-height: 1.4;
+
+			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+
+			transition: background 0.15s ease;
+		}
+		.armor-card:hover {
+			background: rgba(30, 41, 59, 0.98);
+		}
+		.armor-image-wrap {
+			position: relative;
+			width: 80px;
+			height: 80px;
+			flex-shrink: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 0 auto 3px auto;
+		}
+		.armor-image-wrap img {
+			max-width: 100%;
+			max-height: 100%;
+			object-fit: contain;
+			filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+		}
+		.armor-defense-badge {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			background: rgba(0, 0, 0, 0.8);
+			color: #e2e8f0;
+			background: #31435D;
+			font-weight: bold;
+			font-size: 0.62rem;
+			padding: 1px 5px;
+			border-radius: 5px;
+			line-height: 1.4;
+			white-space: nowrap;
+		}
+		.armor-name {
+			font-family: 'HyliaSerif', serif;
+			font-weight: normal;
+			color: #FAF7DF;
+			font-size: 0.72rem;
+			text-align: center;
+			letter-spacing: 0.5px;
+			line-height: 1.25;
+			min-height: 2.1em;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 2px;
+		}
+		.armor-ability-badge {
+			display: block;
+			align-self: center;
+			background: #31435D;
+			color: #e2e8f0;
+			font-size: 0.55rem;
+			text-transform: capitalize;
+			text-align: center;
+			padding: 2px 5px;
+			border-radius: 10px;
+			margin-bottom: 3px;
+			white-space: normal;
+			word-break: break-word;
+			max-width: 100%;
+			box-sizing: border-box;
+		}
+		.armor-ability-badge img {
+			height: 15px;
+			width: auto;
+			vertical-align: middle;
+		}
+		.armor-stars {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 3px;
+			font-size: 1.5rem;
+			margin-bottom: 2px;
+			cursor: pointer;
+			user-select: none;
+		}
+		.armor-stars.disabled {
+			opacity: 0.35;
+			pointer-events: none;
+			cursor: default;
+		}
+		.armor-star {
+			color: var(--set-color, #4ade80);
+			transition: transform 0.1s ease;
+			line-height: 1;
+		}
+		.armor-base-label {
+			display: inline-flex;
+			align-items: center;
+			height: 1em;
+			font-size: 0.45rem;
+			line-height: 1;
+			font-weight: 1000;
+			color: var(--set-color, #4ade80);
+			margin-right: 3px;
+			margin-top: 5px;
+		}
+		.armor-materials {
+			color: #94a3b8;
+			font-size: 0.58rem;
+			text-align: center;
+			line-height: 1.3;
+			margin-bottom: 3px;
+			white-space: normal;
+			word-break: break-word;
+		}
+		.armor-materials-heading {
+			color: #FAF7DF;
+		}
+		.armor-materials.fully-upgraded {
+			color: #4ade80;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+		.armor-found-row {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: auto;
+			padding-top: 3px;
+			gap: 6px;
+			width: 100%;
+			border-top: 1px solid rgba(255,255,255,0.08);
+		}
+		.armor-found-label {
+			font-size: 0.6rem;
+			font-weight: bold;
+			color: #e2e8f0;
+		}
+		#armoryHomePanel {
+			position: fixed;
+			bottom: calc(25px + env(safe-area-inset-bottom));
+			left: 25px;
+			z-index: 10;
+		}
+
         /* --- LOADER --- */
         #loader {
             position: absolute;
@@ -1234,6 +1470,26 @@
 				padding: 6px 8px;
 			}
 
+			#armoryScroll {
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+			#armoryPageTitle {
+				font-size: 1.45rem;
+			}
+			#armoryList {
+				gap: 6px;
+			}
+			.armor-card {
+				padding: 6px 4px;
+			}
+			.armor-name {
+				font-size: 0.62rem;
+			}
+			.armor-materials {
+				font-size: 0.52rem;
+			}
+
 		}
                 
     </style>
@@ -1274,9 +1530,12 @@
 				<button class="layer-btn staggered-item" style="--delay: 4;" onclick="loadProgressView()">
 					<img src="icons/progress2.png"> <span>View<br>Progress</span>
 				</button>
+				<button class="layer-btn staggered-item" style="--delay: 5;" onclick="loadArmoryView()">
+					<img src="icons/armor.png"> <span>View<br>Armory</span>
+				</button>
 			</div>
 		</div>
-		<div class="dashboard-footer staggered-item" style="--delay: 5;">
+		<div class="dashboard-footer staggered-item" style="--delay: 6;">
 			Icons by <em>ME</em> on <a href="https://www.flaticon.com/authors/freepik" title="Flaticon">Flaticon</a><br>
 			Hylia Serif Font from <a href="https://www.fontbolt.com/font/zelda-font/" title="Font Bolt">Font Bolt</a>
 		</div>
@@ -1416,7 +1675,27 @@
 		</div>
 	</div>
 
+	<div id="armoryViewer">
+		<div id="armoryScroll">
+
+			<div id="armoryHeader">
+				<h1 id="armoryPageTitle">Armory</h1>
+				<div id="armorySubtitle">All Armor Pieces</div>
+			</div>
+
+			<div id="armoryList"></div>
+
+		</div>
+
+		<div id="armoryHomePanel">
+			<button class="layer-btn" onclick="exitToDashboard()">
+				<img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
+			</button>
+		</div>
+	</div>
+
 <script src="landmarks.js"></script>
+<script src="armor.js"></script>
 
 <script>
     const REGIONS = [
@@ -1814,6 +2093,7 @@
     function exitToDashboard() {
 		document.getElementById('mapViewer').style.display = 'none';
 		document.getElementById('progressViewer').style.display = 'none';
+		document.getElementById('armoryViewer').style.display = 'none';
 		document.getElementById('dashboard').style.display = 'flex';
 	
 		document.getElementById('mapCanvas').style.display = 'block';
@@ -2127,6 +2407,225 @@
 			list.appendChild(categoryDiv);
 		});
 	}
+
+	// ----------------------- ARMORY VIEW -----------------------
+
+	const ARMOR_STORAGE_KEY = 'armorProgress';
+
+	function loadArmorProgress() {
+		const storedData = localStorage.getItem(ARMOR_STORAGE_KEY);
+		return storedData ? JSON.parse(storedData) : {};
+	}
+
+	function saveArmorProgress(pieceId, data) {
+		const currentProgress = loadArmorProgress();
+		currentProgress[pieceId] = Object.assign({}, currentProgress[pieceId], data);
+		localStorage.setItem(ARMOR_STORAGE_KEY, JSON.stringify(currentProgress));
+	}
+
+	function formatDefenseValue(value) {
+		return (Math.round(value * 10) / 10).toString();
+	}
+
+	function getPieceState(piece) {
+		const progressData = loadArmorProgress();
+		const stored = progressData[piece.id] || {};
+		return {
+			found: stored.found || false,
+			stars: stored.stars || 0
+		};
+	}
+
+	function buildArmorCardHTML(piece) {
+		const state = getPieceState(piece);
+		const currentDefense = (piece.upgradable && state.stars > 0)
+			? piece.starDef[state.stars - 1]
+			: piece.baseDef;
+
+		let abilityIconHTML = '';
+		if (piece.ability && piece.ability.toLowerCase() !== 'none') {
+			const abilityFileName = piece.ability.toLowerCase().replace(/\s+/g, '-');
+			abilityIconHTML = `<img src="icons/${abilityFileName}.png" alt="${piece.ability}">`;
+		}
+		const abilityHTML = `
+			<div class="armor-ability-badge">
+				${abilityIconHTML}
+				<span>${piece.ability}</span>
+			</div>
+		`;
+
+		let starsHTML = '';
+		let materialsHTML = '';
+
+		if (piece.upgradable) {
+
+			const starsDisabledClass = state.found ? '' : ' disabled';
+
+			let starSpans = `<span class="armor-base-label" data-star-value="0">BASE</span>`;
+			for (let i = 1; i <= 4; i++) {
+				const filled = i <= state.stars;
+				starSpans += `<span class="armor-star" data-star-value="${i}">${filled ? '★' : '☆'}</span>`;
+			}
+
+			starsHTML = `
+				<div class="armor-stars${starsDisabledClass}">
+					${starSpans}
+				</div>
+			`;
+
+			if (state.found) {
+				if (state.stars >= 4) {
+					materialsHTML = `
+						<div class="armor-materials fully-upgraded">
+							Fully Upgraded
+						</div>
+					`;
+				} else {
+					const matText = (piece.materials[state.stars] || '').replace(/\n/g, '<br>');
+					materialsHTML = `
+						<div class="armor-materials">
+							<span class="armor-materials-heading">For Next Level:</span><br>
+							${matText}
+						</div>
+					`;
+				}
+			}
+		}
+
+		return `
+			<div class="armor-image-wrap">
+				<img src="images/armor/${piece.img}" alt="${piece.name}">
+				<div class="armor-defense-badge">${formatDefenseValue(currentDefense)}</div>
+			</div>
+
+			<div class="armor-name">${piece.name}</div>
+
+			${abilityHTML}
+
+			${starsHTML}
+			${materialsHTML}
+
+			<div class="armor-found-row">
+				<span class="armor-found-label">Found?</span>
+				<label class="switch" style="margin-left:0;">
+					<input
+						type="checkbox"
+						class="armor-found-checkbox"
+						${state.found ? 'checked' : ''}
+					>
+					<span class="slider"></span>
+				</label>
+			</div>
+		`;
+	}
+
+	function attachArmorCardEvents(cardEl, piece) {
+		const checkbox = cardEl.querySelector('.armor-found-checkbox');
+		if (checkbox) {
+			checkbox.addEventListener('change', () => {
+				if (checkbox.checked) {
+					saveArmorProgress(piece.id, { found: true });
+				} else {
+					// Un-finding a piece resets it back to base level.
+					saveArmorProgress(piece.id, { found: false, stars: 0 });
+				}
+				renderArmoryList();
+			});
+		}
+
+		const starsRow = cardEl.querySelector('.armor-stars');
+		if (starsRow) {
+			const selectableEls = Array.from(
+				starsRow.querySelectorAll('.armor-star, .armor-base-label')
+			);
+
+			const applyPreview = (value) => {
+				selectableEls.forEach(el => {
+					const v = parseInt(el.dataset.starValue, 10);
+					if (!el.classList.contains('armor-base-label')) {
+						el.textContent = v <= value ? '★' : '☆';
+					}
+				});
+			};
+
+			selectableEls.forEach(el => {
+				el.addEventListener('click', () => {
+					if (starsRow.classList.contains('disabled')) return;
+					const value = parseInt(el.dataset.starValue, 10);
+					saveArmorProgress(piece.id, { stars: value });
+					renderArmoryList();
+				});
+
+				el.addEventListener('mouseenter', () => {
+					if (starsRow.classList.contains('disabled')) return;
+					applyPreview(parseInt(el.dataset.starValue, 10));
+				});
+			});
+
+			starsRow.addEventListener('mouseleave', () => {
+				if (starsRow.classList.contains('disabled')) return;
+				const state = getPieceState(piece);
+				applyPreview(state.stars);
+			});
+		}
+	}
+
+	const ARMOR_ROW_COLORS = [
+		'#86a3e6', '#7cc9c2', '#a784e5', '#de878b',
+		'#a7c96e', '#dd87d3', '#61cc74'
+	];
+
+	function renderArmoryList() {
+		const list = document.getElementById('armoryList');
+		if (!list) return;
+
+		if (typeof ARMOR_SETS === 'undefined') {
+			list.innerHTML = `
+				<div class="list-empty" style="grid-column: 1 / -1;">
+					Armor data failed to load. Make sure armor.js
+					is saved next to index.html and try reloading the page.
+				</div>
+			`;
+			return;
+		}
+
+		list.innerHTML = '';
+
+		ARMOR_SETS.forEach((setPieces, setIndex) => {
+			const rowColor = ARMOR_ROW_COLORS[setIndex % ARMOR_ROW_COLORS.length];
+
+			const rowEl = document.createElement('div');
+			rowEl.className = 'armor-set-row';
+			rowEl.style.setProperty('--set-color', rowColor);
+
+			setPieces.forEach(piece => {
+				const card = document.createElement('div');
+				card.className = 'armor-card';
+				card.dataset.armorId = piece.id;
+				card.innerHTML = buildArmorCardHTML(piece);
+
+				attachArmorCardEvents(card, piece);
+				rowEl.appendChild(card);
+			});
+
+			list.appendChild(rowEl);
+		});
+	}
+
+	function loadArmoryView() {
+		clearInterval(dashInterval);
+		dashInterval = null;
+
+		document.getElementById('dashboard').style.display = 'none';
+		document.getElementById('mapViewer').style.display = 'none';
+		document.getElementById('progressViewer').style.display = 'none';
+		document.getElementById('armoryViewer').style.display = 'block';
+
+		renderArmoryList();
+
+		document.getElementById('armoryScroll').scrollTop = 0;
+	}
+
 	
 	function refreshCurrentView() {
 		updateTotalCompletion();

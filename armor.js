@@ -7,6 +7,7 @@ const ARMOR_SETS = [
 			"id": "ancienthero1",
 			"name": "Ancient Hero's Aspect",
 			"img": "ancienthero1.png",
+			"ability": "none",
 			"baseDef": 12,
 			"starDef": [
 				21,
@@ -28,6 +29,7 @@ const ARMOR_SETS = [
 			"id": "archaic2",
 			"name": "Archaic Tunic",
 			"img": "archaic2.png",
+			"ability": "none",
 			"baseDef": 1,
 			"starDef": [
 				null,
@@ -47,6 +49,7 @@ const ARMOR_SETS = [
 			"id": "archaic3",
 			"name": "Archaic Legwear",
 			"img": "archaic3.png",
+			"ability": "none",
 			"baseDef": 1,
 			"starDef": [
 				null,
@@ -68,6 +71,7 @@ const ARMOR_SETS = [
 			"id": "awakening1",
 			"name": "Mask of Awakening",
 			"img": "awakening1.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -87,6 +91,7 @@ const ARMOR_SETS = [
 			"id": "awakening2",
 			"name": "Tunic of Awakening",
 			"img": "awakening2.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -106,6 +111,7 @@ const ARMOR_SETS = [
 			"id": "awakening3",
 			"name": "Trousers of Awakening",
 			"img": "awakening3.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -127,6 +133,7 @@ const ARMOR_SETS = [
 			"id": "barbarian1",
 			"name": "Barbarian Helm",
 			"img": "barbarian1.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -146,6 +153,7 @@ const ARMOR_SETS = [
 			"id": "barbarian2",
 			"name": "Barbarian Armor",
 			"img": "barbarian2.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -165,6 +173,7 @@ const ARMOR_SETS = [
 			"id": "barbarian3",
 			"name": "Barbarian Leg Wraps",
 			"img": "barbarian3.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -186,6 +195,7 @@ const ARMOR_SETS = [
 			"id": "bokoblin",
 			"name": "Bokoblin Mask",
 			"img": "bokoblin.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -207,6 +217,7 @@ const ARMOR_SETS = [
 			"id": "boots1",
 			"name": "Sand Boots",
 			"img": "boots1.png",
+			"ability": "Sand Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -226,6 +237,7 @@ const ARMOR_SETS = [
 			"id": "boots2",
 			"name": "Snow Boots",
 			"img": "boots2.png",
+			"ability": "Snow Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -245,6 +257,7 @@ const ARMOR_SETS = [
 			"id": "boots3",
 			"name": "Archaic Warm Greaves",
 			"img": "boots3.png",
+			"ability": "Cold Resistance",
 			"baseDef": 2,
 			"starDef": [
 				null,
@@ -266,6 +279,7 @@ const ARMOR_SETS = [
 			"id": "cecehat",
 			"name": "Cece Hat",
 			"img": "cecehat.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -287,6 +301,7 @@ const ARMOR_SETS = [
 			"id": "champion",
 			"name": "Champion's Leathers",
 			"img": "champion.png",
+			"ability": "none",
 			"baseDef": 5,
 			"starDef": [
 				8,
@@ -308,6 +323,7 @@ const ARMOR_SETS = [
 			"id": "charged1",
 			"name": "Charged Headdress",
 			"img": "charged1.png",
+			"ability": "Stormy Weather Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -327,6 +343,7 @@ const ARMOR_SETS = [
 			"id": "charged2",
 			"name": "Charged Shirt",
 			"img": "charged2.png",
+			"ability": "Stormy Weather Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -346,6 +363,7 @@ const ARMOR_SETS = [
 			"id": "charged3",
 			"name": "Charged Trousers",
 			"img": "charged3.png",
+			"ability": "Stormy Weather Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -367,6 +385,7 @@ const ARMOR_SETS = [
 			"id": "circlet1",
 			"name": "Diamond Circlet",
 			"img": "circlet1.png",
+			"ability": "Attack Up",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -386,6 +405,7 @@ const ARMOR_SETS = [
 			"id": "circlet2",
 			"name": "Ruby Circlet",
 			"img": "circlet2.png",
+			"ability": "Cold Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -405,6 +425,7 @@ const ARMOR_SETS = [
 			"id": "circlet3",
 			"name": "Sapphire Circlet",
 			"img": "circlet3.png",
+			"ability": "Heat Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -426,6 +447,7 @@ const ARMOR_SETS = [
 			"id": "climbing1",
 			"name": "Climber's Bandana",
 			"img": "climbing1.png",
+			"ability": "Climb Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -445,6 +467,7 @@ const ARMOR_SETS = [
 			"id": "climbing2",
 			"name": "Climbing Gear",
 			"img": "climbing2.png",
+			"ability": "Climb Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -464,6 +487,7 @@ const ARMOR_SETS = [
 			"id": "climbing3",
 			"name": "Climbing Boots",
 			"img": "climbing3.png",
+			"ability": "Climb Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -485,6 +509,7 @@ const ARMOR_SETS = [
 			"id": "dark1",
 			"name": "Dark Hood",
 			"img": "dark1.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -504,6 +529,7 @@ const ARMOR_SETS = [
 			"id": "dark2",
 			"name": "Dark Tunic",
 			"img": "dark2.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -523,6 +549,7 @@ const ARMOR_SETS = [
 			"id": "dark3",
 			"name": "Dark Trousers",
 			"img": "dark3.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -544,6 +571,7 @@ const ARMOR_SETS = [
 			"id": "depths1",
 			"name": "Hood of the Depths",
 			"img": "depths1.png",
+			"ability": "Gloom Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -563,6 +591,7 @@ const ARMOR_SETS = [
 			"id": "depths2",
 			"name": "Tunic of the Depths",
 			"img": "depths2.png",
+			"ability": "Gloom Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -582,6 +611,7 @@ const ARMOR_SETS = [
 			"id": "depths3",
 			"name": "Gaiters of the Depths",
 			"img": "depths3.png",
+			"ability": "Gloom Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -603,6 +633,7 @@ const ARMOR_SETS = [
 			"id": "desertvoe1",
 			"name": "Desert Voe Headband",
 			"img": "desertvoe1.png",
+			"ability": "Heat Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -622,6 +653,7 @@ const ARMOR_SETS = [
 			"id": "desertvoe2",
 			"name": "Desert Voe Spaulder",
 			"img": "desertvoe2.png",
+			"ability": "Heat Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -641,6 +673,7 @@ const ARMOR_SETS = [
 			"id": "desertvoe3",
 			"name": "Desert Voe Trousers",
 			"img": "desertvoe3.png",
+			"ability": "Heat Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -662,6 +695,7 @@ const ARMOR_SETS = [
 			"id": "earrings1",
 			"name": "Amber Earrings",
 			"img": "earrings1.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -681,6 +715,7 @@ const ARMOR_SETS = [
 			"id": "earrings2",
 			"name": "Opal Earrings",
 			"img": "earrings2.png",
+			"ability": "Swim Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -700,6 +735,7 @@ const ARMOR_SETS = [
 			"id": "earrings3",
 			"name": "Topaz Earrings",
 			"img": "earrings3.png",
+			"ability": "Shock Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -721,6 +757,7 @@ const ARMOR_SETS = [
 			"id": "ember1",
 			"name": "Ember Headdress",
 			"img": "ember1.png",
+			"ability": "Hot Weather Attack Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -740,6 +777,7 @@ const ARMOR_SETS = [
 			"id": "ember2",
 			"name": "Ember Shirt",
 			"img": "ember2.png",
+			"ability": "Hot Weather Attack Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -759,6 +797,7 @@ const ARMOR_SETS = [
 			"id": "ember3",
 			"name": "Ember Trousers",
 			"img": "ember3.png",
+			"ability": "Hot Weather Attack Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -780,6 +819,7 @@ const ARMOR_SETS = [
 			"id": "evilspirit1",
 			"name": "Evil Spirit Mask",
 			"img": "evilspirit1.png",
+			"ability": "Stealth Up",
 			"baseDef": 4,
 			"starDef": [
 				null,
@@ -799,6 +839,7 @@ const ARMOR_SETS = [
 			"id": "evilspirit2",
 			"name": "Evil Spirit Armor",
 			"img": "evilspirit2.png",
+			"ability": "Stealth Up",
 			"baseDef": 4,
 			"starDef": [
 				null,
@@ -818,6 +859,7 @@ const ARMOR_SETS = [
 			"id": "evilspirit3",
 			"name": "Evil Spirit Greaves",
 			"img": "evilspirit3.png",
+			"ability": "Stealth Up",
 			"baseDef": 4,
 			"starDef": [
 				null,
@@ -839,6 +881,7 @@ const ARMOR_SETS = [
 			"id": "fiercedeity1",
 			"name": "Fierce Deity Mask",
 			"img": "fiercedeity1.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -858,6 +901,7 @@ const ARMOR_SETS = [
 			"id": "fiercedeity2",
 			"name": "Fierce Deity Armor",
 			"img": "fiercedeity2.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -877,6 +921,7 @@ const ARMOR_SETS = [
 			"id": "fiercedeity3",
 			"name": "Fierce Deity Boots",
 			"img": "fiercedeity3.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -898,6 +943,7 @@ const ARMOR_SETS = [
 			"id": "flamebreaker1",
 			"name": "Flamebreaker Helm",
 			"img": "flamebreaker1.png",
+			"ability": "Flame Guard",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -917,6 +963,7 @@ const ARMOR_SETS = [
 			"id": "flamebreaker2",
 			"name": "Flamebreaker Armor",
 			"img": "flamebreaker2.png",
+			"ability": "Flame Guard",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -936,6 +983,7 @@ const ARMOR_SETS = [
 			"id": "flamebreaker3",
 			"name": "Flamebreaker Boots",
 			"img": "flamebreaker3.png",
+			"ability": "Flame Guard",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -957,6 +1005,7 @@ const ARMOR_SETS = [
 			"id": "froggy1",
 			"name": "Froggy Hood",
 			"img": "froggy1.png",
+			"ability": "Slip Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -976,6 +1025,7 @@ const ARMOR_SETS = [
 			"id": "froggy2",
 			"name": "Froggy Sleeve",
 			"img": "froggy2.png",
+			"ability": "Slip Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -995,6 +1045,7 @@ const ARMOR_SETS = [
 			"id": "froggy3",
 			"name": "Froggy Leggings",
 			"img": "froggy3.png",
+			"ability": "Slip Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1016,6 +1067,7 @@ const ARMOR_SETS = [
 			"id": "frostbite1",
 			"name": "Frostbite Headdress",
 			"img": "frostbite1.png",
+			"ability": "Cold Weather Attack Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -1035,6 +1087,7 @@ const ARMOR_SETS = [
 			"id": "frostbite2",
 			"name": "Frostbite Shirt",
 			"img": "frostbite2.png",
+			"ability": "Cold Weather Attack Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -1054,6 +1107,7 @@ const ARMOR_SETS = [
 			"id": "frostbite3",
 			"name": "Frostbite Trousers",
 			"img": "frostbite3.png",
+			"ability": "Cold Weather Attack Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -1075,6 +1129,7 @@ const ARMOR_SETS = [
 			"id": "glide1",
 			"name": "Glide Mask",
 			"img": "glide1.png",
+			"ability": "Skydive Mobility Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -1094,6 +1149,7 @@ const ARMOR_SETS = [
 			"id": "glide2",
 			"name": "Glide Shirt",
 			"img": "glide2.png",
+			"ability": "Skydive Mobility Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -1113,6 +1169,7 @@ const ARMOR_SETS = [
 			"id": "glide3",
 			"name": "Glide Tights",
 			"img": "glide3.png",
+			"ability": "Skydive Mobility Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -1134,6 +1191,7 @@ const ARMOR_SETS = [
 			"id": "hairband",
 			"name": "Well-Worn Hair Band",
 			"img": "hairband.png",
+			"ability": "none",
 			"baseDef": 0,
 			"starDef": [
 				null,
@@ -1155,6 +1213,7 @@ const ARMOR_SETS = [
 			"id": "hero1",
 			"name": "Cap of the Hero",
 			"img": "hero1.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1174,6 +1233,7 @@ const ARMOR_SETS = [
 			"id": "hero2",
 			"name": "Tunic of the Hero",
 			"img": "hero2.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1193,6 +1253,7 @@ const ARMOR_SETS = [
 			"id": "hero3",
 			"name": "Trousers of the Hero",
 			"img": "hero3.png",
+			"ability": "Attack Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1214,6 +1275,7 @@ const ARMOR_SETS = [
 			"id": "horriblin",
 			"name": "Horriblin Mask",
 			"img": "horriblin.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1235,6 +1297,7 @@ const ARMOR_SETS = [
 			"id": "hylian1",
 			"name": "Hylian Hood",
 			"img": "hylian1.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1254,6 +1317,7 @@ const ARMOR_SETS = [
 			"id": "hylian2",
 			"name": "Hylian Trousers",
 			"img": "hylian2.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1273,6 +1337,7 @@ const ARMOR_SETS = [
 			"id": "hylian3",
 			"name": "Hylian Tunic",
 			"img": "hylian3.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1294,6 +1359,7 @@ const ARMOR_SETS = [
 			"id": "korok",
 			"name": "Korok Mask",
 			"img": "korok.png",
+			"ability": "Korok Sensor",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1315,6 +1381,7 @@ const ARMOR_SETS = [
 			"id": "lightning",
 			"name": "Lighning Helm",
 			"img": "lightning.png",
+			"ability": "Lightning Proof",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1336,6 +1403,7 @@ const ARMOR_SETS = [
 			"id": "lizalfos",
 			"name": "Lizalfos Mask",
 			"img": "lizalfos.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1357,6 +1425,7 @@ const ARMOR_SETS = [
 			"id": "lobster",
 			"name": "Lobster Shirt",
 			"img": "lobster.png",
+			"ability": "Heat Resistance",
 			"baseDef": 1,
 			"starDef": [
 				null,
@@ -1378,6 +1447,7 @@ const ARMOR_SETS = [
 			"id": "lynel",
 			"name": "Lynel Mask",
 			"img": "lynel.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1399,6 +1469,7 @@ const ARMOR_SETS = [
 			"id": "majoras",
 			"name": "Majora's Mask",
 			"img": "majoras.png",
+			"ability": "none",
 			"baseDef": 1,
 			"starDef": [
 				null,
@@ -1420,6 +1491,7 @@ const ARMOR_SETS = [
 			"id": "memories",
 			"name": "Tunic of Memories",
 			"img": "memories.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -1441,6 +1513,7 @@ const ARMOR_SETS = [
 			"id": "midnas",
 			"name": "Midna's Helmet",
 			"img": "midnas.png",
+			"ability": "none",
 			"baseDef": 7,
 			"starDef": [
 				null,
@@ -1462,6 +1535,7 @@ const ARMOR_SETS = [
 			"id": "miners1",
 			"name": "Miner's Mask",
 			"img": "miners1.png",
+			"ability": "Glow",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1481,6 +1555,7 @@ const ARMOR_SETS = [
 			"id": "miners2",
 			"name": "Miner's Top",
 			"img": "miners2.png",
+			"ability": "Glow",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1500,6 +1575,7 @@ const ARMOR_SETS = [
 			"id": "miners3",
 			"name": "Miner's Trousers",
 			"img": "miners3.png",
+			"ability": "Glow",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1521,6 +1597,7 @@ const ARMOR_SETS = [
 			"id": "moblin",
 			"name": "Moblin Mask",
 			"img": "moblin.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1542,6 +1619,7 @@ const ARMOR_SETS = [
 			"id": "mystic1",
 			"name": "Mystic Headpiece",
 			"img": "mystic1.png",
+			"ability": "Rupee Padding",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1561,6 +1639,7 @@ const ARMOR_SETS = [
 			"id": "mystic2",
 			"name": "Mystic Robe",
 			"img": "mystic2.png",
+			"ability": "Rupee Padding",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1580,6 +1659,7 @@ const ARMOR_SETS = [
 			"id": "mystic3",
 			"name": "Mystic Trousers",
 			"img": "mystic3.png",
+			"ability": "Rupee Padding",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1601,6 +1681,7 @@ const ARMOR_SETS = [
 			"id": "phantom1",
 			"name": "Phantom Helm",
 			"img": "phantom1.png",
+			"ability": "Attack Up",
 			"baseDef": 8,
 			"starDef": [
 				null,
@@ -1620,6 +1701,7 @@ const ARMOR_SETS = [
 			"id": "phantom2",
 			"name": "Phantom Armor",
 			"img": "phantom2.png",
+			"ability": "Attack Up",
 			"baseDef": 8,
 			"starDef": [
 				null,
@@ -1639,6 +1721,7 @@ const ARMOR_SETS = [
 			"id": "phantom3",
 			"name": "Phantom Greaves",
 			"img": "phantom3.png",
+			"ability": "Attack Up",
 			"baseDef": 8,
 			"starDef": [
 				null,
@@ -1660,6 +1743,7 @@ const ARMOR_SETS = [
 			"id": "radiant1",
 			"name": "Radiant Mask",
 			"img": "radiant1.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1679,6 +1763,7 @@ const ARMOR_SETS = [
 			"id": "radiant2",
 			"name": "Radiant Shirt",
 			"img": "radiant2.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1698,6 +1783,7 @@ const ARMOR_SETS = [
 			"id": "radiant3",
 			"name": "Radiant Tights",
 			"img": "radiant3.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1719,6 +1805,7 @@ const ARMOR_SETS = [
 			"id": "ravios",
 			"name": "Ravio's Hood",
 			"img": "ravios.png",
+			"ability": "Sideways Climbing Speed Up",
 			"baseDef": 2,
 			"starDef": [
 				null,
@@ -1740,6 +1827,7 @@ const ARMOR_SETS = [
 			"id": "royalguard1",
 			"name": "Royal Guard Cap",
 			"img": "royalguard1.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				6,
@@ -1759,6 +1847,7 @@ const ARMOR_SETS = [
 			"id": "royalguard2",
 			"name": "Royal Guard Uniform",
 			"img": "royalguard2.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				6,
@@ -1778,6 +1867,7 @@ const ARMOR_SETS = [
 			"id": "royalguard3",
 			"name": "Royal Guard Boots",
 			"img": "royalguard3.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				6,
@@ -1799,6 +1889,7 @@ const ARMOR_SETS = [
 			"id": "rubber1",
 			"name": "Rubber Helm",
 			"img": "rubber1.png",
+			"ability": "Shock Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1818,6 +1909,7 @@ const ARMOR_SETS = [
 			"id": "rubber2",
 			"name": "Rubber Armor",
 			"img": "rubber2.png",
+			"ability": "Shock Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1837,6 +1929,7 @@ const ARMOR_SETS = [
 			"id": "rubber3",
 			"name": "Rubber Tights",
 			"img": "rubber3.png",
+			"ability": "Shock Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1858,6 +1951,7 @@ const ARMOR_SETS = [
 			"id": "sheiks",
 			"name": "Sheik's Mask",
 			"img": "sheiks.png",
+			"ability": "Stealth Up",
 			"baseDef": 2,
 			"starDef": [
 				5,
@@ -1879,6 +1973,7 @@ const ARMOR_SETS = [
 			"id": "sky1",
 			"name": "Cap of the Sky",
 			"img": "sky1.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1898,6 +1993,7 @@ const ARMOR_SETS = [
 			"id": "sky2",
 			"name": "Tunic of the Sky",
 			"img": "sky2.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1917,6 +2013,7 @@ const ARMOR_SETS = [
 			"id": "sky3",
 			"name": "Trousers of the Sky",
 			"img": "sky3.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1938,6 +2035,7 @@ const ARMOR_SETS = [
 			"id": "snowquill1",
 			"name": "Snowquill Headdress",
 			"img": "snowquill1.png",
+			"ability": "Cold Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1957,6 +2055,7 @@ const ARMOR_SETS = [
 			"id": "snowquill2",
 			"name": "Snowquill Tunic",
 			"img": "snowquill2.png",
+			"ability": "Cold Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1976,6 +2075,7 @@ const ARMOR_SETS = [
 			"id": "snowquill3",
 			"name": "Snowquill Trousers",
 			"img": "snowquill3.png",
+			"ability": "Cold Resistance",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1997,6 +2097,7 @@ const ARMOR_SETS = [
 			"id": "soldiers1",
 			"name": "Soldier's Helm",
 			"img": "soldiers1.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2016,6 +2117,7 @@ const ARMOR_SETS = [
 			"id": "soldiers2",
 			"name": "Soldier's Armor",
 			"img": "soldiers2.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2035,6 +2137,7 @@ const ARMOR_SETS = [
 			"id": "soldiers3",
 			"name": "Soldier's Greaves",
 			"img": "soldiers3.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2056,6 +2159,7 @@ const ARMOR_SETS = [
 			"id": "stealth1",
 			"name": "Stealth Mask",
 			"img": "stealth1.png",
+			"ability": "Stealth Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -2075,6 +2179,7 @@ const ARMOR_SETS = [
 			"id": "stealth2",
 			"name": "Stealth Chest Guard",
 			"img": "stealth2.png",
+			"ability": "Stealth Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -2094,6 +2199,7 @@ const ARMOR_SETS = [
 			"id": "stealth3",
 			"name": "Stealth Tights",
 			"img": "stealth3.png",
+			"ability": "Stealth Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -2115,6 +2221,7 @@ const ARMOR_SETS = [
 			"id": "time1",
 			"name": "Cap of Time",
 			"img": "time1.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2134,6 +2241,7 @@ const ARMOR_SETS = [
 			"id": "time2",
 			"name": "Tunic of Time",
 			"img": "time2.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2153,6 +2261,7 @@ const ARMOR_SETS = [
 			"id": "time3",
 			"name": "Trousers of Time",
 			"img": "time3.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2174,6 +2283,7 @@ const ARMOR_SETS = [
 			"id": "tingles1",
 			"name": "Tingle's Hood",
 			"img": "tingles1.png",
+			"ability": "none",
 			"baseDef": 2,
 			"starDef": [
 				null,
@@ -2193,6 +2303,7 @@ const ARMOR_SETS = [
 			"id": "tingles2",
 			"name": "Tingle's Shirt",
 			"img": "tingles2.png",
+			"ability": "none",
 			"baseDef": 2,
 			"starDef": [
 				null,
@@ -2212,6 +2323,7 @@ const ARMOR_SETS = [
 			"id": "tingles3",
 			"name": "Tingle's Tights",
 			"img": "tingles3.png",
+			"ability": "none",
 			"baseDef": 2,
 			"starDef": [
 				null,
@@ -2233,6 +2345,7 @@ const ARMOR_SETS = [
 			"id": "twilight1",
 			"name": "Cap of Twilight",
 			"img": "twilight1.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2252,6 +2365,7 @@ const ARMOR_SETS = [
 			"id": "twilight2",
 			"name": "Tunic of Twilight",
 			"img": "twilight2.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2271,6 +2385,7 @@ const ARMOR_SETS = [
 			"id": "twilight3",
 			"name": "Trousers of Twilight",
 			"img": "twilight3.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2292,6 +2407,7 @@ const ARMOR_SETS = [
 			"id": "vahmedoh",
 			"name": "Vah Medoh Divine Helm",
 			"img": "vahmedoh.png",
+			"ability": "Cold Resistance",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -2313,6 +2429,7 @@ const ARMOR_SETS = [
 			"id": "vahnaboris",
 			"name": "Vah Naboris Divine Helm",
 			"img": "vahnaboris.png",
+			"ability": "Shock Resistance",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -2334,6 +2451,7 @@ const ARMOR_SETS = [
 			"id": "vahrudania",
 			"name": "Vah Rudania Divine Helm",
 			"img": "vahrudania.png",
+			"ability": "Flame Guard",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -2355,6 +2473,7 @@ const ARMOR_SETS = [
 			"id": "vahruta",
 			"name": "Vah Ruta Divine Helm",
 			"img": "vahruta.png",
+			"ability": "Swim Speed Up",
 			"baseDef": 2,
 			"starDef": [
 				4,
@@ -2376,6 +2495,7 @@ const ARMOR_SETS = [
 			"id": "wild1",
 			"name": "Cap of the Wild",
 			"img": "wild1.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2395,6 +2515,7 @@ const ARMOR_SETS = [
 			"id": "wild2",
 			"name": "Tunic of the Wild",
 			"img": "wild2.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2414,6 +2535,7 @@ const ARMOR_SETS = [
 			"id": "wild3",
 			"name": "Trousers of the Wild",
 			"img": "wild3.png",
+			"ability": "none",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2435,6 +2557,7 @@ const ARMOR_SETS = [
 			"id": "wind1",
 			"name": "Cap of the Wind",
 			"img": "wind1.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2454,6 +2577,7 @@ const ARMOR_SETS = [
 			"id": "wind2",
 			"name": "Tunic of the Wind",
 			"img": "wind2.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2473,6 +2597,7 @@ const ARMOR_SETS = [
 			"id": "wind3",
 			"name": "Trousers of the Wind",
 			"img": "wind3.png",
+			"ability": "none",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2494,6 +2619,7 @@ const ARMOR_SETS = [
 			"id": "yiga1",
 			"name": "Yiga Mask",
 			"img": "yiga1.png",
+			"ability": "Stealth Up",
 			"baseDef": 1,
 			"starDef": [
 				3,
@@ -2513,6 +2639,7 @@ const ARMOR_SETS = [
 			"id": "yiga2",
 			"name": "Yiga Armor",
 			"img": "yiga2.png",
+			"ability": "Stealth Up",
 			"baseDef": 1,
 			"starDef": [
 				3,
@@ -2532,6 +2659,7 @@ const ARMOR_SETS = [
 			"id": "yiga3",
 			"name": "Yiga Tights",
 			"img": "yiga3.png",
+			"ability": "Stealth Up",
 			"baseDef": 1,
 			"starDef": [
 				3,
@@ -2553,6 +2681,7 @@ const ARMOR_SETS = [
 			"id": "zants",
 			"name": "Zant's Helmet",
 			"img": "zants.png",
+			"ability": "Unfreezable",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -2574,6 +2703,7 @@ const ARMOR_SETS = [
 			"id": "zonaite1",
 			"name": "Zonaite Helm",
 			"img": "zonaite1.png",
+			"ability": "Energy Up",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2593,6 +2723,7 @@ const ARMOR_SETS = [
 			"id": "zonaite2",
 			"name": "Zonaite Waistguard",
 			"img": "zonaite2.png",
+			"ability": "Energy Up",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2612,6 +2743,7 @@ const ARMOR_SETS = [
 			"id": "zonaite3",
 			"name": "Zonaite Shin Guards",
 			"img": "zonaite3.png",
+			"ability": "Energy Up",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2633,6 +2765,7 @@ const ARMOR_SETS = [
 			"id": "zora1",
 			"name": "Zora Helm",
 			"img": "zora1.png",
+			"ability": "Swim Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2652,6 +2785,7 @@ const ARMOR_SETS = [
 			"id": "zora2",
 			"name": "Zora Armor",
 			"img": "zora2.png",
+			"ability": "Swim Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2671,6 +2805,7 @@ const ARMOR_SETS = [
 			"id": "zora3",
 			"name": "Zora Greaves",
 			"img": "zora3.png",
+			"ability": "Swim Speed Up",
 			"baseDef": 3,
 			"starDef": [
 				5,
