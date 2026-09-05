@@ -195,7 +195,7 @@ const ARMOR_SETS = [
 			"id": "bokoblin",
 			"name": "Bokoblin Mask",
 			"img": "bokoblin.png",
-			"ability": "No Ability",
+			"ability": "Bokoblin Camouflage",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1275,7 +1275,7 @@ const ARMOR_SETS = [
 			"id": "horriblin",
 			"name": "Horriblin Mask",
 			"img": "horriblin.png",
-			"ability": "No Ability",
+			"ability": "Horriblin Camouflage",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1403,7 +1403,7 @@ const ARMOR_SETS = [
 			"id": "lizalfos",
 			"name": "Lizalfos Mask",
 			"img": "lizalfos.png",
-			"ability": "No Ability",
+			"ability": "Lizalfos Camouflage",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1447,7 +1447,7 @@ const ARMOR_SETS = [
 			"id": "lynel",
 			"name": "Lynel Mask",
 			"img": "lynel.png",
-			"ability": "No Ability",
+			"ability": "Lynel Camouflage",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1597,7 +1597,7 @@ const ARMOR_SETS = [
 			"id": "moblin",
 			"name": "Moblin Mask",
 			"img": "moblin.png",
-			"ability": "No Ability",
+			"ability": "Moblin Camouflage",
 			"baseDef": 3,
 			"starDef": [
 				null,
