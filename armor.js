@@ -7,7 +7,7 @@ const ARMOR_SETS = [
 			"id": "ancienthero1",
 			"name": "Ancient Hero's Aspect",
 			"img": "ancienthero1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 12,
 			"starDef": [
 				21,
@@ -29,7 +29,7 @@ const ARMOR_SETS = [
 			"id": "archaic2",
 			"name": "Archaic Tunic",
 			"img": "archaic2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 1,
 			"starDef": [
 				null,
@@ -49,7 +49,7 @@ const ARMOR_SETS = [
 			"id": "archaic3",
 			"name": "Archaic Legwear",
 			"img": "archaic3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 1,
 			"starDef": [
 				null,
@@ -71,7 +71,7 @@ const ARMOR_SETS = [
 			"id": "awakening1",
 			"name": "Mask of Awakening",
 			"img": "awakening1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -91,7 +91,7 @@ const ARMOR_SETS = [
 			"id": "awakening2",
 			"name": "Tunic of Awakening",
 			"img": "awakening2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -111,7 +111,7 @@ const ARMOR_SETS = [
 			"id": "awakening3",
 			"name": "Trousers of Awakening",
 			"img": "awakening3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -195,7 +195,7 @@ const ARMOR_SETS = [
 			"id": "bokoblin",
 			"name": "Bokoblin Mask",
 			"img": "bokoblin.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -279,7 +279,7 @@ const ARMOR_SETS = [
 			"id": "cecehat",
 			"name": "Cece Hat",
 			"img": "cecehat.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -301,7 +301,7 @@ const ARMOR_SETS = [
 			"id": "champion",
 			"name": "Champion's Leathers",
 			"img": "champion.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 5,
 			"starDef": [
 				8,
@@ -509,7 +509,7 @@ const ARMOR_SETS = [
 			"id": "dark1",
 			"name": "Dark Hood",
 			"img": "dark1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -529,7 +529,7 @@ const ARMOR_SETS = [
 			"id": "dark2",
 			"name": "Dark Tunic",
 			"img": "dark2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -549,7 +549,7 @@ const ARMOR_SETS = [
 			"id": "dark3",
 			"name": "Dark Trousers",
 			"img": "dark3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -695,7 +695,7 @@ const ARMOR_SETS = [
 			"id": "earrings1",
 			"name": "Amber Earrings",
 			"img": "earrings1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -1191,7 +1191,7 @@ const ARMOR_SETS = [
 			"id": "hairband",
 			"name": "Well-Worn Hair Band",
 			"img": "hairband.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 0,
 			"starDef": [
 				null,
@@ -1275,7 +1275,7 @@ const ARMOR_SETS = [
 			"id": "horriblin",
 			"name": "Horriblin Mask",
 			"img": "horriblin.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1297,7 +1297,7 @@ const ARMOR_SETS = [
 			"id": "hylian1",
 			"name": "Hylian Hood",
 			"img": "hylian1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1317,7 +1317,7 @@ const ARMOR_SETS = [
 			"id": "hylian2",
 			"name": "Hylian Trousers",
 			"img": "hylian2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1337,7 +1337,7 @@ const ARMOR_SETS = [
 			"id": "hylian3",
 			"name": "Hylian Tunic",
 			"img": "hylian3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1403,7 +1403,7 @@ const ARMOR_SETS = [
 			"id": "lizalfos",
 			"name": "Lizalfos Mask",
 			"img": "lizalfos.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1447,7 +1447,7 @@ const ARMOR_SETS = [
 			"id": "lynel",
 			"name": "Lynel Mask",
 			"img": "lynel.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1469,7 +1469,7 @@ const ARMOR_SETS = [
 			"id": "majoras",
 			"name": "Majora's Mask",
 			"img": "majoras.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 1,
 			"starDef": [
 				null,
@@ -1491,7 +1491,7 @@ const ARMOR_SETS = [
 			"id": "memories",
 			"name": "Tunic of Memories",
 			"img": "memories.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -1513,7 +1513,7 @@ const ARMOR_SETS = [
 			"id": "midnas",
 			"name": "Midna's Helmet",
 			"img": "midnas.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 7,
 			"starDef": [
 				null,
@@ -1597,7 +1597,7 @@ const ARMOR_SETS = [
 			"id": "moblin",
 			"name": "Moblin Mask",
 			"img": "moblin.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				null,
@@ -1743,7 +1743,7 @@ const ARMOR_SETS = [
 			"id": "radiant1",
 			"name": "Radiant Mask",
 			"img": "radiant1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1763,7 +1763,7 @@ const ARMOR_SETS = [
 			"id": "radiant2",
 			"name": "Radiant Shirt",
 			"img": "radiant2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1783,7 +1783,7 @@ const ARMOR_SETS = [
 			"id": "radiant3",
 			"name": "Radiant Tights",
 			"img": "radiant3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1827,7 +1827,7 @@ const ARMOR_SETS = [
 			"id": "royalguard1",
 			"name": "Royal Guard Cap",
 			"img": "royalguard1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				6,
@@ -1847,7 +1847,7 @@ const ARMOR_SETS = [
 			"id": "royalguard2",
 			"name": "Royal Guard Uniform",
 			"img": "royalguard2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				6,
@@ -1867,7 +1867,7 @@ const ARMOR_SETS = [
 			"id": "royalguard3",
 			"name": "Royal Guard Boots",
 			"img": "royalguard3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				6,
@@ -1973,7 +1973,7 @@ const ARMOR_SETS = [
 			"id": "sky1",
 			"name": "Cap of the Sky",
 			"img": "sky1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -1993,7 +1993,7 @@ const ARMOR_SETS = [
 			"id": "sky2",
 			"name": "Tunic of the Sky",
 			"img": "sky2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2013,7 +2013,7 @@ const ARMOR_SETS = [
 			"id": "sky3",
 			"name": "Trousers of the Sky",
 			"img": "sky3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2097,7 +2097,7 @@ const ARMOR_SETS = [
 			"id": "soldiers1",
 			"name": "Soldier's Helm",
 			"img": "soldiers1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2117,7 +2117,7 @@ const ARMOR_SETS = [
 			"id": "soldiers2",
 			"name": "Soldier's Armor",
 			"img": "soldiers2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2137,7 +2137,7 @@ const ARMOR_SETS = [
 			"id": "soldiers3",
 			"name": "Soldier's Greaves",
 			"img": "soldiers3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2221,7 +2221,7 @@ const ARMOR_SETS = [
 			"id": "time1",
 			"name": "Cap of Time",
 			"img": "time1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2241,7 +2241,7 @@ const ARMOR_SETS = [
 			"id": "time2",
 			"name": "Tunic of Time",
 			"img": "time2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2261,7 +2261,7 @@ const ARMOR_SETS = [
 			"id": "time3",
 			"name": "Trousers of Time",
 			"img": "time3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2283,7 +2283,7 @@ const ARMOR_SETS = [
 			"id": "tingles1",
 			"name": "Tingle's Hood",
 			"img": "tingles1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 2,
 			"starDef": [
 				null,
@@ -2303,7 +2303,7 @@ const ARMOR_SETS = [
 			"id": "tingles2",
 			"name": "Tingle's Shirt",
 			"img": "tingles2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 2,
 			"starDef": [
 				null,
@@ -2323,7 +2323,7 @@ const ARMOR_SETS = [
 			"id": "tingles3",
 			"name": "Tingle's Tights",
 			"img": "tingles3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 2,
 			"starDef": [
 				null,
@@ -2345,7 +2345,7 @@ const ARMOR_SETS = [
 			"id": "twilight1",
 			"name": "Cap of Twilight",
 			"img": "twilight1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2365,7 +2365,7 @@ const ARMOR_SETS = [
 			"id": "twilight2",
 			"name": "Tunic of Twilight",
 			"img": "twilight2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2385,7 +2385,7 @@ const ARMOR_SETS = [
 			"id": "twilight3",
 			"name": "Trousers of Twilight",
 			"img": "twilight3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2495,7 +2495,7 @@ const ARMOR_SETS = [
 			"id": "wild1",
 			"name": "Cap of the Wild",
 			"img": "wild1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2515,7 +2515,7 @@ const ARMOR_SETS = [
 			"id": "wild2",
 			"name": "Tunic of the Wild",
 			"img": "wild2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2535,7 +2535,7 @@ const ARMOR_SETS = [
 			"id": "wild3",
 			"name": "Trousers of the Wild",
 			"img": "wild3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 4,
 			"starDef": [
 				7,
@@ -2557,7 +2557,7 @@ const ARMOR_SETS = [
 			"id": "wind1",
 			"name": "Cap of the Wind",
 			"img": "wind1.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2577,7 +2577,7 @@ const ARMOR_SETS = [
 			"id": "wind2",
 			"name": "Tunic of the Wind",
 			"img": "wind2.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,
@@ -2597,7 +2597,7 @@ const ARMOR_SETS = [
 			"id": "wind3",
 			"name": "Trousers of the Wind",
 			"img": "wind3.png",
-			"ability": "none",
+			"ability": "No Ability",
 			"baseDef": 3,
 			"starDef": [
 				5,

@@ -2538,7 +2538,7 @@
 			: piece.baseDef;
 
 		let abilityIconHTML = '';
-		if (piece.ability && piece.ability.toLowerCase() !== 'none') {
+		if (piece.ability && piece.ability.toLowerCase() !== 'no ability') {
 			const abilityFileName = piece.ability.toLowerCase().replace(/\s+/g, '-');
 			abilityIconHTML = `<img src="icons/${abilityFileName}.png" alt="${piece.ability}">`;
 		}
