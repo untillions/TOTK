@@ -929,7 +929,7 @@
 		.armor-set-pieces {
 			display: flex;
 			flex-direction: column;
-			gap: 10px;
+			gap: 6px;
 			width: 100%;
 		}
 		.armor-standalone-card {
@@ -1878,7 +1878,7 @@
         "Armor Shop", "General Shop", "Other Shop", "Inn", "Sage's Will", 
         "Location", "Named Location", "Unnamed Location", "Special Location", "Korok Seed", 
         "Korok x1", "Korok x2", "Flux Construct", "Hinox", "Talus", "Gleeok", "Frox",
-        "Molduga", "Lynel", "Side Quest"
+        "Molduga", "Lynel", "Side Quest", "Main Quest"
     ];
     const landmarkColors = {
         "Tower": "#86a3e6",
@@ -1923,6 +1923,7 @@
         "Korok x1": "#61cc74",
         "Korok x2": "#61cc74",
         "Talus": "#d0d0d0",
+        "Main Quest": "#fec043",
         "default": "#facc15"
     };
     
@@ -1962,7 +1963,7 @@
             	"Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies",
             	"Location": "Locations", "Korok Seed": "Korok Seeds", "Talus": "Talus",
             	"Hinox": "Hinoxes", "Frox": "Froxes", "Gleeok": "Gleeoks", "Molduga": "Moldugas",
-            	"Lynel": "Lynels", "Side Quest": "Side Quests" },
+            	"Lynel": "Lynels", "Side Quest": "Side Quests", "Main Quest": "Main Quests" },
             defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm", "Side Quest"]
         },
         sky: {
@@ -1971,7 +1972,7 @@
             	"Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", 
             	"Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", 
             	"Location": "Locations", "Korok Seed": "Korok Seeds", "Flux Construct": "Flux Constructs",
-            	"Gleeok": "Gleeoks" },
+            	"Gleeok": "Gleeoks", "Main Quest": "Main Quests" },
             defaults: ["Shrine", "Dispenser", "Gleeok"]
         },
         depths: {
@@ -1991,7 +1992,7 @@
         },
         {
             name: "Quests",
-            items: ["Side Quest", "Flux Construct", "Frox", "Gleeok", "Hinox", "Lynel", "Molduga", "Talus"]
+            items: ["Main Quest", "Side Quest", "Flux Construct", "Frox", "Gleeok", "Hinox", "Lynel", "Molduga", "Talus"]
         },
         {
             name: "Collectibles",
@@ -2012,7 +2013,7 @@
     const NON_MAP_TYPES = [
         "Cherry Tree", "Goddess Statue", "Hudson Sign", "Old Map", "Treasure", 
         "Sage's Will", "Schematic", "Talus", "Flux Construct", "Hinox", "Frox", "Gleeok",
-        "Molduga", "Lynel", "Side Quests"
+        "Molduga", "Lynel", "Main Quest", "Side Quest"
     ];
 
     const PROGRESS_LAYERS = [
@@ -2032,7 +2033,8 @@
         "Temple": "Temples", "Shop": "Shops", "Inn": "Inns", "Sage's Will": "Sage's Wills",
         "Location": "Locations", "Korok Seed": "Korok Seeds", "Talus": "Talus",
         "Flux Construct": "Flux Constructs", "Hinox": "Hinoxes", "Frox": "Froxes", 
-        "Gleeok": "Gleeoks", "Molduga": "Moldugas", "Lynel": "Lynels", "Side Quest": "Side Quests"
+        "Gleeok": "Gleeoks", "Molduga": "Moldugas", "Lynel": "Lynels", "Main Quest": "Main Quests", 
+        "Side Quest": "Side Quests"
     };
     
     const cycleLandmarks = Object.keys(loaderPlurals);
