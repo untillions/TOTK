@@ -793,7 +793,7 @@
 		}
 		#progressHomePanel {
 			position: fixed;
-			bottom: 25px;
+			bottom: calc(25px + env(safe-area-inset-bottom));
 			left: 25px;
 			z-index: 10;
 		}
@@ -848,223 +848,28 @@
 			margin: 0 0 8px 0;
 			text-shadow: 2px 2px 3px black;
 		}
-		/* --- ARMORY COLLAPSIBLE SECTIONS --- */
-		.armory-collapsible {
-			width: 100%;
-			max-width: 760px;
-			margin: 0 auto 30px auto;
-		}
-		.armory-collapsible:last-child {
-			margin-bottom: 0;
-		}
-		.armory-collapsible-header {
-			font-family: 'HyliaSerif', serif;
+		#armorySubtitle {
 			color: #4ade80;
-			font-size: 1.2rem;
+			font-size: 0.95rem;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			text-shadow: 1px 1px 3px black;
+		}
+		.armory-section-title {
+			font-family: 'HyliaSerif', serif;
+			color: #FAF7DF;
+			font-size: 1.3rem;
 			font-weight: normal;
 			text-align: center;
-			letter-spacing: 0.5px;
+			letter-spacing: 1px;
 			text-shadow: 2px 2px 3px black;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 8px;
-			cursor: pointer;
-			user-select: none;
-			padding-bottom: 12px;
-			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-			margin-bottom: 16px;
-			transition: opacity 0.15s ease;
-		}
-		.armory-collapsible-header:hover {
-			opacity: 0.85;
-		}
-		.armory-chevron {
-			font-size: 0.85rem;
-			color: #4ade80;
-			transition: transform 0.2s ease;
-			text-shadow: none;
-		}
-		.armory-collapsible.collapsed .armory-chevron {
-			transform: rotate(-90deg);
-		}
-		.armory-collapsible.collapsed .armory-collapsible-header {
-			border-bottom-color: transparent;
-			margin-bottom: 0;
-			padding-bottom: 0;
-		}
-		.armory-collapsible-content {
-			overflow: hidden;
-		}
-		.armory-collapsible.collapsed .armory-collapsible-content {
-			display: none;
-		}
-
-		/* --- MATERIAL CALCULATOR --- */
-		.mat-calc-form {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 14px;
-			padding-bottom: 4px;
-		}
-		.mat-calc-wheels {
-			display: flex;
-			gap: 10px;
 			width: 100%;
+			max-width: 760px;
+			margin: 0 auto 12px auto;
 		}
-		.wheel-picker {
-			position: relative;
-			flex: 1 1 0;
-			min-width: 0;
-			height: 152px;
-			border-radius: 8px;
-			background: rgba(15, 23, 42, 0.95);
-			border: 1px solid #334155;
-			box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-			overflow: hidden;
-		}
-		.wheel-picker::before,
-		.wheel-picker::after {
-			content: '';
-			position: absolute;
-			left: 0;
-			right: 0;
-			height: 57px;
-			pointer-events: none;
-			z-index: 2;
-		}
-		.wheel-picker::before {
-			top: 0;
-			background: linear-gradient(to bottom, rgba(15,23,42,0.95), rgba(15,23,42,0));
-		}
-		.wheel-picker::after {
-			bottom: 0;
-			background: linear-gradient(to top, rgba(15,23,42,0.95), rgba(15,23,42,0));
-		}
-		.wheel-picker-highlight {
-			position: absolute;
-			top: 50%;
-			left: 0;
-			right: 0;
-			height: 38px;
-			transform: translateY(-50%);
-			border-top: 1px solid #4ade80;
-			border-bottom: 1px solid #4ade80;
-			background: rgba(74, 222, 128, 0.08);
-			pointer-events: none;
-			z-index: 1;
-		}
-		.wheel-picker-scroll {
-			position: relative;
-			height: 100%;
-			overflow-y: auto;
-			scroll-snap-type: y mandatory;
-			-webkit-overflow-scrolling: touch;
-			scrollbar-width: none;
-		}
-		.wheel-picker-scroll::-webkit-scrollbar {
-			display: none;
-		}
-		.wheel-picker-pad {
-			height: 57px;
-			scroll-snap-align: none;
-		}
-		.wheel-picker-item {
-			height: 38px;
-			line-height: 38px;
-			text-align: center;
-			scroll-snap-align: center;
-			color: #94a3b8;
-			font-size: 0.8rem;
-			font-weight: 600;
-			padding: 0 10px;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			cursor: pointer;
-		}
-		.wheel-picker-item.selected {
-			color: #FAF7DF;
-			font-weight: bold;
-		}
-		.mat-calc-btn {
-			padding: 8px 22px;
-			font-size: 0.95rem;
-		}
-		.mat-calc-rupee-costs {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 6px;
-			width: 100%;
-			font-family: monospace;
-			font-size: 0.75rem;
-			color: #e2e8f0;
-			text-align: center;
-		}
-		.mat-calc-rupee-title {
-			color: #FAF7DF;
-			font-weight: bold;
-			font-size: 0.8rem;
-		}
-		.mat-calc-rupee-line {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: center;
-			align-items: center;
-			gap: 4px 14px;
-			width: 100%;
-		}
-		.mat-calc-rupee-item {
-			display: inline-block;
-			white-space: nowrap;
-		}
-		.mat-calc-rupee-item .armor-materials-stars {
-			vertical-align: middle;
-			margin-right: 2px;
-			display: inline-block;
-			transform: translateY(-0.12em); /* might need to nudge */
-		}
-		.mat-calc-rupee-icon {
-			height: 14px;
-			width: auto;
-			vertical-align: middle;
-			margin-left: 3px;
-		}
-		.mat-calc-results {
-			width: 100%;
-			min-height: 30px;
-		}
-		.mat-calc-empty {
-			color: #94a3b8;
-			font-size: 0.8rem;
-			text-align: center;
-			font-style: italic;
-		}
-		.mat-calc-results-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-			gap: 6px 12px;
-		}
-		.mat-calc-item {
-			display: flex;
-			gap: 5px;
-			font-family: monospace;
-			font-size: 0.78rem;
-			color: #e2e8f0;
-			line-height: 1.3;
-			min-width: 0;
-		}
-		.mat-calc-item .mat-calc-qty {
-			color: #4ade80;
-			font-weight: bold;
-			flex-shrink: 0;
-			text-align: right;
-			display: inline-block;
-		}
-		.mat-calc-item .mat-calc-name {
-			word-break: break-word;
+		.armory-section-title.second {
+			margin-top: 30px;
 		}
 		.armory-set-list {
 			width: 100%;
@@ -1310,7 +1115,7 @@
 		}
 		#armoryHomePanel {
 			position: fixed;
-			bottom: 25px;
+			bottom: calc(25px + env(safe-area-inset-bottom));
 			left: 25px;
 			z-index: 10;
 		}
@@ -1775,26 +1580,6 @@
 			.armor-materials {
 				font-size: 0.7rem;
 			}
-			.armory-collapsible-header {
-				font-size: 1.15rem;
-			}
-			.wheel-picker {
-				height: 132px;
-			}
-			.wheel-picker::before,
-			.wheel-picker::after {
-				height: 47px;
-			}
-			.wheel-picker-pad {
-				height: 47px;
-			}
-			.mat-calc-results-grid {
-				grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
-			}
-			.mat-calc-rupee-costs {
-				font-size: 0.68rem;
-				gap: 3px 8px;
-			}
 
 		}
                 
@@ -1986,68 +1771,19 @@
 
 			<div id="armoryHeader">
 				<h1 id="armoryPageTitle">Armory</h1>
+				<div id="armorySubtitle">All Armor Pieces</div>
 			</div>
 
-			<div class="armory-collapsible" id="matCalcSection">
-				<div class="armory-collapsible-header" onclick="toggleArmoryCollapsible('matCalcSection')">
-					<span class="armory-chevron">▼</span> Material Calculator
-				</div>
-				<div class="armory-collapsible-content">
-					<div class="mat-calc-form">
-						<div class="mat-calc-wheels">
-							<div class="wheel-picker" id="matCalcSetWheel">
-								<div class="wheel-picker-highlight"></div>
-								<div class="wheel-picker-scroll" id="matCalcSetWheelScroll"></div>
-							</div>
-							<div class="wheel-picker" id="matCalcLevelWheel">
-								<div class="wheel-picker-highlight"></div>
-								<div class="wheel-picker-scroll" id="matCalcLevelWheelScroll"></div>
-							</div>
-						</div>
+			<div class="armory-section-title">Armor Sets</div>
+			<div id="armorySetsList" class="armory-set-list"></div>
 
-						<button class="btn mat-calc-btn" onclick="calculateMaterials()">Calculate Materials</button>
-
-						<div class="mat-calc-rupee-costs">
-							<div class="mat-calc-rupee-title">Upgrade Costs:</div>
-							<div class="mat-calc-rupee-line">
-								<span class="mat-calc-rupee-item"><span class="armor-materials-stars">★</span>: 10x <img src="images/items/rupee.png" alt="Rupee" class="mat-calc-rupee-icon"></span>
-								<span class="mat-calc-rupee-item"><span class="armor-materials-stars">★★</span>: 50x <img src="images/items/rupee.png" alt="Rupee" class="mat-calc-rupee-icon"></span>
-							</div>
-							<div class="mat-calc-rupee-line">
-								<span class="mat-calc-rupee-item"><span class="armor-materials-stars">★★★</span>: 200x <img src="images/items/rupee.png" alt="Rupee" class="mat-calc-rupee-icon"></span>
-								<span class="mat-calc-rupee-item"><span class="armor-materials-stars">★★★★</span>: 500x <img src="images/items/rupee.png" alt="Rupee" class="mat-calc-rupee-icon"></span>
-							</div>
-						</div>
-
-						<div id="matCalcResults" class="mat-calc-results">
-							<div class="mat-calc-empty">Pick a set and a target level, then tap Calculate Materials.</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="armory-collapsible" id="armorySetsSection">
-				<div class="armory-collapsible-header" onclick="toggleArmoryCollapsible('armorySetsSection')">
-					<span class="armory-chevron">▼</span> Armor Sets
-				</div>
-				<div class="armory-collapsible-content">
-					<div id="armorySetsList" class="armory-set-list"></div>
-				</div>
-			</div>
-
-			<div class="armory-collapsible" id="armoryStandaloneSection">
-				<div class="armory-collapsible-header" onclick="toggleArmoryCollapsible('armoryStandaloneSection')">
-					<span class="armory-chevron">▼</span> Standalone Armor Pieces
-				</div>
-				<div class="armory-collapsible-content">
-					<div id="armoryStandaloneList" class="armory-standalone-list"></div>
-				</div>
-			</div>
+			<div class="armory-section-title second">Standalone Armor Pieces</div>
+			<div id="armoryStandaloneList" class="armory-standalone-list"></div>
 
 		</div>
 
 		<div id="armoryHomePanel">
-			<button class="layer-btn" onclick="exitArmoryToDashboard()">
+			<button class="layer-btn" onclick="exitToDashboard()">
 				<img src="icons/home.png" alt="Home" style="width: 30px; height: 30px;">
 			</button>
 		</div>
@@ -2851,7 +2587,7 @@
 						</div>
 					`;
 				} else {
-					const matText = formatMaterialsText(piece.materials[state.stars]).replace(/\n/g, '<br>');
+					const matText = (piece.materials[state.stars] || '').replace(/\n/g, '<br>');
 					const nextLevelStars = '★'.repeat(state.stars + 1);
 					materialsHTML = `
 						<div class="armor-materials">
@@ -3072,261 +2808,8 @@
 		document.getElementById('armoryViewer').style.display = 'block';
 
 		renderArmoryList();
-		applyStoredArmoryCollapseStates();
-		initMaterialCalculator();
 
 		document.getElementById('armoryScroll').scrollTop = 0;
-	}
-
-	// ----------------------- ARMORY COLLAPSIBLE SECTIONS -----------------------
-
-	const ARMORY_COLLAPSE_KEY = 'armoryCollapsedSections';
-
-	function loadArmoryCollapseState() {
-		const stored = localStorage.getItem(ARMORY_COLLAPSE_KEY);
-		return stored ? JSON.parse(stored) : {};
-	}
-
-	function saveArmoryCollapseState(sectionId, isCollapsed) {
-		const state = loadArmoryCollapseState();
-		state[sectionId] = isCollapsed;
-		localStorage.setItem(ARMORY_COLLAPSE_KEY, JSON.stringify(state));
-	}
-
-	function toggleArmoryCollapsible(sectionId) {
-		const section = document.getElementById(sectionId);
-		if (!section) return;
-		section.classList.toggle('collapsed');
-		saveArmoryCollapseState(sectionId, section.classList.contains('collapsed'));
-	}
-
-	function applyStoredArmoryCollapseStates() {
-		const state = loadArmoryCollapseState();
-		['matCalcSection', 'armorySetsSection', 'armoryStandaloneSection'].forEach(id => {
-			const section = document.getElementById(id);
-			if (!section) return;
-			section.classList.toggle('collapsed', !!state[id]);
-		});
-	}
-
-	// ----------------------- MATERIAL CALCULATOR -----------------------
-
-	const MATERIAL_CALC_LEVELS = [
-		{ value: 'next', label: 'To Next Level' },
-		{ value: '1', label: 'To ★' },
-		{ value: '2', label: 'To ★★' },
-		{ value: '3', label: 'To ★★★' },
-		{ value: 'max', label: 'To Max Level' }
-	];
-
-	let materialCalcInitialized = false;
-
-	function buildWheelPicker(scrollElId, items, defaultValue) {
-		const scrollEl = document.getElementById(scrollElId);
-		if (!scrollEl) return;
-
-		scrollEl.innerHTML = '';
-
-		const topPad = document.createElement('div');
-		topPad.className = 'wheel-picker-pad';
-		scrollEl.appendChild(topPad);
-
-		items.forEach(item => {
-			const itemEl = document.createElement('div');
-			itemEl.className = 'wheel-picker-item';
-			itemEl.dataset.value = item.value;
-			itemEl.textContent = item.label;
-			itemEl.addEventListener('click', () => {
-				itemEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
-			});
-			scrollEl.appendChild(itemEl);
-		});
-
-		const bottomPad = document.createElement('div');
-		bottomPad.className = 'wheel-picker-pad';
-		scrollEl.appendChild(bottomPad);
-
-		let scrollDebounce = null;
-		const updateSelection = () => {
-			const itemEls = Array.from(scrollEl.querySelectorAll('.wheel-picker-item'));
-			const containerCenter = scrollEl.scrollTop + (scrollEl.clientHeight / 2);
-			let closest = null;
-			let closestDist = Infinity;
-			itemEls.forEach(el => {
-				const itemCenter = el.offsetTop + (el.offsetHeight / 2);
-				const dist = Math.abs(itemCenter - containerCenter);
-				if (dist < closestDist) {
-					closestDist = dist;
-					closest = el;
-				}
-			});
-			itemEls.forEach(el => el.classList.toggle('selected', el === closest));
-		};
-
-		scrollEl.addEventListener('scroll', () => {
-			clearTimeout(scrollDebounce);
-			scrollDebounce = setTimeout(updateSelection, 100);
-		});
-
-		// Select the default item immediately (no animation) on first build.
-		const defaultEl = scrollEl.querySelector(`.wheel-picker-item[data-value="${defaultValue}"]`) || scrollEl.querySelector('.wheel-picker-item');
-		if (defaultEl) {
-			defaultEl.scrollIntoView({ block: 'center' });
-			updateSelection();
-		}
-	}
-
-	function getWheelSelectedValue(scrollElId) {
-		const scrollEl = document.getElementById(scrollElId);
-		if (!scrollEl) return null;
-		const selected = scrollEl.querySelector('.wheel-picker-item.selected') || scrollEl.querySelector('.wheel-picker-item');
-		return selected ? selected.dataset.value : null;
-	}
-
-	function buildMaterialCalcSetOptions() {
-		const options = [
-			{ value: '__ALL__', label: 'All Upgradeable Pieces' },
-			{ value: '__FOUND__', label: 'Only Found Pieces' },
-			{ value: '__SETS__', label: 'Only Armor Sets' },
-			{ value: '__STANDALONE__', label: 'Only Standalone Pieces' }
-		];
-
-		if (typeof ARMOR_SETS === 'undefined') return options;
-
-		ARMOR_SETS.forEach((setPieces, setIndex) => {
-			const hasUpgradable = setPieces.some(p => p.upgradable);
-			if (!hasUpgradable) return;
-
-			let label;
-			if (setPieces.length > 1) {
-				const firstImgBase = setPieces[0].img.replace(/\.png$/, '');
-				const setBaseMatch = firstImgBase.match(/^(.*?)[1-3]$/);
-				const setBase = setBaseMatch ? setBaseMatch[1] : firstImgBase;
-				label = deriveSetName(setPieces, setBase);
-			} else {
-				label = setPieces[0].name;
-			}
-
-			options.push({ value: String(setIndex), label: label });
-		});
-
-		return options;
-	}
-
-	function buildMaterialCalculatorWheels() {
-		// Centering the default item requires the wheels to actually be laid
-		// out. If the section starts collapsed (e.g. restored from a previous
-		// session), briefly un-collapse it just for the build.
-		const section = document.getElementById('matCalcSection');
-		const wasCollapsed = section && section.classList.contains('collapsed');
-		if (wasCollapsed) section.classList.remove('collapsed');
-
-		const setOptions = buildMaterialCalcSetOptions();
-		buildWheelPicker('matCalcSetWheelScroll', setOptions, '__ALL__');
-		buildWheelPicker('matCalcLevelWheelScroll', MATERIAL_CALC_LEVELS, 'next');
-
-		if (wasCollapsed) section.classList.add('collapsed');
-	}
-
-	function initMaterialCalculator() {
-		// Only build the wheels once so a user's selection survives navigating
-		// away from and back to the Armory view.
-		if (materialCalcInitialized) return;
-		buildMaterialCalculatorWheels();
-		materialCalcInitialized = true;
-	}
-
-	function resetMaterialCalculator() {
-		buildMaterialCalculatorWheels();
-		const resultsEl = document.getElementById('matCalcResults');
-		if (resultsEl) {
-			resultsEl.innerHTML = '<div class="mat-calc-empty">Pick a set and a target level, then tap Calculate Materials.</div>';
-		}
-	}
-
-	function exitArmoryToDashboard() {
-		resetMaterialCalculator();
-		exitToDashboard();
-	}
-
-	function getPiecesForMaterialScope(scopeValue) {
-		if (typeof ARMOR_SETS === 'undefined') return [];
-
-		if (scopeValue === '__ALL__') {
-			return ARMOR_SETS.flat().filter(p => p.upgradable);
-		}
-		if (scopeValue === '__FOUND__') {
-			return ARMOR_SETS.flat().filter(p => p.upgradable && getPieceState(p).found);
-		}
-		if (scopeValue === '__SETS__') {
-			return ARMOR_SETS.filter(setPieces => setPieces.length > 1).flat().filter(p => p.upgradable);
-		}
-		if (scopeValue === '__STANDALONE__') {
-			return ARMOR_SETS.filter(setPieces => setPieces.length === 1).flat().filter(p => p.upgradable);
-		}
-
-		// Otherwise scopeValue is the index of a specific set/piece group.
-		const setIndex = parseInt(scopeValue, 10);
-		if (Number.isNaN(setIndex) || !ARMOR_SETS[setIndex]) return [];
-		return ARMOR_SETS[setIndex].filter(p => p.upgradable);
-	}
-
-	function computeMaterialsNeeded(pieces, levelValue) {
-		const totals = {};
-
-		pieces.forEach(piece => {
-			if (!piece.upgradable || !Array.isArray(piece.materials)) return;
-
-			const currentStars = getPieceState(piece).stars;
-			let targetLevel;
-			if (levelValue === 'next') {
-				targetLevel = Math.min(currentStars + 1, 4);
-			} else if (levelValue === 'max') {
-				targetLevel = 4;
-			} else {
-				targetLevel = parseInt(levelValue, 10);
-			}
-
-			for (let lvl = currentStars; lvl < targetLevel; lvl++) {
-				addMaterialsToTotals(piece.materials[lvl], totals);
-			}
-		});
-
-		return totals;
-	}
-
-	function calculateMaterials() {
-		if (!materialCalcInitialized) initMaterialCalculator();
-
-		const scopeValue = getWheelSelectedValue('matCalcSetWheelScroll');
-		const levelValue = getWheelSelectedValue('matCalcLevelWheelScroll');
-		const resultsEl = document.getElementById('matCalcResults');
-		if (!resultsEl || scopeValue === null || levelValue === null) return;
-
-		const pieces = getPiecesForMaterialScope(scopeValue);
-		const totals = computeMaterialsNeeded(pieces, levelValue);
-		const materialNames = Object.keys(totals).sort((a, b) => a.localeCompare(b));
-
-		if (materialNames.length === 0) {
-			resultsEl.innerHTML = `<div class="mat-calc-empty">Nothing left to upgrade there \u2014 fully upgraded already!</div>`;
-			return;
-		}
-
-		// Widest "##x" string across the results, so every quantity lines up
-		// in a consistent-width column regardless of how many digits it has.
-		const qtyColWidth = Math.max(...materialNames.map(name => `${totals[name]}x`.length));
-
-		const itemsHTML = materialNames.map(name => {
-			const qtyText = `${totals[name]}x`;
-			return `
-				<div class="mat-calc-item">
-					<span class="mat-calc-qty" style="width: ${qtyColWidth}ch;">${qtyText}</span>
-					<span class="mat-calc-name">${name}</span>
-				</div>
-			`;
-		}).join('');
-
-		resultsEl.innerHTML = `<div class="mat-calc-results-grid">${itemsHTML}</div>`;
 	}
 
 	

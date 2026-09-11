@@ -1,6 +1,12 @@
 // Auto-generated armor data for TOTK Companion Armory view.
 // Each entry in ARMOR_SETS is an array of 1-3 pieces (helm, chest, leg order)
 // belonging to the same armor set.
+//
+// Each piece's "materials" field is an array of 4 upgrade steps (Base->1 star,
+// 1->2 star, 2->3 star, 3->4 star/max). Each step is either null (no further
+// upgrade / not upgradable) or an array of { "qty": <number>, "name": <string> }
+// objects, so material quantities can be summed programmatically (e.g. by the
+// Material Calculator) as well as formatted back into display text.
 const ARMOR_SETS = [
 	[
 		{
@@ -16,10 +22,10 @@ const ARMOR_SETS = [
 				84
 			],
 			"materials": [
-				"9x Silver Bokoblin Horn\n9x Hinox Guts\n15x Zonaite",
-				"9x Silver Moblin Horn\n9x Frox Guts\n10x Large Zonaite",
-				"9x Silver Lizalfos Horn\n9x Molduga Guts\n15x Large Zonaite",
-				"9x Silver Lynel Saber Horn\n9x Silver Lynel Mace Horn\n9x Gleeok Guts"
+				[{ "qty": 9, "name": "Silver Bokoblin Horn" }, { "qty": 9, "name": "Hinox Guts" }, { "qty": 15, "name": "Zonaite" }],
+				[{ "qty": 9, "name": "Silver Moblin Horn" }, { "qty": 9, "name": "Frox Guts" }, { "qty": 10, "name": "Large Zonaite" }],
+				[{ "qty": 9, "name": "Silver Lizalfos Horn" }, { "qty": 9, "name": "Molduga Guts" }, { "qty": 15, "name": "Large Zonaite" }],
+				[{ "qty": 9, "name": "Silver Lynel Saber Horn" }, { "qty": 9, "name": "Silver Lynel Mace Horn" }, { "qty": 9, "name": "Gleeok Guts" }]
 			],
 			"upgradable": true
 		}
@@ -80,10 +86,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Luminous Stone\n1x Star Fragment",
-				"15x Luminous Stone\n1x Star Fragment",
-				"20x Luminous Stone\n1x Star Fragment",
-				"30x Luminous Stone\n1x Star Fragment"
+				[{ "qty": 10, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 15, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 20, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 30, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -100,10 +106,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Luminous Stone\n1x Star Fragment",
-				"15x Luminous Stone\n1x Star Fragment",
-				"20x Luminous Stone\n1x Star Fragment",
-				"30x Luminous Stone\n1x Star Fragment"
+				[{ "qty": 10, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 15, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 20, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 30, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -120,10 +126,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Luminous Stone\n1x Star Fragment",
-				"15x Luminous Stone\n1x Star Fragment",
-				"20x Luminous Stone\n1x Star Fragment",
-				"30x Luminous Stone\n1x Star Fragment"
+				[{ "qty": 10, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 15, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 20, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 30, "name": "Luminous Stone" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -142,10 +148,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Mighty Thistle",
-				"2x Lynel Saber Horn\n2x Lynel Mace Horn\n5x Razorshroom",
-				"3x Blue-Maned Lynel Saber Horn\n3x Blue-Maned Lynel Mace Horn\n3x Razorclaw Crab",
-				"3x White-Maned Lynel Saber Horn\n3x White-Maned Lynel Mace Horn\n3x Bladed Rhino Beetle"
+				[{ "qty": 3, "name": "Mighty Thistle" }],
+				[{ "qty": 2, "name": "Lynel Saber Horn" }, { "qty": 2, "name": "Lynel Mace Horn" }, { "qty": 5, "name": "Razorshroom" }],
+				[{ "qty": 3, "name": "Blue-Maned Lynel Saber Horn" }, { "qty": 3, "name": "Blue-Maned Lynel Mace Horn" }, { "qty": 3, "name": "Razorclaw Crab" }],
+				[{ "qty": 3, "name": "White-Maned Lynel Saber Horn" }, { "qty": 3, "name": "White-Maned Lynel Mace Horn" }, { "qty": 3, "name": "Bladed Rhino Beetle" }]
 			],
 			"upgradable": true
 		},
@@ -162,10 +168,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Mighty Thistle",
-				"2x Lynel Saber Horn\n2x Lynel Mace Horn\n5x Razorshroom",
-				"3x Blue-Maned Lynel Saber Horn\n3x Blue-Maned Lynel Mace Horn\n3x Razorclaw Crab",
-				"3x White-Maned Lynel Saber Horn\n3x White-Maned Lynel Mace Horn\n3x Bladed Rhino Beetle"
+				[{ "qty": 3, "name": "Mighty Thistle" }],
+				[{ "qty": 2, "name": "Lynel Saber Horn" }, { "qty": 2, "name": "Lynel Mace Horn" }, { "qty": 5, "name": "Razorshroom" }],
+				[{ "qty": 3, "name": "Blue-Maned Lynel Saber Horn" }, { "qty": 3, "name": "Blue-Maned Lynel Mace Horn" }, { "qty": 3, "name": "Razorclaw Crab" }],
+				[{ "qty": 3, "name": "White-Maned Lynel Saber Horn" }, { "qty": 3, "name": "White-Maned Lynel Mace Horn" }, { "qty": 3, "name": "Bladed Rhino Beetle" }]
 			],
 			"upgradable": true
 		},
@@ -182,10 +188,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Mighty Thistle",
-				"2x Lynel Saber Horn\n2x Lynel Mace Horn\n5x Razorshroom",
-				"3x Blue-Maned Lynel Saber Horn\n3x Blue-Maned Lynel Mace Horn\n3x Razorclaw Crab",
-				"3x White-Maned Lynel Saber Horn\n3x White-Maned Lynel Mace Horn\n3x Bladed Rhino Beetle"
+				[{ "qty": 3, "name": "Mighty Thistle" }],
+				[{ "qty": 2, "name": "Lynel Saber Horn" }, { "qty": 2, "name": "Lynel Mace Horn" }, { "qty": 5, "name": "Razorshroom" }],
+				[{ "qty": 3, "name": "Blue-Maned Lynel Saber Horn" }, { "qty": 3, "name": "Blue-Maned Lynel Mace Horn" }, { "qty": 3, "name": "Razorclaw Crab" }],
+				[{ "qty": 3, "name": "White-Maned Lynel Saber Horn" }, { "qty": 3, "name": "White-Maned Lynel Mace Horn" }, { "qty": 3, "name": "Bladed Rhino Beetle" }]
 			],
 			"upgradable": true
 		}
@@ -226,10 +232,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Hightail Lizard",
-				"20x Gibdo Bone\n5x Swift Carrot",
-				"5x Gibdo Guts\n10x Rushroom\n5x Molduga Fin",
-				"5x Hearty Lizard\n10x Swift Violet\n5x Molduga Guts"
+				[{ "qty": 3, "name": "Hightail Lizard" }],
+				[{ "qty": 20, "name": "Gibdo Bone" }, { "qty": 5, "name": "Swift Carrot" }],
+				[{ "qty": 5, "name": "Gibdo Guts" }, { "qty": 10, "name": "Rushroom" }, { "qty": 5, "name": "Molduga Fin" }],
+				[{ "qty": 5, "name": "Hearty Lizard" }, { "qty": 10, "name": "Swift Violet" }, { "qty": 5, "name": "Molduga Guts" }]
 			],
 			"upgradable": true
 		},
@@ -246,10 +252,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Hightail Lizard",
-				"5x Octorok Tentacle\n5x Swift Carrot",
-				"5x Octo Balloon\n20x Rushroom",
-				"2x Naydra's Sacle\n20x Swift Violet"
+				[{ "qty": 3, "name": "Hightail Lizard" }],
+				[{ "qty": 5, "name": "Octorok Tentacle" }, { "qty": 5, "name": "Swift Carrot" }],
+				[{ "qty": 5, "name": "Octo Balloon" }, { "qty": 20, "name": "Rushroom" }],
+				[{ "qty": 2, "name": "Naydra's Sacle" }, { "qty": 20, "name": "Swift Violet" }]
 			],
 			"upgradable": true
 		},
@@ -310,10 +316,10 @@ const ARMOR_SETS = [
 				32
 			],
 			"materials": [
-				"3x Silent Princess\n2x Light Dragon's Scale",
-				"3x Silent Princess\n2x Light Dragon Claw\n10x Sundelions",
-				"5x Silent Princess\n2x Light Dragon Fang\n15x Sundelions",
-				"10x Silent Princess\n2x Light Dragon Horn\n20x Sundelions"
+				[{ "qty": 3, "name": "Silent Princess" }, { "qty": 2, "name": "Light Dragon's Scale" }],
+				[{ "qty": 3, "name": "Silent Princess" }, { "qty": 2, "name": "Light Dragon Claw" }, { "qty": 10, "name": "Sundelions" }],
+				[{ "qty": 5, "name": "Silent Princess" }, { "qty": 2, "name": "Light Dragon Fang" }, { "qty": 15, "name": "Sundelions" }],
+				[{ "qty": 10, "name": "Silent Princess" }, { "qty": 2, "name": "Light Dragon Horn" }, { "qty": 20, "name": "Sundelions" }]
 			],
 			"upgradable": true
 		}
@@ -332,10 +338,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Shock Fruit",
-				"5x Electric Lizal Horn\n3x Thunderwing Butterfly",
-				"5x Shock Like Stone\n5x Electric Darner\n3x Large Zonai Charge",
-				"5x Gleeok Thunder Horn\n10x Voltfin Trout\n5x Large Zonai Charge"
+				[{ "qty": 3, "name": "Shock Fruit" }],
+				[{ "qty": 5, "name": "Electric Lizal Horn" }, { "qty": 3, "name": "Thunderwing Butterfly" }],
+				[{ "qty": 5, "name": "Shock Like Stone" }, { "qty": 5, "name": "Electric Darner" }, { "qty": 3, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Thunder Horn" }, { "qty": 10, "name": "Voltfin Trout" }, { "qty": 5, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		},
@@ -352,10 +358,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Shock Fruit",
-				"5x Electric Lizal Horn\n3x Thunderwing Butterfly",
-				"5x Shock Like Stone\n5x Electric Darner\n3x Large Zonai Charge",
-				"5x Gleeok Thunder Horn\n10x Voltfin Trout\n5x Large Zonai Charge"
+				[{ "qty": 3, "name": "Shock Fruit" }],
+				[{ "qty": 5, "name": "Electric Lizal Horn" }, { "qty": 3, "name": "Thunderwing Butterfly" }],
+				[{ "qty": 5, "name": "Shock Like Stone" }, { "qty": 5, "name": "Electric Darner" }, { "qty": 3, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Thunder Horn" }, { "qty": 10, "name": "Voltfin Trout" }, { "qty": 5, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		},
@@ -372,10 +378,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Shock Fruit",
-				"5x Electric Lizal Horn\n3x Thunderwing Butterfly",
-				"5x Shock Like Stone\n5x Electric Darner\n3x Large Zonai Charge",
-				"5x Gleeok Thunder Horn\n10x Voltfin Trout\n5x Large Zonai Charge"
+				[{ "qty": 3, "name": "Shock Fruit" }],
+				[{ "qty": 5, "name": "Electric Lizal Horn" }, { "qty": 3, "name": "Thunderwing Butterfly" }],
+				[{ "qty": 5, "name": "Shock Like Stone" }, { "qty": 5, "name": "Electric Darner" }, { "qty": 3, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Thunder Horn" }, { "qty": 10, "name": "Voltfin Trout" }, { "qty": 5, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		}
@@ -394,10 +400,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"2x Diamond\n3x Flint",
-				"3x Diamond\n5x Flint",
-				"5x Diamond\n1x Star Fragment",
-				"8x Diamond\n2x Star Fragment"
+				[{ "qty": 2, "name": "Diamond" }, { "qty": 3, "name": "Flint" }],
+				[{ "qty": 3, "name": "Diamond" }, { "qty": 5, "name": "Flint" }],
+				[{ "qty": 5, "name": "Diamond" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 8, "name": "Diamond" }, { "qty": 2, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -414,10 +420,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"2x Ruby\n3x Flint",
-				"4x Ruby\n5x Flint",
-				"6x Ruby\n1x Star Fragment",
-				"10x Ruby\n2x Star Fragment"
+				[{ "qty": 2, "name": "Ruby" }, { "qty": 3, "name": "Flint" }],
+				[{ "qty": 4, "name": "Ruby" }, { "qty": 5, "name": "Flint" }],
+				[{ "qty": 6, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Ruby" }, { "qty": 2, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -434,10 +440,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"2x Sapphire\n3x Flint",
-				"4x Sapphire\n5x Flint",
-				"6x Sapphire\n1x Star Fragment",
-				"10x Sapphire\n2x Star Fragment"
+				[{ "qty": 2, "name": "Sapphire" }, { "qty": 3, "name": "Flint" }],
+				[{ "qty": 4, "name": "Sapphire" }, { "qty": 5, "name": "Flint" }],
+				[{ "qty": 6, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Sapphire" }, { "qty": 2, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -456,10 +462,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Keese Wing\n3x Rushroom",
-				"5x Electric Keese Wing\n5x Hightail Lizard",
-				"8x Ice Keese Wing\n10x Hot-Footed Frog",
-				"10x Fire Keese Wing\n20x Swift Violet"
+				[{ "qty": 3, "name": "Keese Wing" }, { "qty": 3, "name": "Rushroom" }],
+				[{ "qty": 5, "name": "Electric Keese Wing" }, { "qty": 5, "name": "Hightail Lizard" }],
+				[{ "qty": 8, "name": "Ice Keese Wing" }, { "qty": 10, "name": "Hot-Footed Frog" }],
+				[{ "qty": 10, "name": "Fire Keese Wing" }, { "qty": 20, "name": "Swift Violet" }]
 			],
 			"upgradable": true
 		},
@@ -476,10 +482,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Keese Wing\n3x Rushroom",
-				"5x Electric Keese Wing\n5x Hightail Lizard",
-				"8x Ice Keese Wing\n10x Hot-Footed Frog",
-				"10x Fire Keese Wing\n20x Swift Violet"
+				[{ "qty": 3, "name": "Keese Wing" }, { "qty": 3, "name": "Rushroom" }],
+				[{ "qty": 5, "name": "Electric Keese Wing" }, { "qty": 5, "name": "Hightail Lizard" }],
+				[{ "qty": 8, "name": "Ice Keese Wing" }, { "qty": 10, "name": "Hot-Footed Frog" }],
+				[{ "qty": 10, "name": "Fire Keese Wing" }, { "qty": 20, "name": "Swift Violet" }]
 			],
 			"upgradable": true
 		},
@@ -496,10 +502,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Keese Wing\n3x Rushroom",
-				"5x Electric Keese Wing\n5x Hightail Lizard",
-				"8x Ice Keese Wing\n10x Hot-Footed Frog",
-				"10x Fire Keese Wing\n20x Swift Violet"
+				[{ "qty": 3, "name": "Keese Wing" }, { "qty": 3, "name": "Rushroom" }],
+				[{ "qty": 5, "name": "Electric Keese Wing" }, { "qty": 5, "name": "Hightail Lizard" }],
+				[{ "qty": 8, "name": "Ice Keese Wing" }, { "qty": 10, "name": "Hot-Footed Frog" }],
+				[{ "qty": 10, "name": "Fire Keese Wing" }, { "qty": 20, "name": "Swift Violet" }]
 			],
 			"upgradable": true
 		}
@@ -580,10 +586,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Deep Firefly",
-				"5x Dark Clump\n3x Frox Fang",
-				"3x Frox Fingernail\n3x Obsidian Frox Fang\n20x Zonaite",
-				"5x Blue-White Frox Fang\n10x Large Zonaite\n3x Frox Guts"
+				[{ "qty": 3, "name": "Deep Firefly" }],
+				[{ "qty": 5, "name": "Dark Clump" }, { "qty": 3, "name": "Frox Fang" }],
+				[{ "qty": 3, "name": "Frox Fingernail" }, { "qty": 3, "name": "Obsidian Frox Fang" }, { "qty": 20, "name": "Zonaite" }],
+				[{ "qty": 5, "name": "Blue-White Frox Fang" }, { "qty": 10, "name": "Large Zonaite" }, { "qty": 3, "name": "Frox Guts" }]
 			],
 			"upgradable": true
 		},
@@ -600,10 +606,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Deep Firefly",
-				"5x Dark Clump\n3x Frox Fang",
-				"3x Frox Fingernail\n3x Obsidian Frox Fang\n20x Zonaite",
-				"5x Blue-White Frox Fang\n10x Large Zonaite\n3x Frox Guts"
+				[{ "qty": 3, "name": "Deep Firefly" }],
+				[{ "qty": 5, "name": "Dark Clump" }, { "qty": 3, "name": "Frox Fang" }],
+				[{ "qty": 3, "name": "Frox Fingernail" }, { "qty": 3, "name": "Obsidian Frox Fang" }, { "qty": 20, "name": "Zonaite" }],
+				[{ "qty": 5, "name": "Blue-White Frox Fang" }, { "qty": 10, "name": "Large Zonaite" }, { "qty": 3, "name": "Frox Guts" }]
 			],
 			"upgradable": true
 		},
@@ -620,10 +626,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Deep Firefly",
-				"5x Dark Clump\n3x Frox Fang",
-				"3x Frox Fingernail\n3x Obsidian Frox Fang\n20x Zonaite",
-				"5x Blue-White Frox Fang\n10x Large Zonaite\n3x Frox Guts"
+				[{ "qty": 3, "name": "Deep Firefly" }],
+				[{ "qty": 5, "name": "Dark Clump" }, { "qty": 3, "name": "Frox Fang" }],
+				[{ "qty": 3, "name": "Frox Fingernail" }, { "qty": 3, "name": "Obsidian Frox Fang" }, { "qty": 20, "name": "Zonaite" }],
+				[{ "qty": 5, "name": "Blue-White Frox Fang" }, { "qty": 10, "name": "Large Zonaite" }, { "qty": 3, "name": "Frox Guts" }]
 			],
 			"upgradable": true
 		}
@@ -642,10 +648,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x White Chuchu Jelly",
-				"5x White Chuchu Jelly\n3x Cool Safflina",
-				"5x Ice Keese Wing\n3x Ice-Breath Lizal Tail\n5x Chillshroom",
-				"5x Ice-Breath Lizalfos Horn\n10x Ice-Breath Lizalfos Tail\n5x Sapphire"
+				[{ "qty": 3, "name": "White Chuchu Jelly" }],
+				[{ "qty": 5, "name": "White Chuchu Jelly" }, { "qty": 3, "name": "Cool Safflina" }],
+				[{ "qty": 5, "name": "Ice Keese Wing" }, { "qty": 3, "name": "Ice-Breath Lizal Tail" }, { "qty": 5, "name": "Chillshroom" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Horn" }, { "qty": 10, "name": "Ice-Breath Lizalfos Tail" }, { "qty": 5, "name": "Sapphire" }]
 			],
 			"upgradable": true
 		},
@@ -662,10 +668,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x White Chuchu Jelly",
-				"5x White Chuchu Jelly\n3x Cool Safflina",
-				"5x Ice Keese Wing\n3x Ice-Breath Lizal Tail\n5x Chillshroom",
-				"5x Ice-Breath Lizalfos Horn\n10x Ice-Breath Lizalfos Tail\n5x Sapphire"
+				[{ "qty": 3, "name": "White Chuchu Jelly" }],
+				[{ "qty": 5, "name": "White Chuchu Jelly" }, { "qty": 3, "name": "Cool Safflina" }],
+				[{ "qty": 5, "name": "Ice Keese Wing" }, { "qty": 3, "name": "Ice-Breath Lizal Tail" }, { "qty": 5, "name": "Chillshroom" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Horn" }, { "qty": 10, "name": "Ice-Breath Lizalfos Tail" }, { "qty": 5, "name": "Sapphire" }]
 			],
 			"upgradable": true
 		},
@@ -682,10 +688,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x White Chuchu Jelly",
-				"5x White Chuchu Jelly\n3x Cool Safflina",
-				"5x Ice Keese Wing\n3x Ice-Breath Lizal Tail\n5x Chillshroom",
-				"5x Ice-Breath Lizalfos Horn\n10x Ice-Breath Lizalfos Tail\n5x Sapphire"
+				[{ "qty": 3, "name": "White Chuchu Jelly" }],
+				[{ "qty": 5, "name": "White Chuchu Jelly" }, { "qty": 3, "name": "Cool Safflina" }],
+				[{ "qty": 5, "name": "Ice Keese Wing" }, { "qty": 3, "name": "Ice-Breath Lizal Tail" }, { "qty": 5, "name": "Chillshroom" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Horn" }, { "qty": 10, "name": "Ice-Breath Lizalfos Tail" }, { "qty": 5, "name": "Sapphire" }]
 			],
 			"upgradable": true
 		}
@@ -704,10 +710,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"10x Amber\n5x Flint",
-				"20x Amber\n10x Flint",
-				"35x Amber\n15x Flint",
-				"60x Amber\n25x Flint"
+				[{ "qty": 10, "name": "Amber" }, { "qty": 5, "name": "Flint" }],
+				[{ "qty": 20, "name": "Amber" }, { "qty": 10, "name": "Flint" }],
+				[{ "qty": 35, "name": "Amber" }, { "qty": 15, "name": "Flint" }],
+				[{ "qty": 60, "name": "Amber" }, { "qty": 25, "name": "Flint" }]
 			],
 			"upgradable": true
 		},
@@ -724,10 +730,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"6x Opal\n5x Flint",
-				"12x Opal\n10x Flint",
-				"18x Opal\n15x Flint",
-				"30x Opal\n25x Flint"
+				[{ "qty": 6, "name": "Opal" }, { "qty": 5, "name": "Flint" }],
+				[{ "qty": 12, "name": "Opal" }, { "qty": 10, "name": "Flint" }],
+				[{ "qty": 18, "name": "Opal" }, { "qty": 15, "name": "Flint" }],
+				[{ "qty": 30, "name": "Opal" }, { "qty": 25, "name": "Flint" }]
 			],
 			"upgradable": true
 		},
@@ -744,10 +750,10 @@ const ARMOR_SETS = [
 				18
 			],
 			"materials": [
-				"2x Topaz\n3x Flint",
-				"4x Topaz\n5x Flint",
-				"6x Topaz\n1x Star Fragment",
-				"10x Topaz\n2x Star Fragment"
+				[{ "qty": 2, "name": "Topaz" }, { "qty": 3, "name": "Flint" }],
+				[{ "qty": 4, "name": "Topaz" }, { "qty": 5, "name": "Flint" }],
+				[{ "qty": 6, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Topaz" }, { "qty": 2, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -766,10 +772,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Fire Fruit",
-				"5x Fire-Breath Lizalfos Horn\n5x Summerwing Butterfly",
-				"5x Fire Like Stone\n7x Warm Darner\n5x Large Zonai Charge",
-				"5x Gleeok Flame Horn\n10x Sizzlefin Trout\n10x Large Zonai Charge"
+				[{ "qty": 3, "name": "Fire Fruit" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 5, "name": "Summerwing Butterfly" }],
+				[{ "qty": 5, "name": "Fire Like Stone" }, { "qty": 7, "name": "Warm Darner" }, { "qty": 5, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Flame Horn" }, { "qty": 10, "name": "Sizzlefin Trout" }, { "qty": 10, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		},
@@ -786,10 +792,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Fire Fruit",
-				"5x Fire-Breath Lizalfos Horn\n5x Summerwing Butterfly",
-				"5x Fire Like Stone\n7x Warm Darner\n5x Large Zonai Charge",
-				"5x Gleeok Flame Horn\n10x Sizzlefin Trout\n10x Large Zonai Charge"
+				[{ "qty": 3, "name": "Fire Fruit" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 5, "name": "Summerwing Butterfly" }],
+				[{ "qty": 5, "name": "Fire Like Stone" }, { "qty": 7, "name": "Warm Darner" }, { "qty": 5, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Flame Horn" }, { "qty": 10, "name": "Sizzlefin Trout" }, { "qty": 10, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		},
@@ -806,10 +812,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Fire Fruit",
-				"5x Fire-Breath Lizalfos Horn\n5x Summerwing Butterfly",
-				"5x Fire Like Stone\n7x Warm Darner\n5x Large Zonai Charge",
-				"5x Gleeok Flame Horn\n10x Sizzlefin Trout\n10x Large Zonai Charge"
+				[{ "qty": 3, "name": "Fire Fruit" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 5, "name": "Summerwing Butterfly" }],
+				[{ "qty": 5, "name": "Fire Like Stone" }, { "qty": 7, "name": "Warm Darner" }, { "qty": 5, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Flame Horn" }, { "qty": 10, "name": "Sizzlefin Trout" }, { "qty": 10, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		}
@@ -890,10 +896,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Hinox Toenail\n1x Dinraal's Scale",
-				"5x Hinox Tooth\n1x Dinraal's Claw",
-				"2x Hinox Guts\n1x Shard of Dinraal's Fang",
-				"2x Lynel Guts\n1x Dinraal's Horn"
+				[{ "qty": 5, "name": "Hinox Toenail" }, { "qty": 1, "name": "Dinraal's Scale" }],
+				[{ "qty": 5, "name": "Hinox Tooth" }, { "qty": 1, "name": "Dinraal's Claw" }],
+				[{ "qty": 2, "name": "Hinox Guts" }, { "qty": 1, "name": "Shard of Dinraal's Fang" }],
+				[{ "qty": 2, "name": "Lynel Guts" }, { "qty": 1, "name": "Dinraal's Horn" }]
 			],
 			"upgradable": true
 		},
@@ -910,10 +916,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Hinox Toenail\n1x Naydra's Scale",
-				"5x Hinox Tooth\n1x Naydra's Claw",
-				"2x Hinox Guts\n1x Shard of Naydra's Fang",
-				"2x Lynel Guts\n1x Naydra's Horn"
+				[{ "qty": 5, "name": "Hinox Toenail" }, { "qty": 1, "name": "Naydra's Scale" }],
+				[{ "qty": 5, "name": "Hinox Tooth" }, { "qty": 1, "name": "Naydra's Claw" }],
+				[{ "qty": 2, "name": "Hinox Guts" }, { "qty": 1, "name": "Shard of Naydra's Fang" }],
+				[{ "qty": 2, "name": "Lynel Guts" }, { "qty": 1, "name": "Naydra's Horn" }]
 			],
 			"upgradable": true
 		},
@@ -930,10 +936,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Hinox Toenail\n1x Farosh's Scale",
-				"5x Hinox Tooth\n1x Farosh's Claw",
-				"2x Hinox Guts\n1x Shard of Farosh's Fang",
-				"2x Lynel Guts\n1x Farosh's Horn"
+				[{ "qty": 5, "name": "Hinox Toenail" }, { "qty": 1, "name": "Farosh's Scale" }],
+				[{ "qty": 5, "name": "Hinox Tooth" }, { "qty": 1, "name": "Farosh's Claw" }],
+				[{ "qty": 2, "name": "Hinox Guts" }, { "qty": 1, "name": "Shard of Farosh's Fang" }],
+				[{ "qty": 2, "name": "Lynel Guts" }, { "qty": 1, "name": "Farosh's Horn" }]
 			],
 			"upgradable": true
 		}
@@ -952,10 +958,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Moblin Horn",
-				"5x Moblin Fang\n5x Fireproof Lizard",
-				"5x Blue Moblin Horn\n3x Smotherwing Butterfly\n15x Flint",
-				"5x Fire-Breath Lizalfos Horn\n10x Fire-Breath Lizalfos Tail\n5x Ruby"
+				[{ "qty": 3, "name": "Moblin Horn" }],
+				[{ "qty": 5, "name": "Moblin Fang" }, { "qty": 5, "name": "Fireproof Lizard" }],
+				[{ "qty": 5, "name": "Blue Moblin Horn" }, { "qty": 3, "name": "Smotherwing Butterfly" }, { "qty": 15, "name": "Flint" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 10, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Ruby" }]
 			],
 			"upgradable": true
 		},
@@ -972,10 +978,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Moblin Horn",
-				"5x Moblin Fang\n5x Fireproof Lizard",
-				"5x Blue Moblin Horn\n3x Smotherwing Butterfly\n15x Flint",
-				"5x Fire-Breath Lizalfos Horn\n10x Fire-Breath Lizalfos Tail\n5x Ruby"
+				[{ "qty": 3, "name": "Moblin Horn" }],
+				[{ "qty": 5, "name": "Moblin Fang" }, { "qty": 5, "name": "Fireproof Lizard" }],
+				[{ "qty": 5, "name": "Blue Moblin Horn" }, { "qty": 3, "name": "Smotherwing Butterfly" }, { "qty": 15, "name": "Flint" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 10, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Ruby" }]
 			],
 			"upgradable": true
 		},
@@ -992,10 +998,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Moblin Horn",
-				"5x Moblin Fang\n5x Fireproof Lizard",
-				"5x Blue Moblin Horn\n3x Smotherwing Butterfly\n15x Flint",
-				"5x Fire-Breath Lizalfos Horn\n10x Fire-Breath Lizalfos Tail\n5x Ruby"
+				[{ "qty": 3, "name": "Moblin Horn" }],
+				[{ "qty": 5, "name": "Moblin Fang" }, { "qty": 5, "name": "Fireproof Lizard" }],
+				[{ "qty": 5, "name": "Blue Moblin Horn" }, { "qty": 3, "name": "Smotherwing Butterfly" }, { "qty": 15, "name": "Flint" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 10, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Ruby" }]
 			],
 			"upgradable": true
 		}
@@ -1014,10 +1020,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Sticky Lizard",
-				"5x Sticky Lizard\n5x Horriblin Horn",
-				"5x Blue Horriblin Horn\n5x Sticky Frog",
-				"5x Black Horriblin Horn\n10x Horriblin Guts\n10x Opal"
+				[{ "qty": 3, "name": "Sticky Lizard" }],
+				[{ "qty": 5, "name": "Sticky Lizard" }, { "qty": 5, "name": "Horriblin Horn" }],
+				[{ "qty": 5, "name": "Blue Horriblin Horn" }, { "qty": 5, "name": "Sticky Frog" }],
+				[{ "qty": 5, "name": "Black Horriblin Horn" }, { "qty": 10, "name": "Horriblin Guts" }, { "qty": 10, "name": "Opal" }]
 			],
 			"upgradable": true
 		},
@@ -1034,10 +1040,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Sticky Lizard",
-				"5x Sticky Lizard\n5x Horriblin Horn",
-				"5x Blue Horriblin Horn\n5x Sticky Frog",
-				"5x Black Horriblin Horn\n10x Horriblin Guts\n10x Opal"
+				[{ "qty": 3, "name": "Sticky Lizard" }],
+				[{ "qty": 5, "name": "Sticky Lizard" }, { "qty": 5, "name": "Horriblin Horn" }],
+				[{ "qty": 5, "name": "Blue Horriblin Horn" }, { "qty": 5, "name": "Sticky Frog" }],
+				[{ "qty": 5, "name": "Black Horriblin Horn" }, { "qty": 10, "name": "Horriblin Guts" }, { "qty": 10, "name": "Opal" }]
 			],
 			"upgradable": true
 		},
@@ -1054,10 +1060,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Sticky Lizard",
-				"5x Sticky Lizard\n5x Horriblin Horn",
-				"5x Blue Horriblin Horn\n5x Sticky Frog",
-				"5x Black Horriblin Horn\n10x Horriblin Guts\n10x Opal"
+				[{ "qty": 3, "name": "Sticky Lizard" }],
+				[{ "qty": 5, "name": "Sticky Lizard" }, { "qty": 5, "name": "Horriblin Horn" }],
+				[{ "qty": 5, "name": "Blue Horriblin Horn" }, { "qty": 5, "name": "Sticky Frog" }],
+				[{ "qty": 5, "name": "Black Horriblin Horn" }, { "qty": 10, "name": "Horriblin Guts" }, { "qty": 10, "name": "Opal" }]
 			],
 			"upgradable": true
 		}
@@ -1076,10 +1082,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Ice Fruit",
-				"5x Ice-Breath Lizalfos Horn\n5x Winterwing Butterfly",
-				"5x Ice Like Stone\n5x Cold Darner\n5x Large Zonai Charge",
-				"5x Gleeok Frost Horn\n10x Chillfin Trout\n10x Large Zonai Charge"
+				[{ "qty": 3, "name": "Ice Fruit" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Horn" }, { "qty": 5, "name": "Winterwing Butterfly" }],
+				[{ "qty": 5, "name": "Ice Like Stone" }, { "qty": 5, "name": "Cold Darner" }, { "qty": 5, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Frost Horn" }, { "qty": 10, "name": "Chillfin Trout" }, { "qty": 10, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		},
@@ -1096,10 +1102,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Ice Fruit",
-				"5x Ice-Breath Lizalfos Horn\n5x Winterwing Butterfly",
-				"5x Ice Like Stone\n5x Cold Darner\n5x Large Zonai Charge",
-				"5x Gleeok Frost Horn\n10x Chillfin Trout\n10x Large Zonai Charge"
+				[{ "qty": 3, "name": "Ice Fruit" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Horn" }, { "qty": 5, "name": "Winterwing Butterfly" }],
+				[{ "qty": 5, "name": "Ice Like Stone" }, { "qty": 5, "name": "Cold Darner" }, { "qty": 5, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Frost Horn" }, { "qty": 10, "name": "Chillfin Trout" }, { "qty": 10, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		},
@@ -1116,10 +1122,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Ice Fruit",
-				"5x Ice-Breath Lizalfos Horn\n5x Winterwing Butterfly",
-				"5x Ice Like Stone\n5x Cold Darner\n5x Large Zonai Charge",
-				"5x Gleeok Frost Horn\n10x Chillfin Trout\n10x Large Zonai Charge"
+				[{ "qty": 3, "name": "Ice Fruit" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Horn" }, { "qty": 5, "name": "Winterwing Butterfly" }],
+				[{ "qty": 5, "name": "Ice Like Stone" }, { "qty": 5, "name": "Cold Darner" }, { "qty": 5, "name": "Large Zonai Charge" }],
+				[{ "qty": 5, "name": "Gleeok Frost Horn" }, { "qty": 10, "name": "Chillfin Trout" }, { "qty": 10, "name": "Large Zonai Charge" }]
 			],
 			"upgradable": true
 		}
@@ -1138,10 +1144,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Keese Wing",
-				"6x Aerocuda Eyeball\n5x Keese Wing",
-				"8x Aerocuda Eyeball\n6x Aerocuda Wing",
-				"12x Gleeok Wing\n10x Aerocuda Wing\n8x Gibdo Wing"
+				[{ "qty": 3, "name": "Keese Wing" }],
+				[{ "qty": 6, "name": "Aerocuda Eyeball" }, { "qty": 5, "name": "Keese Wing" }],
+				[{ "qty": 8, "name": "Aerocuda Eyeball" }, { "qty": 6, "name": "Aerocuda Wing" }],
+				[{ "qty": 12, "name": "Gleeok Wing" }, { "qty": 10, "name": "Aerocuda Wing" }, { "qty": 8, "name": "Gibdo Wing" }]
 			],
 			"upgradable": true
 		},
@@ -1158,10 +1164,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Keese Wing",
-				"6x Aerocuda Eyeball\n5x Keese Wing",
-				"8x Aerocuda Eyeball\n6x Aerocuda Wing",
-				"12x Gleeok Wing\n10x Aerocuda Wing\n8x Gibdo Wing"
+				[{ "qty": 3, "name": "Keese Wing" }],
+				[{ "qty": 6, "name": "Aerocuda Eyeball" }, { "qty": 5, "name": "Keese Wing" }],
+				[{ "qty": 8, "name": "Aerocuda Eyeball" }, { "qty": 6, "name": "Aerocuda Wing" }],
+				[{ "qty": 12, "name": "Gleeok Wing" }, { "qty": 10, "name": "Aerocuda Wing" }, { "qty": 8, "name": "Gibdo Wing" }]
 			],
 			"upgradable": true
 		},
@@ -1178,10 +1184,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Keese Wing",
-				"6x Aerocuda Eyeball\n5x Keese Wing",
-				"8x Aerocuda Eyeball\n6x Aerocuda Wing",
-				"12x Gleeok Wing\n10x Aerocuda Wing\n8x Gibdo Wing"
+				[{ "qty": 3, "name": "Keese Wing" }],
+				[{ "qty": 6, "name": "Aerocuda Eyeball" }, { "qty": 5, "name": "Keese Wing" }],
+				[{ "qty": 8, "name": "Aerocuda Eyeball" }, { "qty": 6, "name": "Aerocuda Wing" }],
+				[{ "qty": 12, "name": "Gleeok Wing" }, { "qty": 10, "name": "Aerocuda Wing" }, { "qty": 8, "name": "Gibdo Wing" }]
 			],
 			"upgradable": true
 		}
@@ -1222,10 +1228,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Ruby\n1x Star Fragment",
-				"4x Ruby\n1x Star Fragment",
-				"6x Ruby\n1x Star Fragment",
-				"10x Ruby\n1x Star Fragment"
+				[{ "qty": 1, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -1242,10 +1248,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Ruby\n1x Star Fragment",
-				"4x Ruby\n1x Star Fragment",
-				"6x Ruby\n1x Star Fragment",
-				"10x Ruby\n1x Star Fragment"
+				[{ "qty": 1, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -1262,10 +1268,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Ruby\n1x Star Fragment",
-				"4x Ruby\n1x Star Fragment",
-				"6x Ruby\n1x Star Fragment",
-				"10x Ruby\n1x Star Fragment"
+				[{ "qty": 1, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Ruby" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -1306,10 +1312,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Bokoblin Horn",
-				"5x Blue Bokoblin Horn\n3x Bokoblin Fang",
-				"5x Black Bokoblin Horn\n3x Bokoblin Guts\n20x Amber",
-				"5x Silver Bokoblin Horn\n5x Bokoblin Guts\n30x Amber"
+				[{ "qty": 5, "name": "Bokoblin Horn" }],
+				[{ "qty": 5, "name": "Blue Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Fang" }],
+				[{ "qty": 5, "name": "Black Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Guts" }, { "qty": 20, "name": "Amber" }],
+				[{ "qty": 5, "name": "Silver Bokoblin Horn" }, { "qty": 5, "name": "Bokoblin Guts" }, { "qty": 30, "name": "Amber" }]
 			],
 			"upgradable": true
 		},
@@ -1326,10 +1332,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Bokoblin Horn",
-				"5x Blue Bokoblin Horn\n3x Bokoblin Fang",
-				"5x Black Bokoblin Horn\n3x Bokoblin Guts\n20x Amber",
-				"5x Silver Bokoblin Horn\n5x Bokoblin Guts\n30x Amber"
+				[{ "qty": 5, "name": "Bokoblin Horn" }],
+				[{ "qty": 5, "name": "Blue Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Fang" }],
+				[{ "qty": 5, "name": "Black Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Guts" }, { "qty": 20, "name": "Amber" }],
+				[{ "qty": 5, "name": "Silver Bokoblin Horn" }, { "qty": 5, "name": "Bokoblin Guts" }, { "qty": 30, "name": "Amber" }]
 			],
 			"upgradable": true
 		},
@@ -1346,10 +1352,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Bokoblin Horn",
-				"5x Blue Bokoblin Horn\n3x Bokoblin Fang",
-				"5x Black Bokoblin Horn\n3x Bokoblin Guts\n20x Amber",
-				"5x Silver Bokoblin Horn\n5x Bokoblin Guts\n30x Amber"
+				[{ "qty": 5, "name": "Bokoblin Horn" }],
+				[{ "qty": 5, "name": "Blue Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Fang" }],
+				[{ "qty": 5, "name": "Black Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Guts" }, { "qty": 20, "name": "Amber" }],
+				[{ "qty": 5, "name": "Silver Bokoblin Horn" }, { "qty": 5, "name": "Bokoblin Guts" }, { "qty": 30, "name": "Amber" }]
 			],
 			"upgradable": true
 		}
@@ -1500,10 +1506,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"3x Silent Princess\n1x Light Dragon's Scale",
-				"3x Silent Princess\n1x Light Dragon's Talon\n2x Farosh's Horn",
-				"5x Silent Princess\n1x Shard of Light Dragon's Fang\n2x Naydra's Horn",
-				"10x Silent Princess\n1x Light Dragon's Horn\n2x Dinraal's Horn"
+				[{ "qty": 3, "name": "Silent Princess" }, { "qty": 1, "name": "Light Dragon's Scale" }],
+				[{ "qty": 3, "name": "Silent Princess" }, { "qty": 1, "name": "Light Dragon's Talon" }, { "qty": 2, "name": "Farosh's Horn" }],
+				[{ "qty": 5, "name": "Silent Princess" }, { "qty": 1, "name": "Shard of Light Dragon's Fang" }, { "qty": 2, "name": "Naydra's Horn" }],
+				[{ "qty": 10, "name": "Silent Princess" }, { "qty": 1, "name": "Light Dragon's Horn" }, { "qty": 2, "name": "Dinraal's Horn" }]
 			],
 			"upgradable": true
 		}
@@ -1544,10 +1550,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Brightbloom Seed",
-				"20x Brightbloom Seed\n5x Bright Caps",
-				"15x Giant Brightbloom Seed\n5x Glowing Cave Fish\n10x Deep Firefly",
-				"20x Giant Brightbloom Seed\n3x Diamond\n10x Large Zonaite"
+				[{ "qty": 10, "name": "Brightbloom Seed" }],
+				[{ "qty": 20, "name": "Brightbloom Seed" }, { "qty": 5, "name": "Bright Caps" }],
+				[{ "qty": 15, "name": "Giant Brightbloom Seed" }, { "qty": 5, "name": "Glowing Cave Fish" }, { "qty": 10, "name": "Deep Firefly" }],
+				[{ "qty": 20, "name": "Giant Brightbloom Seed" }, { "qty": 3, "name": "Diamond" }, { "qty": 10, "name": "Large Zonaite" }]
 			],
 			"upgradable": true
 		},
@@ -1564,10 +1570,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Brightbloom Seed",
-				"20x Brightbloom Seed\n5x Bright Caps",
-				"15x Giant Brightbloom Seed\n5x Glowing Cave Fish\n10x Deep Firefly",
-				"20x Giant Brightbloom Seed\n3x Diamond\n10x Large Zonaite"
+				[{ "qty": 10, "name": "Brightbloom Seed" }],
+				[{ "qty": 20, "name": "Brightbloom Seed" }, { "qty": 5, "name": "Bright Caps" }],
+				[{ "qty": 15, "name": "Giant Brightbloom Seed" }, { "qty": 5, "name": "Glowing Cave Fish" }, { "qty": 10, "name": "Deep Firefly" }],
+				[{ "qty": 20, "name": "Giant Brightbloom Seed" }, { "qty": 3, "name": "Diamond" }, { "qty": 10, "name": "Large Zonaite" }]
 			],
 			"upgradable": true
 		},
@@ -1584,10 +1590,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Brightbloom Seed",
-				"20x Brightbloom Seed\n5x Bright Caps",
-				"15x Giant Brightbloom Seed\n5x Glowing Cave Fish\n10x Deep Firefly",
-				"20x Giant Brightbloom Seed\n3x Diamond\n10x Large Zonaite"
+				[{ "qty": 10, "name": "Brightbloom Seed" }],
+				[{ "qty": 20, "name": "Brightbloom Seed" }, { "qty": 5, "name": "Bright Caps" }],
+				[{ "qty": 15, "name": "Giant Brightbloom Seed" }, { "qty": 5, "name": "Glowing Cave Fish" }, { "qty": 10, "name": "Deep Firefly" }],
+				[{ "qty": 20, "name": "Giant Brightbloom Seed" }, { "qty": 3, "name": "Diamond" }, { "qty": 10, "name": "Large Zonaite" }]
 			],
 			"upgradable": true
 		}
@@ -1752,10 +1758,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Luminous Stone\n1x Bokoblin Guts",
-				"15x Luminous Stone\n2x Moblin Guts",
-				"20x Luminous Stone\n3x Horriblin Guts\n10x Gibdo Bone",
-				"30x Luminous Stone\n3x Lynel Guts\n3x Molduga Jaw"
+				[{ "qty": 10, "name": "Luminous Stone" }, { "qty": 1, "name": "Bokoblin Guts" }],
+				[{ "qty": 15, "name": "Luminous Stone" }, { "qty": 2, "name": "Moblin Guts" }],
+				[{ "qty": 20, "name": "Luminous Stone" }, { "qty": 3, "name": "Horriblin Guts" }, { "qty": 10, "name": "Gibdo Bone" }],
+				[{ "qty": 30, "name": "Luminous Stone" }, { "qty": 3, "name": "Lynel Guts" }, { "qty": 3, "name": "Molduga Jaw" }]
 			],
 			"upgradable": true
 		},
@@ -1772,10 +1778,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Luminous Stone\n1x Moblin Guts",
-				"15x Luminous Stone\n2x Moblin Guts",
-				"20x Luminous Stone\n3x Horriblin Guts\n10x Gibdo Bone",
-				"30x Luminous Stone\n3x Lynel Guts\n3x Molduga Jaw"
+				[{ "qty": 10, "name": "Luminous Stone" }, { "qty": 1, "name": "Moblin Guts" }],
+				[{ "qty": 15, "name": "Luminous Stone" }, { "qty": 2, "name": "Moblin Guts" }],
+				[{ "qty": 20, "name": "Luminous Stone" }, { "qty": 3, "name": "Horriblin Guts" }, { "qty": 10, "name": "Gibdo Bone" }],
+				[{ "qty": 30, "name": "Luminous Stone" }, { "qty": 3, "name": "Lynel Guts" }, { "qty": 3, "name": "Molduga Jaw" }]
 			],
 			"upgradable": true
 		},
@@ -1792,10 +1798,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Luminous Stone\n1x Moblin Guts",
-				"15x Luminous Stone\n2x Moblin Guts",
-				"20x Luminous Stone\n3x Horriblin Guts\n10x Gibdo Bone",
-				"30x Luminous Stone\n3x Lynel Guts\n3x Molduga Jaw"
+				[{ "qty": 10, "name": "Luminous Stone" }, { "qty": 1, "name": "Moblin Guts" }],
+				[{ "qty": 15, "name": "Luminous Stone" }, { "qty": 2, "name": "Moblin Guts" }],
+				[{ "qty": 20, "name": "Luminous Stone" }, { "qty": 3, "name": "Horriblin Guts" }, { "qty": 10, "name": "Gibdo Bone" }],
+				[{ "qty": 30, "name": "Luminous Stone" }, { "qty": 3, "name": "Lynel Guts" }, { "qty": 3, "name": "Molduga Jaw" }]
 			],
 			"upgradable": true
 		}
@@ -1836,10 +1842,10 @@ const ARMOR_SETS = [
 				24
 			],
 			"materials": [
-				"3x Boss Bokoblin Horn\n3x Bokoblin Guts",
-				"3x Blue Boss Bokoblin Horn\n3x Boss Bokoblin Fang",
-				"3x Black Boss Bokoblin Horn\n3x Hinox Guts",
-				"3x Silver Boss Bokoblin Horn\n3x Molduga Guts\n3x Gleeok Guts"
+				[{ "qty": 3, "name": "Boss Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Guts" }],
+				[{ "qty": 3, "name": "Blue Boss Bokoblin Horn" }, { "qty": 3, "name": "Boss Bokoblin Fang" }],
+				[{ "qty": 3, "name": "Black Boss Bokoblin Horn" }, { "qty": 3, "name": "Hinox Guts" }],
+				[{ "qty": 3, "name": "Silver Boss Bokoblin Horn" }, { "qty": 3, "name": "Molduga Guts" }, { "qty": 3, "name": "Gleeok Guts" }]
 			],
 			"upgradable": true
 		},
@@ -1856,10 +1862,10 @@ const ARMOR_SETS = [
 				24
 			],
 			"materials": [
-				"3x Boss Bokoblin Horn\n3x Bokoblin Guts",
-				"3x Blue Boss Bokoblin Horn\n3x Boss Bokoblin Fang",
-				"3x Black Boss Bokoblin Horn\n3x Hinox Guts",
-				"3x Silver Boss Bokoblin Horn\n3x Molduga Guts\n3x Gleeok Guts"
+				[{ "qty": 3, "name": "Boss Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Guts" }],
+				[{ "qty": 3, "name": "Blue Boss Bokoblin Horn" }, { "qty": 3, "name": "Boss Bokoblin Fang" }],
+				[{ "qty": 3, "name": "Black Boss Bokoblin Horn" }, { "qty": 3, "name": "Hinox Guts" }],
+				[{ "qty": 3, "name": "Silver Boss Bokoblin Horn" }, { "qty": 3, "name": "Molduga Guts" }, { "qty": 3, "name": "Gleeok Guts" }]
 			],
 			"upgradable": true
 		},
@@ -1876,10 +1882,10 @@ const ARMOR_SETS = [
 				24
 			],
 			"materials": [
-				"3x Boss Bokoblin Horn\n3x Bokoblin Guts",
-				"3x Blue Boss Bokoblin Horn\n3x Boss Bokoblin Fang",
-				"3x Black Boss Bokoblin Horn\n3x Hinox Guts",
-				"3x Silver Boss Bokoblin Horn\n3x Molduga Guts\n3x Gleeok Guts"
+				[{ "qty": 3, "name": "Boss Bokoblin Horn" }, { "qty": 3, "name": "Bokoblin Guts" }],
+				[{ "qty": 3, "name": "Blue Boss Bokoblin Horn" }, { "qty": 3, "name": "Boss Bokoblin Fang" }],
+				[{ "qty": 3, "name": "Black Boss Bokoblin Horn" }, { "qty": 3, "name": "Hinox Guts" }],
+				[{ "qty": 3, "name": "Silver Boss Bokoblin Horn" }, { "qty": 3, "name": "Molduga Guts" }, { "qty": 3, "name": "Gleeok Guts" }]
 			],
 			"upgradable": true
 		}
@@ -1898,10 +1904,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Electric Lizalfos Horn\n3x Yellow Chuchu Jelly",
-				"8x Yellow Chuchu Jelly\n5x Voltfruit",
-				"5x Zapshroom\n5x Electric Lizalfos Tail\n8x Electric Safflina",
-				"5x Electric Lizalfos Horn\n5x Topaz\n8x Electric Lizalfos Tail"
+				[{ "qty": 1, "name": "Electric Lizalfos Horn" }, { "qty": 3, "name": "Yellow Chuchu Jelly" }],
+				[{ "qty": 8, "name": "Yellow Chuchu Jelly" }, { "qty": 5, "name": "Voltfruit" }],
+				[{ "qty": 5, "name": "Zapshroom" }, { "qty": 5, "name": "Electric Lizalfos Tail" }, { "qty": 8, "name": "Electric Safflina" }],
+				[{ "qty": 5, "name": "Electric Lizalfos Horn" }, { "qty": 5, "name": "Topaz" }, { "qty": 8, "name": "Electric Lizalfos Tail" }]
 			],
 			"upgradable": true
 		},
@@ -1918,10 +1924,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Electric Lizalfos Horn\n3x Yellow Chuchu Jelly",
-				"8x Yellow Chuchu Jelly\n5x Voltfruit",
-				"5x Zapshroom\n5x Electric Lizalfos Tail\n8x Electric Safflina",
-				"5x Electric Lizalfos Horn\n5x Topaz\n8x Electric Lizalfos Tail"
+				[{ "qty": 1, "name": "Electric Lizalfos Horn" }, { "qty": 3, "name": "Yellow Chuchu Jelly" }],
+				[{ "qty": 8, "name": "Yellow Chuchu Jelly" }, { "qty": 5, "name": "Voltfruit" }],
+				[{ "qty": 5, "name": "Zapshroom" }, { "qty": 5, "name": "Electric Lizalfos Tail" }, { "qty": 8, "name": "Electric Safflina" }],
+				[{ "qty": 5, "name": "Electric Lizalfos Horn" }, { "qty": 5, "name": "Topaz" }, { "qty": 8, "name": "Electric Lizalfos Tail" }]
 			],
 			"upgradable": true
 		},
@@ -1938,10 +1944,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Electric Lizalfos Horn\n3x Yellow Chuchu Jelly",
-				"8x Yellow Chuchu Jelly\n5x Voltfruit",
-				"5x Zapshroom\n5x Electric Lizalfos Tail\n8x Electric Safflina",
-				"5x Electric Lizalfos Horn\n5x Topaz\n8x Electric Lizalfos Tail"
+				[{ "qty": 1, "name": "Electric Lizalfos Horn" }, { "qty": 3, "name": "Yellow Chuchu Jelly" }],
+				[{ "qty": 8, "name": "Yellow Chuchu Jelly" }, { "qty": 5, "name": "Voltfruit" }],
+				[{ "qty": 5, "name": "Zapshroom" }, { "qty": 5, "name": "Electric Lizalfos Tail" }, { "qty": 8, "name": "Electric Safflina" }],
+				[{ "qty": 5, "name": "Electric Lizalfos Horn" }, { "qty": 5, "name": "Topaz" }, { "qty": 8, "name": "Electric Lizalfos Tail" }]
 			],
 			"upgradable": true
 		}
@@ -1960,10 +1966,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Silent Princess\n1x Star Fragment",
-				"2x Silent Princess\n2x Star Fragment",
-				"4x Silent Princess\n3x Star Fragment",
-				"8x Silent Princess\n4x Star Fragment"
+				[{ "qty": 1, "name": "Silent Princess" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 2, "name": "Silent Princess" }, { "qty": 2, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Silent Princess" }, { "qty": 3, "name": "Star Fragment" }],
+				[{ "qty": 8, "name": "Silent Princess" }, { "qty": 4, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -1982,10 +1988,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Sapphire\n1x Star Fragment",
-				"4x Sapphire\n1x Star Fragment",
-				"6x Sapphire\n1x Star Fragment",
-				"10x Sapphire\n1x Star Fragment"
+				[{ "qty": 1, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -2002,10 +2008,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Sapphire\n1x Star Fragment",
-				"4x Sapphire\n1x Star Fragment",
-				"6x Sapphire\n1x Star Fragment",
-				"10x Sapphire\n1x Star Fragment"
+				[{ "qty": 1, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -2022,10 +2028,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Sapphire\n1x Star Fragment",
-				"4x Sapphire\n1x Star Fragment",
-				"6x Sapphire\n1x Star Fragment",
-				"10x Sapphire\n1x Star Fragment"
+				[{ "qty": 1, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Sapphire" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -2044,10 +2050,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Red Chuchu Jelly",
-				"5x Red Chuchu Jelly\n3x Warm Safflina",
-				"5x Fire Keese Wing\n3x Fire-Breath Lizalfos Tail\n5x Sunshroom",
-				"5x Fire-Breath Lizalfos Horn\n10x Fire-Breath Lizalfos Tail\n5x Ruby"
+				[{ "qty": 3, "name": "Red Chuchu Jelly" }],
+				[{ "qty": 5, "name": "Red Chuchu Jelly" }, { "qty": 3, "name": "Warm Safflina" }],
+				[{ "qty": 5, "name": "Fire Keese Wing" }, { "qty": 3, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Sunshroom" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 10, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Ruby" }]
 			],
 			"upgradable": true
 		},
@@ -2064,10 +2070,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Red Chuchu Jelly",
-				"5x Red Chuchu Jelly\n3x Warm Safflina",
-				"5x Fire Keese Wing\n3x Fire-Breath Lizalfos Tail\n5x Sunshroom",
-				"5x Fire-Breath Lizalfos Horn\n10x Fire-Breath Lizalfos Tail\n5x Ruby"
+				[{ "qty": 3, "name": "Red Chuchu Jelly" }],
+				[{ "qty": 5, "name": "Red Chuchu Jelly" }, { "qty": 3, "name": "Warm Safflina" }],
+				[{ "qty": 5, "name": "Fire Keese Wing" }, { "qty": 3, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Sunshroom" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 10, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Ruby" }]
 			],
 			"upgradable": true
 		},
@@ -2084,10 +2090,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Red Chuchu Jelly",
-				"5x Red Chuchu Jelly\n3x Warm Safflina",
-				"5x Fire Keese Wing\n3x Fire-Breath Lizalfos Tail\n5x Sunshroom",
-				"5x Fire-Breath Lizalfos Horn\n10x Fire-Breath Lizalfos Tail\n5x Ruby"
+				[{ "qty": 3, "name": "Red Chuchu Jelly" }],
+				[{ "qty": 5, "name": "Red Chuchu Jelly" }, { "qty": 3, "name": "Warm Safflina" }],
+				[{ "qty": 5, "name": "Fire Keese Wing" }, { "qty": 3, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Sunshroom" }],
+				[{ "qty": 5, "name": "Fire-Breath Lizalfos Horn" }, { "qty": 10, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 5, "name": "Ruby" }]
 			],
 			"upgradable": true
 		}
@@ -2106,10 +2112,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"5x Chuchu Jelly\n3x Bokoblin Guts",
-				"5x Keese Eyeball\n3x Moblin Guts",
-				"3x Lizalfos Tail\n3x Hinox Guts\n30x Flint",
-				"5x Lynel Hoof\n5x Lynel Guts\n30x Amber"
+				[{ "qty": 5, "name": "Chuchu Jelly" }, { "qty": 3, "name": "Bokoblin Guts" }],
+				[{ "qty": 5, "name": "Keese Eyeball" }, { "qty": 3, "name": "Moblin Guts" }],
+				[{ "qty": 3, "name": "Lizalfos Tail" }, { "qty": 3, "name": "Hinox Guts" }, { "qty": 30, "name": "Flint" }],
+				[{ "qty": 5, "name": "Lynel Hoof" }, { "qty": 5, "name": "Lynel Guts" }, { "qty": 30, "name": "Amber" }]
 			],
 			"upgradable": true
 		},
@@ -2126,10 +2132,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"5x Chuchu Jelly\n3x Bokoblin Guts",
-				"5x Keese Eyeball\n3x Moblin Guts",
-				"3x Lizalfos Tail\n3x Hinox Guts\n30x Flint",
-				"5x Lynel Hoof\n5x Lynel Guts\n30x Amber"
+				[{ "qty": 5, "name": "Chuchu Jelly" }, { "qty": 3, "name": "Bokoblin Guts" }],
+				[{ "qty": 5, "name": "Keese Eyeball" }, { "qty": 3, "name": "Moblin Guts" }],
+				[{ "qty": 3, "name": "Lizalfos Tail" }, { "qty": 3, "name": "Hinox Guts" }, { "qty": 30, "name": "Flint" }],
+				[{ "qty": 5, "name": "Lynel Hoof" }, { "qty": 5, "name": "Lynel Guts" }, { "qty": 30, "name": "Amber" }]
 			],
 			"upgradable": true
 		},
@@ -2146,10 +2152,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"5x Chuchu Jelly\n3x Bokoblin Guts",
-				"5x Keese Eyeball\n3x Moblin Guts",
-				"3x Lizalfos Tail\n3x Hinox Guts\n30x Flint",
-				"5x Lynel Hoof\n5x Lynel Guts\n30x Amber"
+				[{ "qty": 5, "name": "Chuchu Jelly" }, { "qty": 3, "name": "Bokoblin Guts" }],
+				[{ "qty": 5, "name": "Keese Eyeball" }, { "qty": 3, "name": "Moblin Guts" }],
+				[{ "qty": 3, "name": "Lizalfos Tail" }, { "qty": 3, "name": "Hinox Guts" }, { "qty": 30, "name": "Flint" }],
+				[{ "qty": 5, "name": "Lynel Hoof" }, { "qty": 5, "name": "Lynel Guts" }, { "qty": 30, "name": "Amber" }]
 			],
 			"upgradable": true
 		}
@@ -2168,10 +2174,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Blue Nightshade",
-				"5x Blue Nightshade\n5x Sunset Firefly",
-				"8x Silent Shroom\n5x Sneaky River Snail",
-				"10x Stealthfin Trout\n5x Silent Princess\n10x Sundelion"
+				[{ "qty": 3, "name": "Blue Nightshade" }],
+				[{ "qty": 5, "name": "Blue Nightshade" }, { "qty": 5, "name": "Sunset Firefly" }],
+				[{ "qty": 8, "name": "Silent Shroom" }, { "qty": 5, "name": "Sneaky River Snail" }],
+				[{ "qty": 10, "name": "Stealthfin Trout" }, { "qty": 5, "name": "Silent Princess" }, { "qty": 10, "name": "Sundelion" }]
 			],
 			"upgradable": true
 		},
@@ -2188,10 +2194,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Blue Nightshade",
-				"5x Blue Nightshade\n5x Sunset Firefly",
-				"8x Silent Shroom\n5x Sneaky River Snail",
-				"10x Stealthfin Trout\n5x Silent Princess\n10x Sundelion"
+				[{ "qty": 3, "name": "Blue Nightshade" }],
+				[{ "qty": 5, "name": "Blue Nightshade" }, { "qty": 5, "name": "Sunset Firefly" }],
+				[{ "qty": 8, "name": "Silent Shroom" }, { "qty": 5, "name": "Sneaky River Snail" }],
+				[{ "qty": 10, "name": "Stealthfin Trout" }, { "qty": 5, "name": "Silent Princess" }, { "qty": 10, "name": "Sundelion" }]
 			],
 			"upgradable": true
 		},
@@ -2208,10 +2214,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"3x Blue Nightshade",
-				"5x Blue Nightshade\n5x Sunset Firefly",
-				"8x Silent Shroom\n5x Sneaky River Snail",
-				"10x Stealthfin Trout\n5x Silent Princess\n10x Sundelion"
+				[{ "qty": 3, "name": "Blue Nightshade" }],
+				[{ "qty": 5, "name": "Blue Nightshade" }, { "qty": 5, "name": "Sunset Firefly" }],
+				[{ "qty": 8, "name": "Silent Shroom" }, { "qty": 5, "name": "Sneaky River Snail" }],
+				[{ "qty": 10, "name": "Stealthfin Trout" }, { "qty": 5, "name": "Silent Princess" }, { "qty": 10, "name": "Sundelion" }]
 			],
 			"upgradable": true
 		}
@@ -2230,10 +2236,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Amber\n1x Star Fragment",
-				"20x Amber\n1x Star Fragment",
-				"30x Amber\n1x Star Fragment",
-				"40x Amber\n1x Star Fragment"
+				[{ "qty": 10, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 20, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 30, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 40, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -2250,10 +2256,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Amber\n1x Star Fragment",
-				"20x Amber\n1x Star Fragment",
-				"30x Amber\n1x Star Fragment",
-				"40x Amber\n1x Star Fragment"
+				[{ "qty": 10, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 20, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 30, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 40, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -2270,10 +2276,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"10x Amber\n1x Star Fragment",
-				"20x Amber\n1x Star Fragment",
-				"30x Amber\n1x Star Fragment",
-				"40x Amber\n1x Star Fragment"
+				[{ "qty": 10, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 20, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 30, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 40, "name": "Amber" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -2354,10 +2360,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Topaz\n1x Star Fragment",
-				"4x Topaz\n1x Star Fragment",
-				"6x Topaz\n1x Star Fragment",
-				"10x Topaz\n1x Star Fragment"
+				[{ "qty": 1, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -2374,10 +2380,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Topaz\n1x Star Fragment",
-				"4x Topaz\n1x Star Fragment",
-				"6x Topaz\n1x Star Fragment",
-				"10x Topaz\n1x Star Fragment"
+				[{ "qty": 1, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -2394,10 +2400,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"1x Topaz\n1x Star Fragment",
-				"4x Topaz\n1x Star Fragment",
-				"6x Topaz\n1x Star Fragment",
-				"10x Topaz\n1x Star Fragment"
+				[{ "qty": 1, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 4, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 6, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Topaz" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -2416,10 +2422,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"1x Sapphire\n5x Zonaite",
-				"4x Sapphire\n10x Zonaite",
-				"6x Sapphire\n5x Large Zonaite\n5x Dazzlefruit",
-				"10x Sapphire\n10x Large Zonaite\n10x Dazzlefruit"
+				[{ "qty": 1, "name": "Sapphire" }, { "qty": 5, "name": "Zonaite" }],
+				[{ "qty": 4, "name": "Sapphire" }, { "qty": 10, "name": "Zonaite" }],
+				[{ "qty": 6, "name": "Sapphire" }, { "qty": 5, "name": "Large Zonaite" }, { "qty": 5, "name": "Dazzlefruit" }],
+				[{ "qty": 10, "name": "Sapphire" }, { "qty": 10, "name": "Large Zonaite" }, { "qty": 10, "name": "Dazzlefruit" }]
 			],
 			"upgradable": true
 		}
@@ -2438,10 +2444,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"1x Topaz\n5x Zonaite",
-				"4x Topaz\n10x Zonaite",
-				"6x Topaz\n5x Large Zonaite\n5x Dazzlefruit",
-				"10x Topaz\n10x Large Zonaite\n10x Dazzlefruit"
+				[{ "qty": 1, "name": "Topaz" }, { "qty": 5, "name": "Zonaite" }],
+				[{ "qty": 4, "name": "Topaz" }, { "qty": 10, "name": "Zonaite" }],
+				[{ "qty": 6, "name": "Topaz" }, { "qty": 5, "name": "Large Zonaite" }, { "qty": 5, "name": "Dazzlefruit" }],
+				[{ "qty": 10, "name": "Topaz" }, { "qty": 10, "name": "Large Zonaite" }, { "qty": 10, "name": "Dazzlefruit" }]
 			],
 			"upgradable": true
 		}
@@ -2460,10 +2466,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"1x Ruby\n5x Zonaite",
-				"4x Ruby\n10x Zonaite",
-				"6x Ruby\n5x Large Zonaite\n5x Dazzlefruit",
-				"10x Ruby\n10x Large Zonaite\n10x Dazzlefruit"
+				[{ "qty": 1, "name": "Ruby" }, { "qty": 5, "name": "Zonaite" }],
+				[{ "qty": 4, "name": "Ruby" }, { "qty": 10, "name": "Zonaite" }],
+				[{ "qty": 6, "name": "Ruby" }, { "qty": 5, "name": "Large Zonaite" }, { "qty": 5, "name": "Dazzlefruit" }],
+				[{ "qty": 10, "name": "Ruby" }, { "qty": 10, "name": "Large Zonaite" }, { "qty": 10, "name": "Dazzlefruit" }]
 			],
 			"upgradable": true
 		}
@@ -2482,10 +2488,10 @@ const ARMOR_SETS = [
 				16
 			],
 			"materials": [
-				"5x Opal\n5x Zonaite",
-				"10x Opal\n10x Zonaite",
-				"15x Opal\n5x Large Zonaite\n5x Dazzlefruit",
-				"25x Opal\n10x Large Zonaite\n10x Dazzlefruit"
+				[{ "qty": 5, "name": "Opal" }, { "qty": 5, "name": "Zonaite" }],
+				[{ "qty": 10, "name": "Opal" }, { "qty": 10, "name": "Zonaite" }],
+				[{ "qty": 15, "name": "Opal" }, { "qty": 5, "name": "Large Zonaite" }, { "qty": 5, "name": "Dazzlefruit" }],
+				[{ "qty": 25, "name": "Opal" }, { "qty": 10, "name": "Large Zonaite" }, { "qty": 10, "name": "Dazzlefruit" }]
 			],
 			"upgradable": true
 		}
@@ -2504,10 +2510,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"10x Acorn\n2x Farosh's Scale",
-				"5x Courser Bee Honey\n2x Farosh's Claw",
-				"3x Energetic Rhino Beetle\n2x Farosh's Fang\n5x Shard of Farosh's Spike",
-				"3x Star Fragment\n2x Farosh's Horn\n10x Shard of Farosh's Spike"
+				[{ "qty": 10, "name": "Acorn" }, { "qty": 2, "name": "Farosh's Scale" }],
+				[{ "qty": 5, "name": "Courser Bee Honey" }, { "qty": 2, "name": "Farosh's Claw" }],
+				[{ "qty": 3, "name": "Energetic Rhino Beetle" }, { "qty": 2, "name": "Farosh's Fang" }, { "qty": 5, "name": "Shard of Farosh's Spike" }],
+				[{ "qty": 3, "name": "Star Fragment" }, { "qty": 2, "name": "Farosh's Horn" }, { "qty": 10, "name": "Shard of Farosh's Spike" }]
 			],
 			"upgradable": true
 		},
@@ -2524,10 +2530,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"10x Acorn\n2x Naydra's Scale",
-				"5x Courser Bee Honey\n2x Naydra's Claw",
-				"3x Energetic Rhino Beetle\n2x Naydra's Fang\n5x Shard of Naydra's Spike",
-				"3x Star Fragment\n2x Farosh's Horn\n10x Shard of Farosh's Spike"
+				[{ "qty": 10, "name": "Acorn" }, { "qty": 2, "name": "Naydra's Scale" }],
+				[{ "qty": 5, "name": "Courser Bee Honey" }, { "qty": 2, "name": "Naydra's Claw" }],
+				[{ "qty": 3, "name": "Energetic Rhino Beetle" }, { "qty": 2, "name": "Naydra's Fang" }, { "qty": 5, "name": "Shard of Naydra's Spike" }],
+				[{ "qty": 3, "name": "Star Fragment" }, { "qty": 2, "name": "Farosh's Horn" }, { "qty": 10, "name": "Shard of Farosh's Spike" }]
 			],
 			"upgradable": true
 		},
@@ -2544,10 +2550,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"10x Acorn\n2x Dinraal's Scale",
-				"5x Courser Bee Honey\n2x Dinraal's Claw",
-				"3x Energetic Rhino Beetle\n2x Dinraal's Fang\n5x Shard of Dinraal's Spike",
-				"3x Star Fragment\n2x Farosh's Horn\n10x Shard of Farosh's Spike"
+				[{ "qty": 10, "name": "Acorn" }, { "qty": 2, "name": "Dinraal's Scale" }],
+				[{ "qty": 5, "name": "Courser Bee Honey" }, { "qty": 2, "name": "Dinraal's Claw" }],
+				[{ "qty": 3, "name": "Energetic Rhino Beetle" }, { "qty": 2, "name": "Dinraal's Fang" }, { "qty": 5, "name": "Shard of Dinraal's Spike" }],
+				[{ "qty": 3, "name": "Star Fragment" }, { "qty": 2, "name": "Farosh's Horn" }, { "qty": 10, "name": "Shard of Farosh's Spike" }]
 			],
 			"upgradable": true
 		}
@@ -2566,10 +2572,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Opal\n1x Star Fragment",
-				"10x Opal\n1x Star Fragment",
-				"15x Opal\n1x Star Fragment",
-				"25x Opal\n1x Star Fragment"
+				[{ "qty": 5, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 15, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 25, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -2586,10 +2592,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Opal\n1x Star Fragment",
-				"10x Opal\n1x Star Fragment",
-				"15x Opal\n1x Star Fragment",
-				"25x Opal\n1x Star Fragment"
+				[{ "qty": 5, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 15, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 25, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		},
@@ -2606,10 +2612,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"5x Opal\n1x Star Fragment",
-				"10x Opal\n1x Star Fragment",
-				"15x Opal\n1x Star Fragment",
-				"25x Opal\n1x Star Fragment"
+				[{ "qty": 5, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 10, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 15, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }],
+				[{ "qty": 25, "name": "Opal" }, { "qty": 1, "name": "Star Fragment" }]
 			],
 			"upgradable": true
 		}
@@ -2628,10 +2634,10 @@ const ARMOR_SETS = [
 				12
 			],
 			"materials": [
-				"2x Octorok Eyeball",
-				"3x Fire-Breath Lizalfos Tail\n3x Puffshroom",
-				"5x Ice-Breath Lizalfos Tail\n5x Keese Eyeball",
-				"5x Electric Lizalfos Tail\n3x Black Hinox Horn\n10x Mighty Bananas"
+				[{ "qty": 2, "name": "Octorok Eyeball" }],
+				[{ "qty": 3, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 3, "name": "Puffshroom" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Tail" }, { "qty": 5, "name": "Keese Eyeball" }],
+				[{ "qty": 5, "name": "Electric Lizalfos Tail" }, { "qty": 3, "name": "Black Hinox Horn" }, { "qty": 10, "name": "Mighty Bananas" }]
 			],
 			"upgradable": true
 		},
@@ -2648,10 +2654,10 @@ const ARMOR_SETS = [
 				12
 			],
 			"materials": [
-				"2x Octorok Eyeball",
-				"3x Fire-Breath Lizalfos Tail\n3x Puffshroom",
-				"5x Ice-Breath Lizalfos Tail\n5x Keese Eyeball",
-				"5x Electric Lizalfos Tail\n3x Black Hinox Horn\n10x Mighty Bananas"
+				[{ "qty": 2, "name": "Octorok Eyeball" }],
+				[{ "qty": 3, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 3, "name": "Puffshroom" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Tail" }, { "qty": 5, "name": "Keese Eyeball" }],
+				[{ "qty": 5, "name": "Electric Lizalfos Tail" }, { "qty": 3, "name": "Black Hinox Horn" }, { "qty": 10, "name": "Mighty Bananas" }]
 			],
 			"upgradable": true
 		},
@@ -2668,10 +2674,10 @@ const ARMOR_SETS = [
 				12
 			],
 			"materials": [
-				"2x Octorok Eyeball",
-				"3x Fire-Breath Lizalfos Tail\n3x Puffshroom",
-				"5x Ice-Breath Lizalfos Tail\n5x Keese Eyeball",
-				"5x Electric Lizalfos Tail\n3x Black Hinox Horn\n10x Mighty Bananas"
+				[{ "qty": 2, "name": "Octorok Eyeball" }],
+				[{ "qty": 3, "name": "Fire-Breath Lizalfos Tail" }, { "qty": 3, "name": "Puffshroom" }],
+				[{ "qty": 5, "name": "Ice-Breath Lizalfos Tail" }, { "qty": 5, "name": "Keese Eyeball" }],
+				[{ "qty": 5, "name": "Electric Lizalfos Tail" }, { "qty": 3, "name": "Black Hinox Horn" }, { "qty": 10, "name": "Mighty Bananas" }]
 			],
 			"upgradable": true
 		}
@@ -2712,10 +2718,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"5x Soldier Construct Horn",
-				"5x Soldier Construct II Horn\n5x Captain Construct I Horn\n5x Zonaite",
-				"5x Soldier Construct III Horn\n5x Captain Construct II Horn\n5x Large Zonaite",
-				"5x Soldier Construct IV Horn\n5x Captain Construct III Horn\n10x Large Zonaite"
+				[{ "qty": 5, "name": "Soldier Construct Horn" }],
+				[{ "qty": 5, "name": "Soldier Construct II Horn" }, { "qty": 5, "name": "Captain Construct I Horn" }, { "qty": 5, "name": "Zonaite" }],
+				[{ "qty": 5, "name": "Soldier Construct III Horn" }, { "qty": 5, "name": "Captain Construct II Horn" }, { "qty": 5, "name": "Large Zonaite" }],
+				[{ "qty": 5, "name": "Soldier Construct IV Horn" }, { "qty": 5, "name": "Captain Construct III Horn" }, { "qty": 10, "name": "Large Zonaite" }]
 			],
 			"upgradable": true
 		},
@@ -2732,10 +2738,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"5x Soldier Construct Horn",
-				"5x Soldier Construct II Horn\n5x Captain Construct I Horn\n5x Zonaite",
-				"5x Soldier Construct III Horn\n5x Captain Construct II Horn\n5x Large Zonaite",
-				"5x Soldier Construct IV Horn\n5x Captain Construct III Horn\n10x Large Zonaite"
+				[{ "qty": 5, "name": "Soldier Construct Horn" }],
+				[{ "qty": 5, "name": "Soldier Construct II Horn" }, { "qty": 5, "name": "Captain Construct I Horn" }, { "qty": 5, "name": "Zonaite" }],
+				[{ "qty": 5, "name": "Soldier Construct III Horn" }, { "qty": 5, "name": "Captain Construct II Horn" }, { "qty": 5, "name": "Large Zonaite" }],
+				[{ "qty": 5, "name": "Soldier Construct IV Horn" }, { "qty": 5, "name": "Captain Construct III Horn" }, { "qty": 10, "name": "Large Zonaite" }]
 			],
 			"upgradable": true
 		},
@@ -2752,10 +2758,10 @@ const ARMOR_SETS = [
 				28
 			],
 			"materials": [
-				"5x Soldier Construct Horn",
-				"5x Soldier Construct II Horn\n5x Captain Construct I Horn\n5x Zonaite",
-				"5x Soldier Construct III Horn\n5x Captain Construct II Horn\n5x Large Zonaite",
-				"5x Soldier Construct IV Horn\n5x Captain Construct III Horn\n10x Large Zonaite"
+				[{ "qty": 5, "name": "Soldier Construct Horn" }],
+				[{ "qty": 5, "name": "Soldier Construct II Horn" }, { "qty": 5, "name": "Captain Construct I Horn" }, { "qty": 5, "name": "Zonaite" }],
+				[{ "qty": 5, "name": "Soldier Construct III Horn" }, { "qty": 5, "name": "Captain Construct II Horn" }, { "qty": 5, "name": "Large Zonaite" }],
+				[{ "qty": 5, "name": "Soldier Construct IV Horn" }, { "qty": 5, "name": "Captain Construct III Horn" }, { "qty": 10, "name": "Large Zonaite" }]
 			],
 			"upgradable": true
 		}
@@ -2774,10 +2780,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Lizalfos Horn",
-				"5x Lizalfos Talon\n5x Hyrule Bass",
-				"5x Blue Lizalfos Horn\n3x Lizalfos Tail\n3x Hearty Bass",
-				"5x Black Lizalfos Horn\n5x Blue Lizalfos Tail\n20x Opal"
+				[{ "qty": 3, "name": "Lizalfos Horn" }],
+				[{ "qty": 5, "name": "Lizalfos Talon" }, { "qty": 5, "name": "Hyrule Bass" }],
+				[{ "qty": 5, "name": "Blue Lizalfos Horn" }, { "qty": 3, "name": "Lizalfos Tail" }, { "qty": 3, "name": "Hearty Bass" }],
+				[{ "qty": 5, "name": "Black Lizalfos Horn" }, { "qty": 5, "name": "Blue Lizalfos Tail" }, { "qty": 20, "name": "Opal" }]
 			],
 			"upgradable": true
 		},
@@ -2794,10 +2800,10 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Lizalfos Horn",
-				"5x Lizalfos Talon\n5x Hyrule Bass",
-				"5x Blue Lizalfos Horn\n3x Lizalfos Tail\n3x Hearty Bass",
-				"5x Black Lizalfos Horn\n5x Blue Lizalfos Tail\n20x Opal"
+				[{ "qty": 3, "name": "Lizalfos Horn" }],
+				[{ "qty": 5, "name": "Lizalfos Talon" }, { "qty": 5, "name": "Hyrule Bass" }],
+				[{ "qty": 5, "name": "Blue Lizalfos Horn" }, { "qty": 3, "name": "Lizalfos Tail" }, { "qty": 3, "name": "Hearty Bass" }],
+				[{ "qty": 5, "name": "Black Lizalfos Horn" }, { "qty": 5, "name": "Blue Lizalfos Tail" }, { "qty": 20, "name": "Opal" }]
 			],
 			"upgradable": true
 		},
@@ -2814,12 +2820,34 @@ const ARMOR_SETS = [
 				20
 			],
 			"materials": [
-				"3x Lizalfos Horn",
-				"5x Lizalfos Talon\n5x Hyrule Bass",
-				"5x Blue Lizalfos Horn\n3x Lizalfos Tail\n3x Hearty Bass",
-				"5x Black Lizalfos Horn\n5x Blue Lizalfos Tail\n20x Opal"
+				[{ "qty": 3, "name": "Lizalfos Horn" }],
+				[{ "qty": 5, "name": "Lizalfos Talon" }, { "qty": 5, "name": "Hyrule Bass" }],
+				[{ "qty": 5, "name": "Blue Lizalfos Horn" }, { "qty": 3, "name": "Lizalfos Tail" }, { "qty": 3, "name": "Hearty Bass" }],
+				[{ "qty": 5, "name": "Black Lizalfos Horn" }, { "qty": 5, "name": "Blue Lizalfos Tail" }, { "qty": 20, "name": "Opal" }]
 			],
 			"upgradable": true
 		}
 	]
 ];
+
+// ----------------------------------------------------------------------
+// Helpers for working with the structured "materials" format above.
+// ----------------------------------------------------------------------
+
+// Turns a single upgrade step's material array (or null) into the
+// "9x Silver Bokoblin Horn\n9x Hinox Guts" style text used on armor cards.
+function formatMaterialsText(materialsStep) {
+	if (!materialsStep) return '';
+	return materialsStep.map(m => `${m.qty}x ${m.name}`).join('\n');
+}
+
+// Adds every material in a single upgrade step into a running totals map
+// of { "Material Name": quantity }. Used by the Material Calculator to
+// collate materials across many pieces/steps.
+function addMaterialsToTotals(materialsStep, totals) {
+	if (!materialsStep) return totals;
+	materialsStep.forEach(m => {
+		totals[m.name] = (totals[m.name] || 0) + m.qty;
+	});
+	return totals;
+}
