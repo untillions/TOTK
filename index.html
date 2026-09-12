@@ -39,7 +39,7 @@
 			position: fixed;
 			top: 0; left: 0; right: 0; bottom: 0;
 			width: 100vw;
-			height: 100vh; /* Changed from vh */
+			height: 100vh;
 			object-fit: cover;
 			object-position: 0% 50%;
 			z-index: 1;
@@ -108,13 +108,19 @@
 			z-index: 2;
 		}
 		
-		.dashboard-footer a {
+		.footer-link-btn {
+			background: transparent;
+			border: none;
+			padding: 0;
+			font: inherit;
 			color: #4ade80;
 			text-decoration: none;
+			text-shadow: inherit;
+			cursor: pointer;
 			transition: color 0.15s ease;
 		}
 		
-		.dashboard-footer a:hover {
+		.footer-link-btn:hover {
 			color: #ABB0B8;
 			text-decoration: underline;
 		}
@@ -694,6 +700,24 @@
 			background: rgba(15, 23, 42, 0.95);
 			box-shadow: 0 4px 16px rgba(0,0,0,0.6);
 		}
+		.completion-disclaimer {
+			max-width: 350px;
+			margin: 12px auto 0 auto;
+			padding: 10px 14px;
+			background: rgba(15, 23, 42, 0.85);
+			border: 1px solid #334155;
+			border-radius: 8px;
+			font-size: 0.78rem;
+			line-height: 1.5;
+			color: #94a3b8;
+			text-align: left;
+		}
+		.completion-disclaimer strong {
+			display: block;
+			color: #4ade80;
+			font-size: 0.85rem;
+			margin-bottom: 6px;
+		}
 		.progress-table {
 			width: 100%;
 			min-width: 350px;
@@ -992,6 +1016,125 @@
 			padding: 8px 22px;
 			font-size: 0.95rem;
 		}
+		.clear-progress-btn {
+			margin-top: 14px;
+			background: rgba(220, 38, 38, 0.12);
+			border-color: #b91c1c;
+			color: #fca5a5;
+		}
+		.clear-progress-btn:hover {
+			background: rgba(220, 38, 38, 0.22);
+		}
+		/* --- CONFIRM DIALOG --- */
+		.confirm-overlay {
+			position: fixed;
+			top: 0; left: 0;
+			width: 100%; height: 100%;
+			background: rgba(0, 0, 0, 0.6);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 1000;
+		}
+		.confirm-dialog {
+			background: rgba(15, 23, 42, 0.98);
+			border: 1px solid #475569;
+			border-radius: 10px;
+			padding: 20px;
+			max-width: 320px;
+			width: calc(100% - 40px);
+			box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+			text-align: center;
+		}
+		.confirm-dialog-message {
+			color: #e2e8f0;
+			font-size: 0.95rem;
+			line-height: 1.4;
+			margin-bottom: 18px;
+		}
+		.confirm-dialog-buttons {
+			display: flex;
+			justify-content: center;
+			gap: 12px;
+		}
+		.confirm-btn-cancel {
+			background: #1e293b;
+			border: 1px solid #475569;
+			color: #e2e8f0;
+			padding: 8px 18px;
+			border-radius: 6px;
+			cursor: pointer;
+			font-weight: 600;
+		}
+		.confirm-btn-cancel:hover {
+			background: #334155;
+		}
+		.confirm-btn-danger {
+			background: rgba(220, 38, 38, 0.15);
+			border: 1px solid #b91c1c;
+			color: #fca5a5;
+			padding: 8px 18px;
+			border-radius: 6px;
+			cursor: pointer;
+			font-weight: 600;
+		}
+		.confirm-btn-danger:hover {
+			background: rgba(220, 38, 38, 0.3);
+		}
+		/* --- VERSIONS & CREDITS DIALOG (shares the confirm-dialog's dark card look) --- */
+		.info-dialog {
+			background: rgba(15, 23, 42, 0.98);
+			border: 1px solid #475569;
+			box-sizing: border-box;
+			border-radius: 10px;
+			padding: 22px;
+			max-width: 420px;
+			width: calc(100% - 40px);
+			max-height: 80vh;
+			overflow-y: auto;
+			box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+			text-align: left;
+			color: #e2e8f0;
+		}
+		.info-dialog-title {
+			font-family: 'HyliaSerif', serif;
+			color: #FAF7DF;
+			font-size: 1.15rem;
+			font-weight: normal;
+			letter-spacing: 0.5px;
+			text-align: center;
+			margin: 0 0 14px 0;
+		}
+		.info-dialog p {
+			margin: 0 0 10px 0;
+			font-size: 0.9rem;
+			line-height: 1.5;
+		}
+		.info-dialog ul {
+			margin: 4px 0 14px 0;
+			padding-left: 20px;
+			font-size: 0.8rem;
+			line-height: 1.5;
+			color: #94a3b8;
+		}
+		.info-dialog strong {
+			color: #4ade80;
+		}
+		.info-dialog hr {
+			border: none;
+			border-top: 1px solid rgba(255,255,255,0.15);
+			margin: 16px 0;
+		}
+		.info-dialog-role-line {
+			display: block;
+			font-size: 0.8rem;
+			color: #94a3b8;
+		}
+		.info-dialog-legal {
+			font-size: 0.75rem;
+			color: #94a3b8;
+			line-height: 1.5;
+		}
 		.mat-calc-rupee-costs {
 			display: flex;
 			flex-direction: column;
@@ -1030,7 +1173,6 @@
 			height: 14px;
 			width: auto;
 			vertical-align: middle;
-			margin-left: 3px;
 		}
 		.mat-calc-results {
 			width: 100%;
@@ -1842,8 +1984,7 @@
 			</div>
 		</div>
 		<div class="dashboard-footer staggered-item" style="--delay: 6;">
-			Icons by <em>ME</em> on <a href="https://www.flaticon.com/authors/freepik" title="Flaticon">Flaticon</a><br>
-			Hylia Serif Font from <a href="https://www.fontbolt.com/font/zelda-font/" title="Font Bolt">Font Bolt</a>
+			<button type="button" class="footer-link-btn" onclick="showVersionsCreditsDialog()">Versions &amp; Credits</button>
 		</div>
 	</div>
 	
@@ -1936,6 +2077,7 @@
 			<div id="progressHeader">
 				<h1 id="progressPageTitle">Progress Tracker</h1>
 				<div id="progressOverallLine">Overall Map Completion: <span id="progressOverallValue">0.00/100%</span></div>
+				<button id="clearAllProgressBtn" class="btn mat-calc-btn clear-progress-btn" onclick="confirmClearAllProgress()">Clear All Progress</button>
 			</div>
 
 			<div class="progress-section">
@@ -1952,6 +2094,12 @@
 						</thead>
 						<tbody id="regionProgressBody"></tbody>
 					</table>
+				</div>
+				<div class="completion-disclaimer">
+					<strong>A Note about 100% Map Completion:</strong>
+					Nintendo has not released the exact list and weighting for how found landmarks affect the map completion, but I conducted extensive research to bring you the closest estimate possible.
+					<br><br>
+					This app’s calculation includes all landmarks which affect the percent calculation AND the different weights of locations whose names move on the map when scrolling in and out. This estimation is among the closest you will find on the internet.
 				</div>
 			</div>
 
@@ -2192,10 +2340,53 @@
         "Main Quest": "#fec043",
         "default": "#facc15"
     };
+
+    // ----------------------- SHARED LANDMARK HELPERS -----------------------
+    // Small lookups reused throughout the file instead of being re-derived inline.
+
+    // Stable per-landmark identifier used as its localStorage/progress key.
+    function getLandmarkId(lm) {
+        return `${lm.landmark}_${lm.x}_${lm.y}`;
+    }
+
+    // Collapses shop/location/korok sub-types down to their filter/display category.
+    function getFilterKey(lm) {
+        return FILTER_ALIASES[lm.landmark] || lm.landmark;
+    }
+
+    // Converts a landmark type name to its icon file's base name (e.g. "Cherry Tree" -> "cherry-tree").
+    function typeToIconFile(type) {
+        return type.toLowerCase().replace(/\s+/g, '-');
+    }
+
+    // Looks up a type's marker/UI color, falling back to the default palette color.
+    function getTypeColor(type) {
+        return landmarkColors[type] || landmarkColors["default"];
+    }
+
+    // True if a landmark belongs to the region/layer currently being viewed,
+    // regardless of whether its type is toggled on in the filter menu.
+    function isInCurrentRegionLayer(lm) {
+        if (!currentRegion) return false;
+        return getRegions(lm.region).includes(currentRegion.id) &&
+               getLevels(lm.level).includes(currentLayer);
+    }
+
+    // True if a landmark is actually shown on the map right now: right region/layer,
+    // and its type is currently switched on in the filter menu.
+    function isVisibleOnMap(lm) {
+        return isInCurrentRegionLayer(lm) &&
+               activeFiltersByLayer[currentLayer].includes(getFilterKey(lm));
+    }
+
+    // All landmarks currently shown on the map (region + layer + active filters).
+    function getVisibleMapLandmarks() {
+        return landmarks.filter(isVisibleOnMap);
+    }
     
     iconTypes.forEach(type => {
         const img = new Image();
-        const fileName = type.toLowerCase().replace(/\s+/g, '-'); 
+        const fileName = typeToIconFile(type); 
         img.src = `icons/${fileName}.png`;
         icons[type] = img;
     });
@@ -2219,39 +2410,27 @@
     let hideFoundInList = localStorage.getItem("hideFoundInList") === "true";
 
     // --- FILTERING STATE ---
-	const FILTER_CONFIG = {
-        surface: {
-            options: { "Tower": "Towers", "Shrine": "Shrines", "Temple": "Temples", 
-           		"Cave": "Caves", "Well": "Wells", "Chasm": "Chasms", "Village": "Villages", 
-            	"Stable": "Stables", "Dispenser": "Dispensers", "Forge & Refinery": "Forges & Refineries",
-            	"Shop": "Shops", "Inn": "Inns", "Dragon Tear": "Dragon Tears", "Hudson Sign": "Hudson Signs",
-            	"Schematic": "Schematics", "Cherry Tree": "Cherry Trees", "Goddess Statue": "Goddess Statues",
-            	"Bargainer Statue": "Bargainer Statues", "Great Fairy": "Great Fairies",
-            	"Location": "Locations", "Korok Seed": "Korok Seeds", "Talus": "Talus",
-            	"Hinox": "Hinoxes", "Frox": "Froxes", "Gleeok": "Gleeoks", "Molduga": "Moldugas",
-            	"Lynel": "Lynels", "Side Quest": "Side Quests", "Main Quest": "Main Quests",
-            	"Side Adventure": "Side Adventures", "Shrine Quest": "Shrine Quests" },
-            defaults: ["Tower", "Shrine", "Village", "Cave", "Chasm"]
-        },
-        sky: {
-            options: { "Shrine": "Shrines", "Temple": "Temples", "Dispenser": "Dispensers", 
-            	"Old Map": "Old Maps", "Cave": "Caves", "Forge & Refinery": "Forges & Refineries", 
-            	"Ancient Tablet": "Ancient Tablets", "Goddess Statue": "Goddess Statues", 
-            	"Bargainer Statue": "Bargainer Statues", "Sage's Will": "Sage's Wills", 
-            	"Location": "Locations", "Korok Seed": "Korok Seeds", "Flux Construct": "Flux Constructs",
-            	"Gleeok": "Gleeoks", "Main Quest": "Main Quests", "Side Adventure": "Side Adventures",
-            	"Shrine Quest": "Shrine Quests" },
-            defaults: ["Shrine", "Dispenser"]
-        },
-        depths: {
-            options: { "Lightroot": "Lightroots", "Temple": "Temples", "Dispenser": "Dispensers", 
-            	"Treasure": "Treasure", "Schematic": "Schematics", "Chasm": "Chasms", 
-            	"Forge & Refinery": "Forges & Refineries", "Statue": "Statues", "Location": "Locations", 
-            	"Talus": "Talus", "Flux Construct": "Flux Constructs", "Hinox": "Hinoxes",
-            	"Frox": "Froxes", "Lynel": "Lynels", "Side Quest": "Side Quests",
-            	"Side Adventure": "Side Adventures" },
-            defaults: ["Lightroot", "Forge Construct", "Chasm"]
-        }
+	// Which landmark types can appear on each layer, and which are on by default.
+	// Display labels (singular -> plural) live in one place: LANDMARK_PLURALS, defined below.
+	const LAYER_TYPES = {
+        surface: ["Tower", "Shrine", "Temple", "Cave", "Well", "Chasm", "Village",
+        	"Stable", "Dispenser", "Forge & Refinery", "Shop", "Inn", "Dragon Tear", "Hudson Sign",
+        	"Schematic", "Cherry Tree", "Goddess Statue", "Bargainer Statue", "Great Fairy",
+        	"Location", "Korok Seed", "Talus", "Hinox", "Frox", "Gleeok", "Molduga",
+        	"Lynel", "Side Quest", "Main Quest", "Side Adventure", "Shrine Quest"],
+        sky: ["Shrine", "Temple", "Dispenser", "Old Map", "Cave", "Forge & Refinery",
+        	"Ancient Tablet", "Goddess Statue", "Bargainer Statue", "Sage's Will",
+        	"Location", "Korok Seed", "Flux Construct", "Gleeok", "Main Quest", "Side Adventure",
+        	"Shrine Quest"],
+        depths: ["Lightroot", "Temple", "Dispenser", "Treasure", "Schematic", "Chasm",
+        	"Forge & Refinery", "Statue", "Location", "Talus", "Flux Construct", "Hinox",
+        	"Frox", "Lynel", "Gleeok", "Side Quest", "Side Adventure"]
+    };
+
+    const LAYER_DEFAULTS = {
+        surface: ["Tower", "Shrine", "Village", "Cave", "Chasm"],
+        sky: ["Shrine", "Dispenser"],
+        depths: ["Lightroot", "Forge & Refinery", "Chasm"]
     };
     
     const FILTER_CATEGORIES = [
@@ -2296,7 +2475,10 @@
     ];
     
     let dashInterval, loaderInterval;
-    const loaderPlurals = {
+
+    // Single source of truth for singular -> plural display labels, used by the
+    // loader cycle animation, the filter menu, and the progress table.
+    const LANDMARK_PLURALS = {
         "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Bargainer Statue": "Bargainer Statues",
         "Cherry Tree": "Cherry Trees", "Dispenser": "Dispensers", "Goddess Statue": "Goddess Statues", 
         "Hudson Sign": "Hudson Signs", "Old Map": "Old Maps", "Dragon Tear": "Dragon Tears",
@@ -2307,12 +2489,22 @@
         "Location": "Locations", "Korok Seed": "Korok Seeds", "Talus": "Talus",
         "Flux Construct": "Flux Constructs", "Hinox": "Hinoxes", "Frox": "Froxes", 
         "Gleeok": "Gleeoks", "Molduga": "Moldugas", "Lynel": "Lynels", "Main Quest": "Main Quests", 
-        "Side Quest": "Side Quests", "Side Adventure": "Side Adventures", "Shrine Quest": "Shrine Quests"
+        "Side Quest": "Side Quests", "Side Adventure": "Side Adventures", "Shrine Quest": "Shrine Quests",
+        "Statue": "Statues"
     };
     
-    const cycleLandmarks = Object.keys(loaderPlurals);
+    // "Statue" has no standalone icon asset (only "Goddess Statue" / "Bargainer Statue" do),
+    // so it's excluded from the loader's icon-cycling animation.
+    const cycleLandmarks = Object.keys(LANDMARK_PLURALS).filter(type => type !== "Statue");
     let lastLandmarkType = null;
 	const PROGRESS_STORAGE_KEY = "totk_companion_progress";
+
+	// App information to update
+	const APP_VERSION = "1.0.0";
+	const APP_RELEASE_DATE = "September 12, 2026";
+	const APP_VERSION_NOTES = [
+		"First build of TOTK Region Companion released to the public."
+	];
 
 	function loadProgress() {
 		const storedData = localStorage.getItem(PROGRESS_STORAGE_KEY);
@@ -2353,7 +2545,7 @@
 	
 			totalWeight += weight;
 	
-			const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+			const lmId = getLandmarkId(lm);
 	
 			if (progressData[lmId]) {
 				foundWeight += weight;
@@ -2488,7 +2680,7 @@
     function buildLandmarkCardHTML(landmark) {
 		const lmColor = landmarkColors[landmark.landmark] || landmarkColors["default"];
 		const fileName = landmark.landmark.toLowerCase().replace(/\s+/g, '-');
-		const lmId = `${landmark.landmark}_${landmark.x}_${landmark.y}`;
+		const lmId = getLandmarkId(landmark);
 		
 		const progressData = loadProgress();
 		const isFound = progressData[lmId] || false;
@@ -2498,7 +2690,7 @@
 		if (landmark.details) {
 	
 			if (
-				["Dispenser", "Armor Shop", "General Shop"]
+				["Dispenser", "Armor Shop", "General Shop", "Other Shop"]
 					.includes(landmark.landmark)
 			) {
 	
@@ -2507,8 +2699,7 @@
 				if (landmark.landmark === "Dispenser") {
 					folder = "zonai";
 				} else if (
-					landmark.landmark === "Armor Shop" ||
-					landmark.landmark === "General Shop"
+					landmark.landmark === "Armor Shop"
 				) {
 					folder = "armor";
 				}
@@ -2623,7 +2814,7 @@
 				<div class="landmark-found-row">
 	
 					<span class="landmark-found-label">
-						Found?
+						${["Main Quest", "Side Quest", "Shrine Quest", "Side Adventure"].includes(landmark.landmark) ? "Completed?" : "Found?"}
 					</span>
 	
 					<label class="switch" style="margin-left:0;">
@@ -2651,7 +2842,7 @@
 		if (!checkbox) return;
 	
 		const lmId =
-			`${landmark.landmark}_${landmark.x}_${landmark.y}`;
+			getLandmarkId(landmark);
 	
 		checkbox.addEventListener('change', () => {
 			handleLandmarkToggle(lmId, checkbox);
@@ -2667,20 +2858,10 @@
 				.toLowerCase()
 				.trim();
 	
-		return landmarks.filter(lm => {
-	
-			const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
-			const regionMatch = getRegions(lm.region).includes(currentRegion.id);
-			const layerMatch = getLevels(lm.level).includes(currentLayer);
-			const filterMatch = activeFiltersByLayer[currentLayer].includes(filterKey);
-			const searchMatch = !searchTerm || lm.name.toLowerCase().includes(searchTerm) || lm.type.toLowerCase().includes(searchTerm);
-	
-			return (
-				regionMatch &&
-				layerMatch &&
-				filterMatch &&
-				searchMatch
-			);
+		return getVisibleMapLandmarks().filter(lm => {
+			return !searchTerm ||
+				lm.name.toLowerCase().includes(searchTerm) ||
+				lm.type.toLowerCase().includes(searchTerm);
 		});
 	}
 	
@@ -2732,7 +2913,7 @@
 					return false;
 			
 				if (hideFoundInList) {
-					const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+					const lmId = getLandmarkId(lm);
 					if (progressData[lmId]) return false;
 				}
 			
@@ -2764,7 +2945,7 @@
 					const lmColor = landmarkColors[lm.landmark] || landmarkColors["default"];
 					
 					wrapper.style.setProperty('--landmark-color', lmColor);
-					wrapper.dataset.landmarkId = `${lm.landmark}_${lm.x}_${lm.y}`;
+					wrapper.dataset.landmarkId = getLandmarkId(lm);
 					wrapper.innerHTML = buildLandmarkCardHTML(lm);
 					
 					attachLandmarkToggle(wrapper, lm);
@@ -3366,6 +3547,118 @@
 		renderLandmarkProgressTable();
 	}
 
+	function showConfirmDialog(message, onConfirm) {
+		const overlay = document.createElement('div');
+		overlay.className = 'confirm-overlay';
+
+		const dialog = document.createElement('div');
+		dialog.className = 'confirm-dialog';
+
+		const messageEl = document.createElement('div');
+		messageEl.className = 'confirm-dialog-message';
+		messageEl.textContent = message;
+
+		const buttonsEl = document.createElement('div');
+		buttonsEl.className = 'confirm-dialog-buttons';
+
+		const cancelBtn = document.createElement('button');
+		cancelBtn.className = 'confirm-btn-cancel';
+		cancelBtn.textContent = 'Cancel';
+		cancelBtn.onclick = () => overlay.remove();
+
+		const confirmBtn = document.createElement('button');
+		confirmBtn.className = 'confirm-btn-danger';
+		confirmBtn.textContent = 'Confirm';
+		confirmBtn.onclick = () => {
+			overlay.remove();
+			onConfirm();
+		};
+
+		buttonsEl.appendChild(cancelBtn);
+		buttonsEl.appendChild(confirmBtn);
+		dialog.appendChild(messageEl);
+		dialog.appendChild(buttonsEl);
+		overlay.appendChild(dialog);
+
+		overlay.addEventListener('click', (e) => {
+			if (e.target === overlay) overlay.remove();
+		});
+
+		document.body.appendChild(overlay);
+	}
+
+	function showVersionsCreditsDialog() {
+		const overlay = document.createElement('div');
+		overlay.className = 'confirm-overlay';
+
+		const dialog = document.createElement('div');
+		dialog.className = 'info-dialog';
+
+		const notesHtml = APP_VERSION_NOTES.map(note => `<li>${note}</li>`).join('');
+
+		dialog.innerHTML = `
+			<h2 class="info-dialog-title">Version</h2>
+			<p>Version: <strong>${APP_VERSION}</strong></p>
+			<p>Released: <strong>${APP_RELEASE_DATE}</strong></p>
+			<p>Notes:</p>
+			<ul>${notesHtml}</ul>
+			<hr>
+			<h2 class="info-dialog-title">Credits</h2>
+			<p style="text-align: center;">
+				Made by <strong>Aaron Kugler</strong><a href="mailto:kugs@live.com" style="display: inline-block;"><img src="icons/email.png" alt="Email" width="20" height="20" style="vertical-align: middle;"></a>
+				<span class="info-dialog-role-line">Creative Director &middot; Data Wrangler &middot; UI/UX Designer &middot; Icon Designer</span><br>
+				Secondary Engineering Team
+				<span class="info-dialog-role-line">Google <strong>Gemini</strong>, <strong>ChatGPT</strong> by OpenAI, and <strong>Claude</strong> by Anthropic.<br>Free consumer tiers used during development.</span><br>
+				<span class="info-dialog-role-line">The Legend of Zelda: Tears of the Kingdom &copy; 2023 <strong>Nintendo</strong>. Nintendo and The Legend of Zelda are trademarks of Nintendo. This unofficial companion app is not affiliated with or endorsed by Nintendo.</span><br>
+				<span class="info-dialog-role-line">All game-related names, characters, artwork, screenshots, and other content are the property of Nintendo. Used for identification and informational purposes only.</span><br>
+				<span class="info-dialog-role-line">Hylia Serif font by <strong>Omni Jacala</strong>, used under the author's stated terms.</span>
+			</p>
+			
+		`;
+
+		const buttonsEl = document.createElement('div');
+		buttonsEl.className = 'confirm-dialog-buttons';
+
+		const closeBtn = document.createElement('button');
+		closeBtn.className = 'confirm-btn-cancel';
+		closeBtn.textContent = 'Close';
+		closeBtn.onclick = () => overlay.remove();
+
+		buttonsEl.appendChild(closeBtn);
+		dialog.appendChild(buttonsEl);
+		overlay.appendChild(dialog);
+
+		overlay.addEventListener('click', (e) => {
+			if (e.target === overlay) overlay.remove();
+		});
+
+		document.body.appendChild(overlay);
+	}
+
+	function confirmClearAllProgress() {
+		showConfirmDialog(
+			'This will clear all "found" landmarks and all armory progress. This cannot be undone. Are you sure?',
+			clearAllProgress
+		);
+	}
+
+	function clearAllProgress() {
+		localStorage.removeItem(PROGRESS_STORAGE_KEY);
+		localStorage.removeItem(ARMOR_STORAGE_KEY);
+
+		buildProgressView();
+		updateTotalCompletion();
+		renderArmoryList();
+
+		if (viewMode === 'map') {
+			redraw();
+			renderLandmarkList();
+			if (document.getElementById('progressMenu').style.display === 'flex') {
+				buildProgressMenu();
+			}
+		}
+	}
+
 	function buildRegionProgressRows(gameTotalWeight) {
 		const progressData = loadProgress();
 		const rows = [];
@@ -3405,7 +3698,7 @@
 
 					regionLayerTotal += weight;
 
-					const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+					const lmId = getLandmarkId(lm);
 					if (progressData[lmId]) {
 						regionLayerFound += weight;
 					}
@@ -3495,7 +3788,7 @@
 
 		const progressData = loadProgress();
 		const totalLandmarks = landmarks.length;
-		const foundLandmarks = landmarks.filter(lm => progressData[`${lm.landmark}_${lm.x}_${lm.y}`]).length;
+		const foundLandmarks = landmarks.filter(lm => progressData[getLandmarkId(lm)]).length;
 
 		const categories = buildLandmarkProgressCategories();
 
@@ -3505,20 +3798,20 @@
 
 			const typeRows = category.items.map(type => {
 				const typeLandmarks = landmarks.filter(lm =>
-					(FILTER_ALIASES[lm.landmark] || lm.landmark) === type
+					getFilterKey(lm) === type
 				);
 
 				const total = typeLandmarks.length;
 				if (total === 0) return null;
 
 				const found = typeLandmarks.filter(lm =>
-					progressData[`${lm.landmark}_${lm.x}_${lm.y}`]
+					progressData[getLandmarkId(lm)]
 				).length;
 
 				const percent = (found / total) * 100;
-				const color = landmarkColors[type] || landmarkColors["default"];
-				const fileName = type.toLowerCase().replace(/\s+/g, '-');
-				const label = loaderPlurals[type] || type;
+				const color = getTypeColor(type);
+				const fileName = typeToIconFile(type);
+				const label = LANDMARK_PLURALS[type] || type;
 
 				return { total, found, percent, color, fileName, label };
 			}).filter(Boolean);
@@ -3621,11 +3914,18 @@
             offsetY = startY + (targetOffsetY - startY) * ease;
 
             keepInBounds();
-            redraw();
 
+            // Mark the animation as finished BEFORE the final redraw,
+            // so anything that checks "is a pan still in flight" (like
+            // the korok coordlabel positioning) sees the correct state
+            // in time for the frame where the map actually lands.
             if (progress < 1) {
 				panAnimId = requestAnimationFrame(step);
+			} else {
+				panAnimId = null;
 			}
+
+            redraw();
         }
         panAnimId = requestAnimationFrame(step);
     }
@@ -3705,11 +4005,27 @@
 		
 			const groupCenterX = (minRectX + maxRectX) / 2;
 		
-			if (mobileKorokLabelOffsetX === null) {
-				mobileKorokLabelOffsetX = (window.innerWidth / 2) - groupCenterX;
+			// While the auto pan/zoom animation is still moving the map
+			// (panAnimId !== null), we don't know where the group will
+			// actually end up on screen yet - so render with a temporary
+			// offset of 0 (i.e. assume it'll land centered) instead of
+			// locking in an offset based on the pre-pan position. Only
+			// once the pan has actually settled do we capture the real
+			// offset, which is then held fixed so the label keeps
+			// tracking the group correctly if the user manually pans
+			// the map afterward.
+			let effectiveOffsetX = mobileKorokLabelOffsetX;
+		
+			if (effectiveOffsetX === null) {
+				effectiveOffsetX = 0;
+		
+				if (panAnimId === null) {
+					mobileKorokLabelOffsetX = (window.innerWidth / 2) - groupCenterX;
+					effectiveOffsetX = mobileKorokLabelOffsetX;
+				}
 			}
 		
-			const labelCenterX = groupCenterX + mobileKorokLabelOffsetX;
+			const labelCenterX = groupCenterX + effectiveOffsetX;
 			const labelLeft = labelCenterX - (labelWidth / 2);
 			const labelTop = maxRectY + labelGap;
 		
@@ -3829,15 +4145,7 @@
         }
         
         // --- DRAW LANDMARKS ---
-        const visibleLandmarks = landmarks.filter(lm => {
-			const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
-			
-			const regionMatch = getRegions(lm.region).includes(currentRegion.id);
-			const filterMatch = activeFiltersByLayer[currentLayer].includes(filterKey);
-			const layerMatch = getLevels(lm.level).includes(currentLayer);			
-
-			return regionMatch && layerMatch && filterMatch;
-		});
+        const visibleLandmarks = getVisibleMapLandmarks();
         
         for (let lm of visibleLandmarks) {
             const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
@@ -3848,7 +4156,7 @@
             
             const icon = icons[lm.landmark];
 
-            const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+            const lmId = getLandmarkId(lm);
             const isFound = progressData[lmId] || false;
             
             ctx.shadowColor = 'rgba(0, 0, 0, 1)';
@@ -4252,11 +4560,11 @@
         // Update the tracker
         lastLandmarkType = type;
         // const type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
-        const color = landmarkColors[type] || landmarkColors["default"];
+        const color = getTypeColor(type);
         
-        const displayName = usePlural ? loaderPlurals[type] : type;
+        const displayName = usePlural ? LANDMARK_PLURALS[type] : type;
         
-        const fileName = type.toLowerCase().replace(/\s+/g, '-');
+        const fileName = typeToIconFile(type);
         const formattedName = displayName.replace(' ', '<br>');
 
         const div = document.createElement('div');
@@ -4598,7 +4906,7 @@
 				currentLayer = levels[0];
 			}
 		
-			const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
+			const filterKey = getFilterKey(lm);
 		
 			if (!activeFiltersByLayer[currentLayer].includes(filterKey)) {
 				activeFiltersByLayer[currentLayer].push(filterKey);
@@ -4628,7 +4936,7 @@
 		
 				for (const card of cards) {
 					if (card.dataset.landmarkId ===
-						`${lm.landmark}_${lm.x}_${lm.y}`) {
+						getLandmarkId(lm)) {
 		
 						card.scrollIntoView({
 							behavior: 'smooth',
@@ -4706,7 +5014,7 @@
 	}
 	
 	function executeZoomAndPan(lm) {
-		const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
+		const filterKey = getFilterKey(lm);
     
 		if (!activeFiltersByLayer[currentLayer].includes(filterKey)) {
 			activeFiltersByLayer[currentLayer].push(filterKey);
@@ -4783,9 +5091,9 @@
     // ----------------------- FILTER MENU LOGIC -----------------------
 
     let activeFiltersByLayer = {
-        surface: [...FILTER_CONFIG.surface.defaults],
-        sky: [...FILTER_CONFIG.sky.defaults],
-        depths: [...FILTER_CONFIG.depths.defaults]
+        surface: [...LAYER_DEFAULTS.surface],
+        sky: [...LAYER_DEFAULTS.sky],
+        depths: [...LAYER_DEFAULTS.depths]
     };
 
     function toggleFilterMenu() {
@@ -4806,7 +5114,7 @@
 	function buildFilterMenu() {
         const menu = document.getElementById('filterMenu');
         menu.innerHTML = '';
-        const config = FILTER_CONFIG[currentLayer];
+        const allowedTypes = LAYER_TYPES[currentLayer];
         let layerFilters = activeFiltersByLayer[currentLayer]; 
         
         // --- 1. Master Show All / Hide All Row ---
@@ -4817,7 +5125,7 @@
         showAllBtn.className = 'filter-master-btn show-all';
         showAllBtn.innerText = 'SHOW ALL';
         showAllBtn.onclick = () => {
-            activeFiltersByLayer[currentLayer] = Object.keys(config.options);
+            activeFiltersByLayer[currentLayer] = [...allowedTypes];
             menu.querySelectorAll('.switch input').forEach(cb => cb.checked = true);
             refreshCurrentView();
         };
@@ -4838,7 +5146,7 @@
         // --- 2. Build Category Hierarchies ---
         FILTER_CATEGORIES.forEach(category => {
             // Find items in this category that are available on the current layer
-            const availableItems = category.items.filter(item => config.options[item]);
+            const availableItems = category.items.filter(item => allowedTypes.includes(item));
 
             if (availableItems.length === 0) return; // Skip if layer has none of these
 
@@ -4897,13 +5205,13 @@
             contentDiv.className = 'filter-category-content';
 
             availableItems.forEach((type, index) => {
-                const labelText = config.options[type];
+                const labelText = LANDMARK_PLURALS[type] || type;
                 const label = document.createElement('label');
                 label.className = 'filter-label animated-item';
                 label.style.animationDelay = `${index * 0.03}s`; // Sped up the stagger slightly
                 
                 const iconImg = document.createElement('img');
-                const fileName = type.toLowerCase().replace(/\s+/g, '-');
+                const fileName = typeToIconFile(type);
                 iconImg.src = `icons/${fileName}.png`;
                 iconImg.className = 'filter-icon';
                 
@@ -4976,10 +5284,7 @@
 		const progressData = loadProgress();
 		
 		// Filter landmarks for the exact region and layer currently being viewed
-		const localLandmarks = landmarks.filter(lm => 
-			getRegions(lm.region).includes(currentRegion.id) &&
-			getLevels(lm.level).includes(currentLayer)
-		);
+		const localLandmarks = landmarks.filter(isInCurrentRegionLayer);
 		
 		if (localLandmarks.length === 0) {
 			menu.innerHTML = '<div style="color: #94a3b8; text-align: center; font-size: 0.9rem; padding: 10px;">No landmarks in this area.</div>';
@@ -4992,13 +5297,13 @@
 		let overallFound = 0;
 	
 		localLandmarks.forEach(lm => {
-			const type = FILTER_ALIASES[lm.landmark] || lm.landmark;
+			const type = getFilterKey(lm);
 			if (!stats[type]) stats[type] = { total: 0, found: 0 };
 			
 			stats[type].total++;
 			overallTotal++;
 			
-			const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+			const lmId = getLandmarkId(lm);
 			if (progressData[lmId]) {
 				stats[type].found++;
 				overallFound++;
@@ -5035,7 +5340,41 @@
 		separator.style.margin = '6px 0 2px 0';
 		menu.appendChild(separator);
 		
-		// --- 2. BUILD CATEGORY HIERARCHY ---
+		// --- 2. MASTER FIND ALL / UNFIND ALL ROW ---
+		const progressMasterRow = document.createElement('div');
+		progressMasterRow.className = 'filter-master-row';
+
+		const findAllBtn = document.createElement('span');
+		findAllBtn.className = 'filter-master-btn show-all';
+		findAllBtn.innerText = '✓ Find All';
+		findAllBtn.onclick = () => {
+			localLandmarks.forEach(lm => {
+				const lmId = getLandmarkId(lm);
+				saveProgress(lmId, true);
+			});
+			updateTotalCompletion();
+			redraw();
+			buildProgressMenu();
+		};
+
+		const unfindAllBtn = document.createElement('span');
+		unfindAllBtn.className = 'filter-master-btn hide-all';
+		unfindAllBtn.innerText = '✗ Unfind All';
+		unfindAllBtn.onclick = () => {
+			localLandmarks.forEach(lm => {
+				const lmId = getLandmarkId(lm);
+				saveProgress(lmId, false);
+			});
+			updateTotalCompletion();
+			redraw();
+			buildProgressMenu();
+		};
+
+		progressMasterRow.appendChild(findAllBtn);
+		progressMasterRow.appendChild(unfindAllBtn);
+		menu.appendChild(progressMasterRow);
+		
+		// --- 3. BUILD CATEGORY HIERARCHY ---
 		FILTER_CATEGORIES.forEach(category => {
 			// Find which items in this category actually exist in the current region/layer
 			const categoryItems = category.items.filter(item => stats[item]);
@@ -5075,8 +5414,8 @@
 					const isComplete = stat.found === stat.total;
 					const initialIcon = isComplete ? '✗' : '✓';
 					
-					const color = landmarkColors[type] || landmarkColors["default"];
-					const fileName = type.toLowerCase().replace(/\s+/g, '-');
+					const color = getTypeColor(type);
+					const fileName = typeToIconFile(type);
 					
 					const textOpacity = percentage > 12 ? '1' : '0';
 					
@@ -5139,14 +5478,12 @@
 	function toggleAllLandmarksOfType(type, markAsFound) {
 		const localLandmarks = landmarks.filter(lm => 
 			// Map the raw landmark name to its alias (if one exists) before comparing
-			(FILTER_ALIASES[lm.landmark] || lm.landmark) === type &&
-			getRegions(lm.region).includes(currentRegion.id) &&
-			getLevels(lm.level).includes(currentLayer)
+			getFilterKey(lm) === type && isInCurrentRegionLayer(lm)
 		);
 	
 		localLandmarks.forEach(lm => {
 			// We still save using the original lm.landmark to maintain consistency in your save data
-			const lmId = `${lm.landmark}_${lm.x}_${lm.y}`;
+			const lmId = getLandmarkId(lm);
 			saveProgress(lmId, markAsFound);
 		});
 		
@@ -5156,6 +5493,14 @@
 	}
 
 	// ----------------------- OTHER EVENT LISTENERS -----------------------
+
+	// The set of open UI panels/menus that should swallow map gestures (pan, zoom, click)
+	// so interacting with them doesn't also drag/zoom/click the map underneath.
+	const CORE_PANEL_SELECTORS = ['#regionMenu', '#autocompleteResults', '#filterMenu', '#layerMenu', '#progressMenu'];
+
+	function isInsideUIPanel(target, extraSelectors = []) {
+		return CORE_PANEL_SELECTORS.concat(extraSelectors).some(sel => target.closest(sel));
+	}
 	
 	const video = document.getElementById('bgVideo');
 	const loader = document.getElementById('loader');
@@ -5179,7 +5524,7 @@
     	if (viewMode === 'list') return;
 		if (!currentRegion) return;
 		
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#progressMenu')) return;
+		if (isInsideUIPanel(e.target)) return;
 		
 		e.preventDefault();
 		zoomAround(e.deltaY < 0 ? 1.15 : 0.85, e.clientX, e.clientY);
@@ -5188,9 +5533,9 @@
     window.addEventListener('pointerdown', (e) => {
     	if (viewMode === 'list') return;
     	
-		if (!currentRegion || e.clientY < 70) return; 
+		if (!currentRegion) return; 
 		
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#progressMenu') || e.target.closest('#coordLabel')) return;
+		if (isInsideUIPanel(e.target, ['#coordLabel', '#layerPanel', '#searchPanel', '#filterPanel'])) return;
 	
 		isDragging = true;
 		cancelAnimationFrame(panAnimId);
@@ -5214,9 +5559,7 @@
     	if (viewMode === 'list') return;
         if (!currentRegion) return;
 
-        if (e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#regionMenu') || 
-        e.target.closest('#autocompleteResults') || e.target.closest('.ui-panel') || e.target.closest('.btn') || 
-        e.target.closest('.layer-btn') || e.target.closest('#progressMenu') || e.target.closest('#coordLabel')) {
+        if (isInsideUIPanel(e.target, ['.ui-panel', '.btn', '.layer-btn', '#coordLabel'])) {
             isDragging = false;
             return;
         }
@@ -5251,15 +5594,7 @@
 			}
 			
 			let clickedLandmark = null;
-			const visibleLandmarks = landmarks.filter(lm => {
-				const filterKey = FILTER_ALIASES[lm.landmark] || lm.landmark;
-			
-				return (
-					getRegions(lm.region).includes(currentRegion.id) &&
-					getLevels(lm.level).includes(currentLayer) &&
-					activeFiltersByLayer[currentLayer].includes(filterKey)
-				);
-			});
+			const visibleLandmarks = getVisibleMapLandmarks();
 
             for (let lm of visibleLandmarks) {
                 const lmImgX = (lm.x - currentRegion.gameStartX) * 1.5;
@@ -5289,12 +5624,12 @@
                 
                 // To add back the click to view coordinates functionality, just switch the commented lines below:
                 
-                // markerX = (e.clientX - offsetX) / scale;
-                // markerY = (e.clientY - offsetY) / scale;
-            	markerX = null;
-                markerY = null;
-				mobileKorokLabelOffsetX = null;
-                document.getElementById('coordLabel').style.display = 'none';
+                markerX = (e.clientX - offsetX) / scale;
+                markerY = (e.clientY - offsetY) / scale;
+            	// markerX = null;
+                // markerY = null;
+				// mobileKorokLabelOffsetX = null;
+                // document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
         }
@@ -5321,7 +5656,7 @@
     window.addEventListener('touchmove', (e) => {
 		if (!currentRegion) return;
 		
-		if (e.target.closest('#regionMenu') || e.target.closest('#autocompleteResults') || e.target.closest('#filterMenu') || e.target.closest('#layerMenu') || e.target.closest('#progressMenu')) return;
+		if (isInsideUIPanel(e.target)) return;
 	
 		if (e.touches.length === 2) {
 			e.preventDefault();
@@ -5347,13 +5682,7 @@
 
         if(viewMode !== "list") return;
 
-        if(
-            e.target.closest("#regionMenu") ||
-            e.target.closest("#autocompleteResults") ||
-            e.target.closest("#filterMenu") ||
-            e.target.closest("#layerMenu") ||
-            e.target.closest("#progressMenu")
-        ){
+        if (isInsideUIPanel(e.target)) {
             return;
         }
 
