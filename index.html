@@ -98,7 +98,7 @@
 		}
 		.dashboard-footer {
 			position: absolute;
-			bottom: 15px;
+			bottom: calc(15px + env(safe-area-inset-bottom));
 			transform: translateX(-50%);
 			font-size: 0.9rem;
 			color: #FAF7DF;
@@ -1984,7 +1984,7 @@
 			</div>
 		</div>
 		<div class="dashboard-footer staggered-item" style="--delay: 6;">
-			<button type="button" class="footer-link-btn" onclick="showVersionsCreditsDialog()">Versions &amp; Credits</button>
+			<span>View </span><button type="button" class="footer-link-btn" onclick="showVersionsCreditsDialog()">Versions &amp; Credits</button>
 		</div>
 	</div>
 	
@@ -2269,7 +2269,6 @@
     let activeImage = new Image();
     let viewMode = 'map';
     
-    // Landmark Icons Dictionary
     const FILTER_ALIASES = {
 		"Armor Shop": "Shop",
 		"General Shop": "Shop",
@@ -2342,44 +2341,33 @@
     };
 
     // ----------------------- SHARED LANDMARK HELPERS -----------------------
-    // Small lookups reused throughout the file instead of being re-derived inline.
-
-    // Stable per-landmark identifier used as its localStorage/progress key.
     function getLandmarkId(lm) {
         return `${lm.landmark}_${lm.x}_${lm.y}`;
     }
 
-    // Collapses shop/location/korok sub-types down to their filter/display category.
     function getFilterKey(lm) {
         return FILTER_ALIASES[lm.landmark] || lm.landmark;
     }
 
-    // Converts a landmark type name to its icon file's base name (e.g. "Cherry Tree" -> "cherry-tree").
     function typeToIconFile(type) {
         return type.toLowerCase().replace(/\s+/g, '-');
     }
 
-    // Looks up a type's marker/UI color, falling back to the default palette color.
     function getTypeColor(type) {
         return landmarkColors[type] || landmarkColors["default"];
     }
 
-    // True if a landmark belongs to the region/layer currently being viewed,
-    // regardless of whether its type is toggled on in the filter menu.
     function isInCurrentRegionLayer(lm) {
         if (!currentRegion) return false;
         return getRegions(lm.region).includes(currentRegion.id) &&
                getLevels(lm.level).includes(currentLayer);
     }
 
-    // True if a landmark is actually shown on the map right now: right region/layer,
-    // and its type is currently switched on in the filter menu.
     function isVisibleOnMap(lm) {
         return isInCurrentRegionLayer(lm) &&
                activeFiltersByLayer[currentLayer].includes(getFilterKey(lm));
     }
 
-    // All landmarks currently shown on the map (region + layer + active filters).
     function getVisibleMapLandmarks() {
         return landmarks.filter(isVisibleOnMap);
     }
@@ -2410,8 +2398,6 @@
     let hideFoundInList = localStorage.getItem("hideFoundInList") === "true";
 
     // --- FILTERING STATE ---
-	// Which landmark types can appear on each layer, and which are on by default.
-	// Display labels (singular -> plural) live in one place: LANDMARK_PLURALS, defined below.
 	const LAYER_TYPES = {
         surface: ["Tower", "Shrine", "Temple", "Cave", "Well", "Chasm", "Village",
         	"Stable", "Dispenser", "Forge & Refinery", "Shop", "Inn", "Dragon Tear", "Hudson Sign",
@@ -2476,8 +2462,6 @@
     
     let dashInterval, loaderInterval;
 
-    // Single source of truth for singular -> plural display labels, used by the
-    // loader cycle animation, the filter menu, and the progress table.
     const LANDMARK_PLURALS = {
         "Tower": "Towers", "Shrine": "Shrines", "Cave": "Caves", "Bargainer Statue": "Bargainer Statues",
         "Cherry Tree": "Cherry Trees", "Dispenser": "Dispensers", "Goddess Statue": "Goddess Statues", 
@@ -2493,13 +2477,10 @@
         "Statue": "Statues"
     };
     
-    // "Statue" has no standalone icon asset (only "Goddess Statue" / "Bargainer Statue" do),
-    // so it's excluded from the loader's icon-cycling animation.
     const cycleLandmarks = Object.keys(LANDMARK_PLURALS).filter(type => type !== "Statue");
     let lastLandmarkType = null;
 	const PROGRESS_STORAGE_KEY = "totk_companion_progress";
 
-	// App information to update
 	const APP_VERSION = "1.0.0";
 	const APP_RELEASE_DATE = "September 12, 2026";
 	const APP_VERSION_NOTES = [
@@ -2574,13 +2555,11 @@
         
         container.innerHTML = '';
 
-        // Pass the flag down to the item creator
         let currentCycleItem = createCycleItem(usePlural);
         currentCycleItem.style.transform = 'translate(0%, 0%)';
         container.appendChild(currentCycleItem);
 
         return setInterval(() => {
-            // Pass the flag here as well
             const nextItem = createCycleItem(usePlural);
             
             const dir = Math.floor(Math.random() * 4);
@@ -2610,14 +2589,8 @@
     }
 
 	function resetAllActivePanels(exemptMenuName) {
-		const itemsToReset = [
-			'layerMenu',
-			'filterMenu',
-			'regionMenu',
-			'autocompleteResults',
-			'progressMenu',
-			'regionTitleMenu'
-		];
+		const itemsToReset = ['layerMenu','filterMenu','regionMenu','autocompleteResults',
+			'progressMenu','regionTitleMenu'];
 	
 		// Hide all menus except the exempt one
 		for (const id of itemsToReset) {
@@ -2627,13 +2600,7 @@
 			}
 		}
 	
-		// Remove active-panel classes everywhere except exempt
-		const activeIds = [
-			'layerBtn',
-			'filterBtn',
-			'regionTitlePanel',
-			'progressBtn'
-		];
+		const activeIds = ['layerBtn','filterBtn','regionTitlePanel','progressBtn'];
 	
 		for (const id of activeIds) {
 			const el = document.getElementById(id);
@@ -2641,11 +2608,9 @@
 			if (id !== exemptMenuName) el.classList.remove('active-panel');
 		}
 	
-		// Reset coord label
 		const coordEl = document.getElementById('coordLabel');
 		if (coordEl) coordEl.style.display = 'none';
 	
-		// Clear selection/marker state
 		selectedLandmark = null;
 		markerX = null;
 		markerY = null;
@@ -2713,39 +2678,17 @@
 						item.toLowerCase().replace(/\s+/g, '-');
 	
 					return `
-						<div
-							style="
-								width: 40px;
-								height: 40px;
-								display: flex;
-								align-items: center;
-								justify-content: center;
-							"
-							title="${item}"
-						>
-							<img
-								src="images/${folder}/${itemFileName}.png"
-								alt="${item}"
-								style="
-									max-width: 100%;
-									max-height: 100%;
-									object-fit: contain;
-								"
-							>
+						<div style="width: 40px; height: 40px; display: flex;
+								align-items: center; justify-content: center;" title="${item}">
+							<img src="images/${folder}/${itemFileName}.png" alt="${item}"
+								style="max-width: 100%; max-height: 100%; object-fit: contain;">
 						</div>
 					`;
 				});
 	
 				detailHtml = `
-					<div
-						style="
-							margin-top: 2px;
-							display: flex;
-							flex-wrap: wrap;
-							gap: 8px;
-							align-items: center;
-						"
-					>
+					<div style="margin-top: 2px; display: flex; flex-wrap: wrap;
+							gap: 8px; align-items: center;">
 						${imgTags.join('')}
 					</div>
 				`;
@@ -2753,10 +2696,7 @@
 			} else {
 	
 				detailHtml = `
-					<span
-						class="img-coords"
-						style="margin-top:6px; display:block;"
-					>
+					<span class="img-coords" style="margin-top:6px; display:block;">
 						${landmark.details}
 					</span>
 				`;
@@ -2764,73 +2704,33 @@
 		}
 	
 		return `
-			<div
-				data-landmark-id="${lmId}"
-				style="--landmark-color: ${lmColor};"
-			>
-	
+			<div data-landmark-id="${lmId}" style="--landmark-color: ${lmColor};">
 				<div class="tooltip-header">
-	
-					<img
-						src="icons/${fileName}.png"
-						style="
-							height: 2.8em;
-							width: auto;
-							filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-						"
-					>
-	
+					<img src="icons/${fileName}.png" style="height: 2.8em; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
 					<div>
-	
-						<span
-							class="landmark-title"
-							style="color: ${lmColor};"
-						>
+						<span class="landmark-title" style="color: ${lmColor};">
 							${landmark.name}
 						</span>
-	
-						<span
-							style="
-								color:#94a3b8;
-								font-weight:bold;
-								font-size:0.8rem;
-							"
-						>
+						<span style="color:#94a3b8; font-weight:bold; font-size:0.8rem;">
 							${landmark.type}
 						</span>
-	
 					</div>
-	
 				</div>
-	
 				<span class="game-coords">
-					(${formatCoord(landmark.x)},
-					${formatCoord(landmark.y)},
-					${formatCoord(landmark.z)})
+					(${formatCoord(landmark.x)}, ${formatCoord(landmark.y)}, ${formatCoord(landmark.z)})
 				</span>
 	
 				${detailHtml}
 	
 				<div class="landmark-found-row">
-	
 					<span class="landmark-found-label">
 						${["Main Quest", "Side Quest", "Shrine Quest", "Side Adventure"].includes(landmark.landmark) ? "Completed?" : "Found?"}
 					</span>
-	
 					<label class="switch" style="margin-left:0;">
-	
-						<input
-							type="checkbox"
-							class="landmark-found-checkbox"
-							${isFound ? 'checked' : ''}
-						>
-	
+						<input type="checkbox" class="landmark-found-checkbox" ${isFound ? 'checked' : ''}>
 						<span class="slider"></span>
-	
 					</label>
-	
 				</div>
-	
 			</div>
 		`;
 	}
@@ -2899,7 +2799,6 @@
 			return;
 		}
 	
-		/* Build the exact same hierarchy as the filter menu */
 		FILTER_CATEGORIES.forEach(category => {
 	
 			const progressData = loadProgress();
@@ -2937,7 +2836,6 @@
 			const content = document.createElement('div');
 			content.className = 'list-category-content';
 	
-			/* Keep list order stable and easy to scan */
 			categoryLandmarks.sort((a, b) => a.name.localeCompare(b.name)).forEach(lm => {
 					const wrapper = document.createElement('div');
 	
@@ -3127,16 +3025,12 @@
 		}
 	}
 
-	const ARMOR_ROW_COLORS = [
-		'#86a3e6', '#7cc9c2', '#a784e5', '#de878b',
-		'#a7c96e', '#dd87d3', '#61cc74'
-	];
+	const ARMOR_ROW_COLORS = ['#86a3e6', '#7cc9c2', '#a784e5', '#de878b', '#a7c96e', '#dd87d3', '#61cc74'];
 
 	function deriveSetName(pieces, setBase) {
 		const wordLists = pieces.map(p => p.name.split(' '));
 		const minLen = Math.min(...wordLists.map(w => w.length));
 
-		// Try a common leading phrase first (e.g. "Flamebreaker Helm/Armor/Boots").
 		let prefixWords = [];
 		for (let i = 0; i < minLen; i++) {
 			const w = wordLists[0][i];
@@ -3148,7 +3042,6 @@
 		}
 		if (prefixWords.length) return prefixWords.join(' ') + ' Set';
 
-		// Otherwise try a common trailing phrase (e.g. "Cap/Tunic/Trousers of the Hero").
 		const revLists = wordLists.map(w => w.slice().reverse());
 		let suffixWords = [];
 		for (let i = 0; i < minLen; i++) {
@@ -3166,7 +3059,6 @@
 			return suffixName + ' Set';
 		}
 
-		// Fall back to the shared image filename, capitalized.
 		return setBase.charAt(0).toUpperCase() + setBase.slice(1) + ' Set';
 	}
 
@@ -3193,7 +3085,6 @@
 			const rowColor = ARMOR_ROW_COLORS[setIndex % ARMOR_ROW_COLORS.length];
 
 			if (setPieces.length > 1) {
-				// --- Armor Set: left set-card + right stack of piece cards ---
 				const firstImgBase = setPieces[0].img.replace(/\.png$/, '');
 				const setBaseMatch = firstImgBase.match(/^(.*?)[1-3]$/);
 				const setBase = setBaseMatch ? setBaseMatch[1] : firstImgBase;
@@ -3228,7 +3119,6 @@
 				setsList.appendChild(rowEl);
 
 			} else {
-				// --- Standalone piece: centered, no set-card ---
 				const piece = setPieces[0];
 
 				const card = document.createElement('div');
@@ -3259,8 +3149,6 @@
 		document.getElementById('armoryScroll').scrollTop = 0;
 	}
 
-	// ----------------------- ARMORY COLLAPSIBLE SECTIONS -----------------------
-
 	const ARMORY_COLLAPSE_KEY = 'armoryCollapsedSections';
 
 	function loadArmoryCollapseState() {
@@ -3289,8 +3177,6 @@
 			section.classList.toggle('collapsed', !!state[id]);
 		});
 	}
-
-	// ----------------------- MATERIAL CALCULATOR -----------------------
 
 	const MATERIAL_CALC_LEVELS = [
 		{ value: 'next', label: 'To Next Level' },
@@ -3349,7 +3235,6 @@
 			scrollDebounce = setTimeout(updateSelection, 100);
 		});
 
-		// Select the default item immediately (no animation) on first build.
 		const defaultEl = scrollEl.querySelector(`.wheel-picker-item[data-value="${defaultValue}"]`) || scrollEl.querySelector('.wheel-picker-item');
 		if (defaultEl) {
 			defaultEl.scrollIntoView({ block: 'center' });
@@ -3366,10 +3251,10 @@
 
 	function buildMaterialCalcSetOptions() {
 		const options = [
-			{ value: '__ALL__', label: 'All Upgradeable Pieces' },
+			{ value: '__ALL__', label: 'All Upgradeables' },
 			{ value: '__FOUND__', label: 'Only Found Pieces' },
 			{ value: '__SETS__', label: 'Only Armor Sets' },
-			{ value: '__STANDALONE__', label: 'Only Standalone Pieces' }
+			{ value: '__STANDALONE__', label: 'Only Standalones' }
 		];
 
 		if (typeof ARMOR_SETS === 'undefined') return options;
@@ -3395,9 +3280,6 @@
 	}
 
 	function buildMaterialCalculatorWheels() {
-		// Centering the default item requires the wheels to actually be laid
-		// out. If the section starts collapsed (e.g. restored from a previous
-		// session), briefly un-collapse it just for the build.
 		const section = document.getElementById('matCalcSection');
 		const wasCollapsed = section && section.classList.contains('collapsed');
 		if (wasCollapsed) section.classList.remove('collapsed');
@@ -3410,8 +3292,6 @@
 	}
 
 	function initMaterialCalculator() {
-		// Only build the wheels once so a user's selection survives navigating
-		// away from and back to the Armory view.
 		if (materialCalcInitialized) return;
 		buildMaterialCalculatorWheels();
 		materialCalcInitialized = true;
@@ -3446,7 +3326,6 @@
 			return ARMOR_SETS.filter(setPieces => setPieces.length === 1).flat().filter(p => p.upgradable);
 		}
 
-		// Otherwise scopeValue is the index of a specific set/piece group.
 		const setIndex = parseInt(scopeValue, 10);
 		if (Number.isNaN(setIndex) || !ARMOR_SETS[setIndex]) return [];
 		return ARMOR_SETS[setIndex].filter(p => p.upgradable);
@@ -3493,8 +3372,6 @@
 			return;
 		}
 
-		// Widest "##x" string across the results, so every quantity lines up
-		// in a consistent-width column regardless of how many digits it has.
 		const qtyColWidth = Math.max(...materialNames.map(name => `${totals[name]}x`.length));
 
 		const itemsHTML = materialNames.map(name => {
@@ -3509,7 +3386,6 @@
 
 		resultsEl.innerHTML = `<div class="mat-calc-results-grid">${itemsHTML}</div>`;
 	}
-
 	
 	function refreshCurrentView() {
 		updateTotalCompletion();
@@ -3605,7 +3481,7 @@
 			<hr>
 			<h2 class="info-dialog-title">Credits</h2>
 			<p style="text-align: center;">
-				Made by <strong>Aaron Kugler</strong><a href="mailto:kugs@live.com" style="display: inline-block;"><img src="icons/email.png" alt="Email" width="20" height="20" style="vertical-align: middle;"></a>
+				Made by <strong>Aaron Kugler</strong> <a href="mailto:kugs@live.com" style="display: inline-block;"><img src="icons/mail.png" alt="Email" width="20" style="vertical-align: middle;"></a>
 				<span class="info-dialog-role-line">Creative Director &middot; Data Wrangler &middot; UI/UX Designer &middot; Icon Designer</span><br>
 				Secondary Engineering Team
 				<span class="info-dialog-role-line">Google <strong>Gemini</strong>, <strong>ChatGPT</strong> by OpenAI, and <strong>Claude</strong> by Anthropic.<br>Free consumer tiers used during development.</span><br>
@@ -3665,7 +3541,6 @@
 
 		REGIONS.forEach(region => {
 
-			// Great Sky Island (id 0) only has a Sky layer in this app.
 			const layersForRegion = region.id === 0
 				? PROGRESS_LAYERS.filter(l => l.key === 'sky')
 				: PROGRESS_LAYERS;
@@ -3679,15 +3554,6 @@
 					const weight = lm.weight === undefined ? 1 : Number(lm.weight);
 					if (!Number.isFinite(weight) || weight < 0) return;
 
-					// Some landmarks are tagged with more than one region (or,
-					// in principle, more than one layer) so they still show up
-					// correctly no matter which region/layer someone is
-					// browsing. For a completion breakdown, though, each
-					// landmark should only count toward ONE slice of the
-					// overall 100% - otherwise boundary landmarks get counted
-					// once per region they're tagged with and inflate every
-					// row they touch. Only credit each landmark to its
-					// primary (first-listed) region and layer.
 					const primaryRegion = getRegions(lm.region)[0];
 					const primaryLayer = getLevels(lm.level)[0];
 
@@ -3732,9 +3598,6 @@
 		const rows = buildRegionProgressRows(totalWeight);
 
 		const rowsHtml = rows.map((row, i) => {
-			// Only render the Region cell on the first row of each region's
-			// group of layer-rows, and have it span down over the rest -
-			// rows after that just omit the column entirely.
 			const isFirstOfRegion = i === 0 || rows[i - 1].regionName !== row.regionName;
 
 			const regionCell = isFirstOfRegion
@@ -3900,14 +3763,13 @@
         cancelAnimationFrame(panAnimId);
         const startX = offsetX;
         const startY = offsetY;
-        const duration = 350; // Milliseconds for the glide
+        const duration = 350;
         const startTime = performance.now();
 
         function step(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             
-            // Cubic ease-out formula for a smooth deceleration
             const ease = 1 - Math.pow(1 - progress, 3);
 
             offsetX = startX + (targetOffsetX - startX) * ease;
@@ -3915,10 +3777,6 @@
 
             keepInBounds();
 
-            // Mark the animation as finished BEFORE the final redraw,
-            // so anything that checks "is a pan still in flight" (like
-            // the korok coordlabel positioning) sees the correct state
-            // in time for the frame where the map actually lands.
             if (progress < 1) {
 				panAnimId = requestAnimationFrame(step);
 			} else {
@@ -3936,7 +3794,6 @@
 		const selectedImgX = (selectedLandmark.x - currentRegion.gameStartX) * 1.5;
 		const selectedImgY = (currentRegion.gameStartY - selectedLandmark.y) * 1.5;
 	
-		// Normal landmark: use the existing behavior
 		if (!korokTempMarker) {
 			const tooltipShift = window.innerWidth < 600 ? 120 : 150;
 	
@@ -3947,19 +3804,13 @@
 			return;
 		}
 	
-		// Temporary marker's image coordinates
 		const tempImgX = (korokTempMarker.x - currentRegion.gameStartX) * 1.5;
-	
 		const tempImgY = (currentRegion.gameStartY - korokTempMarker.y) * 1.5;
 	
-		// Center between the two points
 		const groupCenterX = (selectedImgX + tempImgX) / 2;
 		const groupCenterY = (selectedImgY + tempImgY) / 2;
 	
-		// ---------------------------------------------------------
-		// PHONE / SMALL SCREEN
-		// ---------------------------------------------------------
-		
+		// PHONE / SMALL SCREEN		
 		if (window.innerWidth <= 600) {
 		
 			const reservedLabelSpace = 210;
@@ -3976,10 +3827,7 @@
 			return;
 		}
 		
-		// ---------------------------------------------------------
-		// TABLET / DESKTOP
-		// ---------------------------------------------------------
-		
+		// TABLET / DESKTOP		
 		const labelSpace = window.innerWidth < 900 ? 150 : 175;
 		
 		const targetScreenX = (window.innerWidth - labelSpace) / 2;
@@ -3995,25 +3843,11 @@
 		const isSmallScreen = window.innerWidth <= 600;
 		const labelGap = 3;
 	
-		// ---------------------------------------------------------
 		// PHONE / SMALL SCREEN
-		// ---------------------------------------------------------
-		// Always put the label BELOW the entire Korok setup.
-
 		if (isSmallScreen) {
 			const labelWidth = 240;
-		
 			const groupCenterX = (minRectX + maxRectX) / 2;
 		
-			// While the auto pan/zoom animation is still moving the map
-			// (panAnimId !== null), we don't know where the group will
-			// actually end up on screen yet - so render with a temporary
-			// offset of 0 (i.e. assume it'll land centered) instead of
-			// locking in an offset based on the pre-pan position. Only
-			// once the pan has actually settled do we capture the real
-			// offset, which is then held fixed so the label keeps
-			// tracking the group correctly if the user manually pans
-			// the map afterward.
 			let effectiveOffsetX = mobileKorokLabelOffsetX;
 		
 			if (effectiveOffsetX === null) {
@@ -4037,26 +3871,16 @@
 			return;
 		}
 	
-		// ---------------------------------------------------------
 		// TABLET / DESKTOP
-		// ---------------------------------------------------------
-	
 		const dx = screenX - tempScreenX;
 		const dy = screenY - tempScreenY;
 	
 		const slope = Math.abs(dy / dx);
 	
-		// ---------------------------------------------------------
 		// SHALLOW ARROW
-		// ---------------------------------------------------------
-		
 		if (slope <= 1) {
 			const labelWidth = window.innerWidth < 900 ? 240 : 260;
-	
-			// Align with the left edge of the rectangle.
 			const labelLeft = minRectX;
-	
-			// 10px below the rectangle's lowest point.
 			const labelTop = maxRectY + labelGap;
 	
 			coordLabel.style.left = `${labelLeft}px`;
@@ -4067,12 +3891,8 @@
 			return;
 		}
 	
-		// ---------------------------------------------------------
 		// STEEP ARROW
-		// ---------------------------------------------------------
-
 		const labelWidth = window.innerWidth < 900 ? 240 : 260;
-	
 		const labelLeft = maxRectX + labelGap;
 		const labelTop = minRectY;
 	
@@ -4312,7 +4132,6 @@
 			}
 
 			// SELECTED KOROK & TEMPORARY KOROK MARKER
-			
 			if (korokTempMarker && tempScreenX !== null && tempScreenY !== null) {
 			
 				const dx = screenX - tempScreenX;
@@ -4320,7 +4139,6 @@
 				const distance = Math.hypot(dx, dy);
 			
 				// DRAW ARROW FROM TEMPORARY ICON → SELECTED LANDMARK
-				
 				const minArrowDistance = 40;
 				
 				if (distance >= minArrowDistance) {
@@ -4353,14 +4171,12 @@
 					ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
 				
 					// ARROW SHAFT
-				
 					ctx.beginPath();
 					ctx.moveTo(startX, startY);
 					ctx.lineTo(shaftEndX, shaftEndY);
 					ctx.stroke();
 				
 					// ARROWHEAD
-				
 					const arrowHeadLength = 11;
 					const arrowHeadAngle = Math.PI / 6;
 				
@@ -4410,7 +4226,6 @@
 				}
 			
 				// ROTATED ROUNDED RECTANGLE AROUND BOTH ICONS
-				
 				const korokdistance = Math.hypot(screenX - tempScreenX, screenY - tempScreenY);
 				
 				const centerX = (screenX + tempScreenX) / 2;
@@ -4459,7 +4274,6 @@
 				ctx.restore();
 				
 				// POSITION COORDINATE LABEL
-				
 				const halfW = rectWidth / 2;
 				const halfH = rectHeight / 2;
 				
@@ -4557,13 +4371,10 @@
             type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
         } while (type === lastLandmarkType && cycleLandmarks.length > 1);
 
-        // Update the tracker
         lastLandmarkType = type;
-        // const type = cycleLandmarks[Math.floor(Math.random() * cycleLandmarks.length)];
+        
         const color = getTypeColor(type);
-        
         const displayName = usePlural ? LANDMARK_PLURALS[type] : type;
-        
         const fileName = typeToIconFile(type);
         const formattedName = displayName.replace(' ', '<br>');
 
@@ -4661,7 +4472,6 @@
 		clearInterval(dashInterval);
 		dashInterval = null;
 	
-		// Great Sky Island only has Sky.
 		const layerBtn =
 			document.getElementById('layerBtn');
 	
@@ -4717,7 +4527,6 @@
         }
         currentLayer = layer;
         
-        // Update the main layer button image to reflect current state
         document.getElementById('currentLayerIcon').src = `icons/${layer}.png`;
         document.getElementById('layerBtn').classList.remove('active');
         
@@ -5145,15 +4954,13 @@
 
         // --- 2. Build Category Hierarchies ---
         FILTER_CATEGORIES.forEach(category => {
-            // Find items in this category that are available on the current layer
             const availableItems = category.items.filter(item => allowedTypes.includes(item));
 
-            if (availableItems.length === 0) return; // Skip if layer has none of these
+            if (availableItems.length === 0) return;
 
             const catDiv = document.createElement('div');
-            catDiv.className = 'filter-category'; // Expand by default
+            catDiv.className = 'filter-category';
 
-            // Header (Title, Chevron, and Category Master Toggle)
             const headerDiv = document.createElement('div');
             headerDiv.className = 'filter-category-header';
 
@@ -5169,7 +4976,6 @@
             
             const categoryCb = document.createElement('input');
             categoryCb.type = 'checkbox';
-            // It is checked only if ALL available items in this category are active
             categoryCb.checked = availableItems.every(item => layerFilters.includes(item));
             
             categoryCb.onchange = (e) => {
@@ -5184,7 +4990,6 @@
                     }
                 });
                 
-                // Visually update all child checkboxes in this category
                 const childBoxes = catDiv.querySelectorAll('.filter-category-content input[type="checkbox"]');
                 childBoxes.forEach(box => box.checked = isChecked);
                 
@@ -5200,7 +5005,6 @@
             headerDiv.appendChild(switchDiv);
             catDiv.appendChild(headerDiv);
 
-            // Item List Container
             const contentDiv = document.createElement('div');
             contentDiv.className = 'filter-category-content';
 
@@ -5208,7 +5012,7 @@
                 const labelText = LANDMARK_PLURALS[type] || type;
                 const label = document.createElement('label');
                 label.className = 'filter-label animated-item';
-                label.style.animationDelay = `${index * 0.03}s`; // Sped up the stagger slightly
+                label.style.animationDelay = `${index * 0.03}s`;
                 
                 const iconImg = document.createElement('img');
                 const fileName = typeToIconFile(type);
@@ -5232,7 +5036,6 @@
                         activeFiltersByLayer[currentLayer] = activeFiltersByLayer[currentLayer].filter(f => f !== type);
                     }
                     
-                    // Update category master toggle state based on children
                     const allChecked = availableItems.every(i => activeFiltersByLayer[currentLayer].includes(i));
                     categoryCb.checked = allChecked;
                     
@@ -5267,7 +5070,7 @@
 		resetAllActivePanels('progressMenu');
 		
 		if (isOpening) {
-			buildProgressMenu(); // Calculate stats before showing
+			buildProgressMenu();
 			menu.style.display = 'flex';
 			btn.classList.add('active-panel');
 		} else {
@@ -5282,8 +5085,6 @@
 		if (!currentRegion) return;
 		
 		const progressData = loadProgress();
-		
-		// Filter landmarks for the exact region and layer currently being viewed
 		const localLandmarks = landmarks.filter(isInCurrentRegionLayer);
 		
 		if (localLandmarks.length === 0) {
@@ -5291,7 +5092,6 @@
 			return;
 		}
 		
-		// Aggregate totals and found counts
 		const stats = {};
 		let overallTotal = 0;
 		let overallFound = 0;
@@ -5334,7 +5134,6 @@
 		`;
 		menu.appendChild(masterDiv);
 	
-		// Add a visual separator between the master row and categories
 		const separator = document.createElement('div');
 		separator.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
 		separator.style.margin = '6px 0 2px 0';
@@ -5376,16 +5175,13 @@
 		
 		// --- 3. BUILD CATEGORY HIERARCHY ---
 		FILTER_CATEGORIES.forEach(category => {
-			// Find which items in this category actually exist in the current region/layer
 			const categoryItems = category.items.filter(item => stats[item]);
 			
 			if (categoryItems.length > 0) {
 				
-				// Create Collapsible Category Container (reusing filter menu CSS)
 				const catDiv = document.createElement('div');
 				catDiv.className = 'filter-category'; 
 				
-				// Create Category Header
 				const headerDiv = document.createElement('div');
 				headerDiv.className = 'filter-category-header';
 				
@@ -5393,7 +5189,6 @@
 				titleSpan.className = 'filter-category-title';
 				titleSpan.innerHTML = `<span class="category-chevron">▼</span> ${category.name}`;
 				
-				// Add click listener to toggle collapse
 				titleSpan.onclick = () => {
 					catDiv.classList.toggle('category-collapsed');
 				};
@@ -5401,11 +5196,9 @@
 				headerDiv.appendChild(titleSpan);
 				catDiv.appendChild(headerDiv);
 	
-				// Create Content Container for the items
 				const contentDiv = document.createElement('div');
 				contentDiv.className = 'filter-category-content';
 				
-				// Sort the available items alphabetically
 				categoryItems.sort();
 				
 				categoryItems.forEach(type => {
@@ -5446,11 +5239,9 @@
 						</div>
 					`;
 					
-					// Append items to the contentDiv, NOT the main menu
 					contentDiv.appendChild(itemDiv);
 				});
 	
-				// Append the filled content container to the category div, then to the menu
 				catDiv.appendChild(contentDiv);
 				menu.appendChild(catDiv);
 			}
@@ -5477,12 +5268,10 @@
 
 	function toggleAllLandmarksOfType(type, markAsFound) {
 		const localLandmarks = landmarks.filter(lm => 
-			// Map the raw landmark name to its alias (if one exists) before comparing
 			getFilterKey(lm) === type && isInCurrentRegionLayer(lm)
 		);
 	
 		localLandmarks.forEach(lm => {
-			// We still save using the original lm.landmark to maintain consistency in your save data
 			const lmId = getLandmarkId(lm);
 			saveProgress(lmId, markAsFound);
 		});
@@ -5494,8 +5283,6 @@
 
 	// ----------------------- OTHER EVENT LISTENERS -----------------------
 
-	// The set of open UI panels/menus that should swallow map gestures (pan, zoom, click)
-	// so interacting with them doesn't also drag/zoom/click the map underneath.
 	const CORE_PANEL_SELECTORS = ['#regionMenu', '#autocompleteResults', '#filterMenu', '#layerMenu', '#progressMenu'];
 
 	function isInsideUIPanel(target, extraSelectors = []) {
@@ -5624,12 +5411,12 @@
                 
                 // To add back the click to view coordinates functionality, just switch the commented lines below:
                 
-                markerX = (e.clientX - offsetX) / scale;
-                markerY = (e.clientY - offsetY) / scale;
-            	// markerX = null;
-                // markerY = null;
-				// mobileKorokLabelOffsetX = null;
-                // document.getElementById('coordLabel').style.display = 'none';
+                // markerX = (e.clientX - offsetX) / scale;
+                // markerY = (e.clientY - offsetY) / scale;
+            	markerX = null;
+                markerY = null;
+				mobileKorokLabelOffsetX = null;
+                document.getElementById('coordLabel').style.display = 'none';
             } 
             redraw();
         }
@@ -5647,7 +5434,6 @@
             initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
             initialScale = scale;
             
-            // Track the initial center point of the pinch gesture
             lastPinchMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
             lastPinchMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
         }
