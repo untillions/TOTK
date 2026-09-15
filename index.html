@@ -97,9 +97,13 @@
 			display: inline-block;
 		}
 		.dashboard-footer {
-			position: absolute;
-			bottom: calc(15px + env(safe-area-inset-bottom));
-			transform: translateX(-50%);
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: max(15px, env(safe-area-inset-bottom));
+			width: max-content;
+			max-width: 90%;
+			margin: 0 auto;
 			font-size: 0.9rem;
 			color: #FAF7DF;
 			text-align: center;
@@ -1858,7 +1862,6 @@
 			}
 			.dashboard-footer {
 				white-space: normal;
-				width: 90%;
 				line-height: 1.4;
 			}
 			
