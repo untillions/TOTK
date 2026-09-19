@@ -1566,7 +1566,7 @@
         /* --- LAYER MENU --- */
         #layerPanel {
             position: absolute;
-            top: calc(15px + env(safe-area-inset-top));
+            top: max(15px, env(safe-area-inset-top));
             left: 25px;
             display: flex;
             flex-direction: column;
@@ -1588,7 +1588,7 @@
         /* --- FILTER MENU --- */
         #filterPanel {
             position: absolute;
-			top: calc(15px + env(safe-area-inset-top));
+			top: max(15px, env(safe-area-inset-top));
             right: 25px;
             display: flex;
             flex-direction: column;
@@ -1706,7 +1706,7 @@
         /* --- SEARCH & REGION MENUS --- */
 		#searchPanel {
 			position: absolute;
-			top: calc(18px + env(safe-area-inset-top));
+			top: max(18px, env(safe-area-inset-top) + 3px);
 			left: 50%;
 			transform: translateX(-50%);
 			z-index: 20;
@@ -5479,5 +5479,6 @@
     });
     
 </script>
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5ada3aaa075c46cb84af5f64ee9f8e80"}'></script>
 </body>
 </html>
