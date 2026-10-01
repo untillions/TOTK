@@ -1699,6 +1699,7 @@ const landmarks = [
 	{ name: "Maritta Exchange Ruins Well", landmark: "Well", type: "", region: 3, level: "Surface", x: -1811, y: 1620, z: 106, zoom: 4, size: "XS", details: "" },
 	{ name: "New Serenne Stable Well", landmark: "Well", type: "", region: 3, level: "Surface", x: -1359, y: 702, z: 85, zoom: 4, size: "XS", details: "" },
 	{ name: "Tabantha Village Ruins Well", landmark: "Well", type: "", region: 3, level: "Surface", x: -2359, y: 1875, z: 278, zoom: 4, size: "XS", details: "" },
+	{ name: "Tabantha Bridge Stable Well", landmark: "Well", type: "", region: 3, level: "Surface", x: -2955, y: 531, z: 169, zoom: 4, size: "XS", details: "" },
 	{ name: "Dronoc's Pass Well", landmark: "Well", type: "", region: 4, level: "Surface", x: -3831, y: 2107, z: 141, zoom: 4, size: "XS", details: "" },
 	{ name: "Snowfield Stable Well", landmark: "Well", type: "", region: 5, level: "Surface", x: -1675, y: 2584, z: 234, zoom: 4, size: "XS", details: "" },
 	{ name: "Elma Knolls Well", landmark: "Well", type: "", region: 6, level: "Surface", x: -670, y: 1354, z: 88, zoom: 4, size: "XS", details: "" },
@@ -1740,7 +1741,6 @@ const landmarks = [
 	{ name: "Gerudo Canyon Well", landmark: "Well", type: "", region: 14, level: "Surface", x: -2817, y: -2228, z: 29, zoom: 4, size: "XS", details: "" },
 	{ name: "Kara Kara Bazaar Well", landmark: "Well", type: "", region: 14, level: "Surface", x: -3254, y: -2580, z: 23, zoom: 4, size: "XS", details: "" },
 	{ name: "Mount Nabooru Well", landmark: "Well", type: "", region: 14, level: "Surface", x: -1722, y: -2238, z: 36, zoom: 4, size: "XS", details: "" },
-	{ name: "Tabantha Bridge Stable Well", landmark: "Well", type: "", region: 15, level: "Surface", x: -2955, y: -531, z: 169, zoom: 4, size: "XS", details: "" },
 // SHOPS
 	{ name: "Lookout Landing", landmark: "Armor Shop", type: "Armor Shop", region: 1, level: "Surface", x: -206, y: 85, z: 19, details: "hylian1, hylian2, hylian3" },
 	{ name: "Lookout Landing", landmark: "General Shop", type: "General Shop", region: 1, level: "Surface", x: -206, y: 75, z: 19, details: "arrow, apple, shroom" },
@@ -2278,7 +2278,7 @@ const landmarks = [
 	{ name: "Gerudo Highlands Depths #01", landmark: "Flux Construct", type: "Flux Construct III", region: 15, level: "Depths", x: -4086, y: -953, z: -1079, weight: 0, details: "" },
 	{ name: "Gerudo Highlands Depths #02", landmark: "Flux Construct", type: "Flux Construct I", region: 15, level: "Depths", x: -2182, y: -1503, z: -662, weight: 0, details: "" },
 // HINOX
-	{ name: "Hyrule Castle", landmark: "Hinox", type: "Black Hinox ", region: 1, level: "Surface", x: -154, y: 1064, z: 223, weight: 0, details: "" },
+	{ name: "Hyrule Castle", landmark: "Hinox", type: "Black Hinox ", region: 1, level: "Surface", x: -154, y: 1064, z: 223, weight: 0, details: `Part of the <img src="icons/main-quest.png" style="height: 20px; width: 20px; vertical-align: middle; margin-right: 5px;"><span style="color: #fec043; font-weight: bold;">Crisis at Hyrule Castle</span> quest` },
 	{ name: "Carok Bridge", landmark: "Hinox", type: "Hinox", region: 1, level: "Surface", x: -1080, y: 462, z: 47, weight: 0, details: "" },
 	{ name: "Royal Hidden Passage", landmark: "Hinox", type: "Stalnox ", region: 1, level: "Surface", x: -322, y: 458, z: -24, weight: 0, details: "" },
 	{ name: "Giant's Forest", landmark: "Hinox", type: "Stalnox ", region: 1, level: "Surface", x: -1177, y: -115, z: 46, weight: 0, details: "" },
