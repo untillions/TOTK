@@ -2727,8 +2727,15 @@
 	
 				<div class="landmark-found-row">
 					<span class="landmark-found-label">
-						${["Main Quest", "Side Quest", "Shrine Quest", "Side Adventure"].includes(landmark.landmark) ? "Completed?" : "Found?"}
+						${
+							["Flux Construct", "Frox", "Gleeok", "Hinox", "Lynel", "Molduga", "Talus"].includes(landmark.landmark)
+						  		? "Defeated?"
+						  		: ["Main Quest", "Side Quest", "Shrine Quest", "Side Adventure"].includes(landmark.landmark)
+									? "Completed?"
+									: "Found?"
+						}
 					</span>
+
 					<label class="switch" style="margin-left:0;">
 						<input type="checkbox" class="landmark-found-checkbox" ${isFound ? 'checked' : ''}>
 						<span class="slider"></span>
